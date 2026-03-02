@@ -309,3 +309,52 @@ body {
 .animate-bounce-slow {
   animation: bounce-slow 3s ease-in-out infinite;
 }
+
+/* ============================================================
+   Native App / Capacitor Utilities
+   ============================================================ */
+
+/* Safe area inset custom properties */
+:root {
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+}
+
+/* Remove tap highlight on mobile */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevent text selection on UI chrome */
+.no-select {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* Prevent pull-to-refresh on app shell */
+.no-overscroll {
+  overscroll-behavior: none;
+}
+
+/* Momentum scrolling for scroll containers */
+.scroll-touch {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Minimum touch target (Apple HIG: 44x44px) */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Keyboard-aware bottom nav hide */
+.keyboard-open .hide-on-keyboard {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+}

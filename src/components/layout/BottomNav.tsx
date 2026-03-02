@@ -33,9 +33,10 @@ export default function BottomNav() {
     <nav
       role="navigation"
       aria-label="Main navigation"
-      className="fixed bottom-0 left-0 right-0 z-50 h-[72px] bg-[#0D1117]/95 backdrop-blur-md border-t border-[#21262D] md:hidden"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-[#0D1117]/95 backdrop-blur-md border-t border-[#21262D] md:hidden hide-on-keyboard no-select transition-all duration-200"
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
     >
-      <ul className="flex items-center justify-around h-full px-2">
+      <ul className="flex items-center justify-around h-[72px] px-2">
         {navItems.map((item) => {
           const active = isActive(item.href);
           const Icon = item.icon;
@@ -44,7 +45,7 @@ export default function BottomNav() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className="flex flex-col items-center gap-1"
+                className="flex flex-col items-center justify-center gap-1 min-w-[44px] min-h-[44px]"
                 aria-current={active ? "page" : undefined}
               >
                 <motion.div

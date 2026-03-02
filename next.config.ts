@@ -24,7 +24,7 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "X-Frame-Options",
-            value: "DENY",
+            value: "SAMEORIGIN",
           },
           {
             key: "X-Content-Type-Options",
@@ -48,7 +48,7 @@ const nextConfig: NextConfig = {
               "font-src 'self' https://fonts.gstatic.com",
               "connect-src 'self' https: wss:",
               "frame-src 'self' https://vercel.live",
-              "frame-ancestors 'none'",
+              "frame-ancestors 'self' capacitor: https://localhost",
             ].join("; "),
           },
         ],

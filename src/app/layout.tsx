@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import AuthProvider from "@/components/layout/AuthProvider";
 import SkipLink from "@/components/layout/SkipLink";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
+import CapacitorInit from "@/components/layout/CapacitorInit";
 import JsonLd, {
   personJsonLd,
   organizationJsonLd,
@@ -76,16 +77,24 @@ export default function RootLayout({
         <meta name="theme-color" content="#0D1117" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
-      <body className="font-body antialiased bg-[#0D1117] text-klo-text">
+      <body className="font-body antialiased bg-[#0D1117] text-klo-text no-overscroll">
         <AuthProvider>
           <SkipLink />
           <TopNav />
-          <main id="main-content" className="min-h-screen pt-[72px] pb-[72px] md:pb-0">
+          <main
+            id="main-content"
+            className="min-h-screen md:pb-0"
+            style={{
+              paddingTop: "calc(72px + env(safe-area-inset-top, 0px))",
+              paddingBottom: "calc(72px + env(safe-area-inset-bottom, 0px))",
+            }}
+          >
             {children}
           </main>
           <BottomNav />
           <Footer />
         </AuthProvider>
+        <CapacitorInit />
         <ServiceWorkerRegister />
         <JsonLd data={personJsonLd()} />
         <JsonLd data={organizationJsonLd()} />

@@ -84,7 +84,8 @@ export default function TopNav() {
     <>
       <nav
         aria-label="Primary navigation"
-        className="fixed top-0 left-0 right-0 z-50 h-[72px] bg-[#0D1117]/95 backdrop-blur-md border-b border-[#21262D] flex items-center justify-between px-6"
+        className="fixed top-0 left-0 right-0 z-50 bg-[#0D1117]/95 backdrop-blur-md border-b border-[#21262D] flex items-center justify-between px-6 no-select"
+        style={{ paddingTop: "env(safe-area-inset-top, 0px)", height: "calc(72px + env(safe-area-inset-top, 0px))" }}
       >
         {/* Logo */}
         <Link href="/" className="flex items-center">
@@ -131,7 +132,7 @@ export default function TopNav() {
           <button
             ref={hamburgerRef}
             onClick={toggleMenu}
-            className="md:hidden text-[#E6EDF3] hover:text-[#2764FF] transition-colors duration-200"
+            className="md:hidden text-[#E6EDF3] hover:text-[#2764FF] transition-colors duration-200 min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-nav-menu"
