@@ -1,0 +1,236 @@
+// ============================================================
+// KLO App — Core Type Definitions
+// ============================================================
+
+/** Lucide icon name reference (string union kept open for extensibility). */
+export type IconName = string;
+
+// ------------------------------------------------------------
+// Navigation & Layout
+// ------------------------------------------------------------
+
+export interface NavigationItem {
+  label: string;
+  href: string;
+  icon: IconName;
+  /** Optional badge count displayed on the nav item. */
+  badge?: number;
+  /** Whether the link requires authentication. */
+  requiresAuth?: boolean;
+}
+
+// ------------------------------------------------------------
+// User & Profile
+// ------------------------------------------------------------
+
+export interface User {
+  id: string;
+  email: string;
+  displayName: string;
+  avatarUrl?: string;
+  role: "free" | "member" | "premium" | "admin";
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Profile extends User {
+  bio?: string;
+  organization?: string;
+  title?: string;
+  phone?: string;
+  location?: string;
+  website?: string;
+  linkedIn?: string;
+  interests: string[];
+  completedAssessments: string[];
+  subscriptionTier: SubscriptionTierSlug;
+  onboardingComplete: boolean;
+}
+
+// ------------------------------------------------------------
+// Subscription
+// ------------------------------------------------------------
+
+export type SubscriptionTierSlug = "free" | "member" | "premium";
+
+export interface SubscriptionTier {
+  slug: SubscriptionTierSlug;
+  name: string;
+  price: number;
+  /** Billing interval label, e.g. "month". */
+  interval: "month" | "year";
+  description: string;
+  features: string[];
+  highlighted?: boolean;
+  cta: string;
+  /** Stripe price ID or equivalent. */
+  stripePriceId?: string;
+}
+
+// ------------------------------------------------------------
+// Assessments
+// ------------------------------------------------------------
+
+export interface Assessment {
+  id: string;
+  title: string;
+  description: string;
+  icon: IconName;
+  href: string;
+  /** Number of questions in the assessment. */
+  questionCount?: number;
+  /** Estimated minutes to complete. */
+  estimatedMinutes?: number;
+  category?: string;
+}
+
+export interface AssessmentAnswer {
+  questionId: string;
+  value: string | number | boolean;
+}
+
+export interface AssessmentResult {
+  id: string;
+  assessmentId: string;
+  userId: string;
+  answers: AssessmentAnswer[];
+  score: number;
+  maxScore: number;
+  percentile?: number;
+  summary: string;
+  recommendations: string[];
+  completedAt: string;
+  createdAt: string;
+}
+
+// ------------------------------------------------------------
+// Vault (Premium Content)
+// ------------------------------------------------------------
+
+export type VaultContentType = "video" | "article" | "pdf" | "template" | "tool";
+
+export interface VaultContent {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  type: VaultContentType;
+  thumbnailUrl?: string;
+  contentUrl: string;
+  /** Minimum tier required to access this content. */
+  requiredTier: SubscriptionTierSlug;
+  tags: string[];
+  duration?: string;
+  publishedAt: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ------------------------------------------------------------
+// AI Advisor
+// ------------------------------------------------------------
+
+export type AdvisorRole = "user" | "assistant" | "system";
+
+export interface AdvisorMessage {
+  id: string;
+  role: AdvisorRole;
+  content: string;
+  timestamp: string;
+  /** Optional metadata attached by the AI (e.g. citations). */
+  metadata?: Record<string, unknown>;
+}
+
+export interface AdvisorConversation {
+  id: string;
+  userId: string;
+  title: string;
+  messages: AdvisorMessage[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+// ------------------------------------------------------------
+// Strategy Room
+// ------------------------------------------------------------
+
+export type StrategyRoomStatus = "draft" | "active" | "completed" | "archived";
+
+export interface StrategyRoom {
+  id: string;
+  title: string;
+  description: string;
+  ownerId: string;
+  status: StrategyRoomStatus;
+  participants: string[];
+  objectives: string[];
+  /** Key deliverables or action items. */
+  deliverables: StrategyDeliverable[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface StrategyDeliverable {
+  id: string;
+  title: string;
+  assignee?: string;
+  completed: boolean;
+  dueDate?: string;
+}
+
+// ------------------------------------------------------------
+// Community Feed
+// ------------------------------------------------------------
+
+export type FeedPostType = "text" | "image" | "link" | "poll";
+
+export interface FeedPost {
+  id: string;
+  authorId: string;
+  authorName: string;
+  authorAvatarUrl?: string;
+  type: FeedPostType;
+  content: string;
+  imageUrl?: string;
+  linkUrl?: string;
+  likes: number;
+  comments: number;
+  isLiked?: boolean;
+  tags: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface FeedComment {
+  id: string;
+  postId: string;
+  authorId: string;
+  authorName: string;
+  authorAvatarUrl?: string;
+  content: string;
+  likes: number;
+  createdAt: string;
+}
+
+// ------------------------------------------------------------
+// Services
+// ------------------------------------------------------------
+
+export interface Service {
+  title: string;
+  description: string;
+  icon: IconName;
+  features?: string[];
+  href?: string;
+}
+
+// ------------------------------------------------------------
+// Affiliations
+// ------------------------------------------------------------
+
+export interface Affiliation {
+  name: string;
+  role?: string;
+  logoUrl?: string;
+  url?: string;
+}

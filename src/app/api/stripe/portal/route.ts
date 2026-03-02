@@ -1,0 +1,63 @@
+import { NextRequest, NextResponse } from "next/server";
+
+/* ------------------------------------------------------------------ */
+/*  POST /api/stripe/portal                                            */
+/*  Creates a Stripe Customer Portal session (or demo fallback)        */
+/* ------------------------------------------------------------------ */
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const customerId: string | undefined = body.customerId;
+
+    if (!customerId) {
+      return NextResponse.json(
+        { error: "Customer ID is required." },
+        { status: 400 }
+      );
+    }
+
+    /* -------------------------------------------------------------- */
+    /*  Demo mode — no Stripe key configured                           */
+    /* -------------------------------------------------------------- */
+
+    const stripeKey = process.env.STRIPE_SECRET_KEY;
+
+    if (!stripeKey || customerId === "demo") {
+      return NextResponse.json({
+        url: "/pricing/manage",
+        demo: true,
+        message:
+          "Running in demo mode. Configure STRIPE_SECRET_KEY for production billing portal.",
+      });
+    }
+
+    /* -------------------------------------------------------------- */
+    /*  Production — create a real Stripe billing portal session        */
+    /* -------------------------------------------------------------- */
+
+    // Dynamic import so the app doesn't crash if stripe isn't installed
+    // in environments that only need the demo path.
+    const Stripe = (await import("stripe")).default;
+    const stripe = new Stripe(stripeKey, {
+      apiVersion: "2026-02-25.clover",
+    });
+
+    const session = await stripe.billingPortal.sessions.create({
+      customer: customerId,
+      return_url: `${process.env.NEXT_PUBLIC_APP_URL ?? "https://kloadvisory.com"}/pricing/manage`,
+    });
+
+    return NextResponse.json({ url: session.url });
+  } catch (error) {
+    console.error("[stripe/portal] Error creating portal session:", error);
+
+    const message =
+      error instanceof Error ? error.message : "An unexpected error occurred.";
+
+    return NextResponse.json(
+      { error: `Failed to create billing portal session: ${message}` },
+      { status: 500 }
+    );
+  }
+}

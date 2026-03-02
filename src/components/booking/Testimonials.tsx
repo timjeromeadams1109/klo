@@ -1,0 +1,242 @@
+"use client";
+
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Star, ChevronLeft, ChevronRight } from "lucide-react";
+import Card from "@/components/shared/Card";
+
+/* ------------------------------------------------------------------ */
+/*  Data                                                                */
+/* ------------------------------------------------------------------ */
+
+interface Testimonial {
+  quote: string;
+  name: string;
+  title: string;
+  org: string;
+  rating: number;
+}
+
+const testimonials: Testimonial[] = [
+  {
+    quote:
+      "Keith brought a level of clarity and energy to our conference that we had never experienced before. His ability to bridge technology and faith resonated deeply with every attendee.",
+    name: "Rev. Dr. Angela M. Harris",
+    title: "Senior Pastor",
+    org: "New Hope Fellowship",
+    rating: 5,
+  },
+  {
+    quote:
+      "We hired Keith to keynote our annual technology summit and the feedback was overwhelmingly positive. He made complex AI concepts accessible and actionable for our executive audience.",
+    name: "Marcus T. Williams",
+    title: "VP of Innovation",
+    org: "Meridian Enterprises",
+    rating: 5,
+  },
+  {
+    quote:
+      "Keith does not just speak — he transforms the room. His passion for empowering communities through technology is authentic and contagious. A truly world-class speaker.",
+    name: "Dr. Cynthia R. Brooks",
+    title: "Conference Director",
+    org: "National Leadership Forum",
+    rating: 5,
+  },
+  {
+    quote:
+      "Our board members were captivated from the first minute. Keith presented a compelling vision for digital governance that was both practical and inspiring. We immediately began implementing his recommendations.",
+    name: "James L. Carter",
+    title: "Board Chair",
+    org: "Elevate Financial Group",
+    rating: 5,
+  },
+  {
+    quote:
+      "Keith has a rare gift for making technology feel human. His workshop on AI strategy gave our leadership team the confidence and framework to move forward boldly. Highly recommend.",
+    name: "Pastor Diane Whitfield",
+    title: "Executive Director",
+    org: "Grace Community Network",
+    rating: 5,
+  },
+  {
+    quote:
+      "Booking Keith was the best decision we made for our annual gala. His message on faith-driven innovation left a lasting impact and our attendees are still talking about it months later.",
+    name: "Tamara S. Mitchell",
+    title: "Events Director",
+    org: "Urban Impact Alliance",
+    rating: 5,
+  },
+];
+
+/* ------------------------------------------------------------------ */
+/*  Animation variants                                                  */
+/* ------------------------------------------------------------------ */
+
+const slideVariants = {
+  enter: (direction: number) => ({
+    x: direction > 0 ? 300 : -300,
+    opacity: 0,
+  }),
+  center: {
+    x: 0,
+    opacity: 1,
+    transition: { duration: 0.45, ease: "easeOut" as const },
+  },
+  exit: (direction: number) => ({
+    x: direction > 0 ? -300 : 300,
+    opacity: 0,
+    transition: { duration: 0.35, ease: "easeOut" as const },
+  }),
+};
+
+/* ------------------------------------------------------------------ */
+/*  Testimonial card                                                    */
+/* ------------------------------------------------------------------ */
+
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+  return (
+    <Card className="h-full flex flex-col">
+      <div className="flex gap-1 mb-4">
+        {Array.from({ length: 5 }).map((_, idx) => (
+          <Star
+            key={idx}
+            size={16}
+            className={
+              idx < testimonial.rating
+                ? "text-klo-gold fill-klo-gold"
+                : "text-klo-slate"
+            }
+          />
+        ))}
+      </div>
+      <blockquote className="text-klo-muted text-sm leading-relaxed flex-1">
+        &ldquo;{testimonial.quote}&rdquo;
+      </blockquote>
+      <div className="mt-6 pt-4 border-t border-klo-slate/50">
+        <p className="text-klo-text text-sm font-semibold">
+          {testimonial.name}
+        </p>
+        <p className="text-klo-muted text-xs mt-0.5">
+          {testimonial.title}, {testimonial.org}
+        </p>
+      </div>
+    </Card>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Main component                                                      */
+/* ------------------------------------------------------------------ */
+
+export default function Testimonials() {
+  // On desktop we show 3 at a time, on mobile 1
+  const [perPage, setPerPage] = useState(3);
+  const [page, setPage] = useState(0);
+  const [direction, setDirection] = useState(0);
+
+  const totalPages = Math.ceil(testimonials.length / perPage);
+
+  // Responsive detection
+  useEffect(() => {
+    function handleResize() {
+      setPerPage(window.innerWidth >= 768 ? 3 : 1);
+    }
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Reset page if perPage changes and page is out of bounds
+  useEffect(() => {
+    if (page >= totalPages) {
+      setPage(0);
+    }
+  }, [perPage, page, totalPages]);
+
+  // Auto-rotate every 6 seconds
+  const nextPage = useCallback(() => {
+    setDirection(1);
+    setPage((prev) => (prev + 1) % totalPages);
+  }, [totalPages]);
+
+  useEffect(() => {
+    const interval = setInterval(nextPage, 6000);
+    return () => clearInterval(interval);
+  }, [nextPage]);
+
+  const prevPage = () => {
+    setDirection(-1);
+    setPage((prev) => (prev - 1 + totalPages) % totalPages);
+  };
+
+  const goToPage = (idx: number) => {
+    setDirection(idx > page ? 1 : -1);
+    setPage(idx);
+  };
+
+  const visibleTestimonials = testimonials.slice(
+    page * perPage,
+    page * perPage + perPage
+  );
+
+  return (
+    <div>
+      {/* Carousel area */}
+      <div className="relative">
+        {/* Prev / Next buttons */}
+        <button
+          onClick={prevPage}
+          aria-label="Previous testimonials"
+          className="absolute -left-4 md:-left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-klo-dark border border-klo-slate flex items-center justify-center text-klo-muted hover:text-klo-gold hover:border-klo-gold/40 transition-colors duration-200 cursor-pointer"
+        >
+          <ChevronLeft size={20} />
+        </button>
+        <button
+          onClick={() => {
+            setDirection(1);
+            setPage((prev) => (prev + 1) % totalPages);
+          }}
+          aria-label="Next testimonials"
+          className="absolute -right-4 md:-right-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-klo-dark border border-klo-slate flex items-center justify-center text-klo-muted hover:text-klo-gold hover:border-klo-gold/40 transition-colors duration-200 cursor-pointer"
+        >
+          <ChevronRight size={20} />
+        </button>
+
+        {/* Cards */}
+        <div className="overflow-hidden px-2">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={page}
+              custom={direction}
+              variants={slideVariants}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="grid grid-cols-1 md:grid-cols-3 gap-6"
+            >
+              {visibleTestimonials.map((t) => (
+                <TestimonialCard key={t.name} testimonial={t} />
+              ))}
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Navigation dots */}
+      <div className="flex items-center justify-center gap-2 mt-8">
+        {Array.from({ length: totalPages }).map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => goToPage(idx)}
+            aria-label={`Go to page ${idx + 1}`}
+            className={`w-2.5 h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+              idx === page
+                ? "bg-klo-gold w-6"
+                : "bg-klo-slate hover:bg-klo-muted"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}

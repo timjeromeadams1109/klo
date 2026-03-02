@@ -1,0 +1,14 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "outputDirectory": ".next",
+  "regions": ["iad1"],
+  "functions": {
+    "src/**/*.ts": {
+      "maxDuration": 30
+    },
+    "src/**/*.tsx": {
+      "maxDuration": 30
+    }
+  }
+}

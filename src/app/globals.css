@@ -1,26 +1,204 @@
 @import "tailwindcss";
 
+/* ============================================================
+   KLO Brand Design System
+   Keith L. Odom - Technology Innovator, Speaker, Pastor
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Layout tokens */
+  --nav-height: 64px;
+  --bottom-nav-height: 72px;
+
+  /* Brand palette */
+  --color-gold: #C8A84E;
+  --color-gold-light: #E8D5A0;
+  --color-navy: #0A1628;
+  --color-dark: #111827;
+  --color-slate: #1E293B;
+  --color-text: #F1F5F9;
+  --color-muted: #94A3B8;
+  --color-accent: #3B82F6;
+
+  /* Surfaces */
+  --background: #0A1628;
+  --foreground: #F1F5F9;
 }
 
 @theme inline {
+  /* Brand colors */
+  --color-gold: #C8A84E;
+  --color-gold-light: #E8D5A0;
+  --color-navy: #0A1628;
+  --color-dark: #111827;
+  --color-slate: #1E293B;
+  --color-text: #F1F5F9;
+  --color-muted: #94A3B8;
+  --color-accent: #3B82F6;
+
+  /* KLO-prefixed brand aliases */
+  --color-klo-gold: #C8A84E;
+  --color-klo-gold-light: #E8D5A0;
+  --color-klo-navy: #0A1628;
+  --color-klo-dark: #111827;
+  --color-klo-slate: #1E293B;
+  --color-klo-text: #F1F5F9;
+  --color-klo-muted: #94A3B8;
+  --color-klo-accent: #3B82F6;
+
+  /* Semantic surfaces */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-surface: #1E293B;
+  --color-surface-hover: #334155;
+  --color-border: #334155;
+  --color-border-subtle: #1E293B;
+
+  /* Fonts */
+  --font-sans: var(--font-geist-sans), "Inter", ui-sans-serif, system-ui,
+    -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "Cascadia Code",
+    "Fira Code", monospace;
+  --font-heading: var(--font-geist-sans), "Inter", ui-sans-serif, system-ui,
+    -apple-system, sans-serif;
+  --font-display: "Playfair Display", "Georgia", serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================================
+   Base Styles
+   ============================================================ */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   Custom Scrollbar
+   ============================================================ */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #334155 transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #334155;
+  border-radius: 9999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #475569;
+}
+
+/* ============================================================
+   Grain Texture Overlay
+   ============================================================ */
+
+.grain-overlay {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain-overlay::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+/* ============================================================
+   Selection & Focus
+   ============================================================ */
+
+::selection {
+  background-color: rgba(200, 168, 78, 0.3);
+  color: #F1F5F9;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Utility Layers
+   ============================================================ */
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .gold-glow {
+    box-shadow: 0 0 20px rgba(200, 168, 78, 0.15),
+      0 0 60px rgba(200, 168, 78, 0.05);
+  }
+
+  .gold-border-glow {
+    border-color: rgba(200, 168, 78, 0.3);
+    box-shadow: 0 0 12px rgba(200, 168, 78, 0.08);
+  }
+
+  .glass {
+    background: rgba(30, 41, 59, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(200, 168, 78, 0.08);
+  }
+
+  .fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+
+  .slide-up {
+    animation: slideUp 0.5s ease-out forwards;
+  }
+}
+
+/* ============================================================
+   Keyframes
+   ============================================================ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
