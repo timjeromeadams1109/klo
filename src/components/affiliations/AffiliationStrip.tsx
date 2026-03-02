@@ -10,11 +10,11 @@ interface Affiliation {
 }
 
 const affiliations: Affiliation[] = [
-  { name: "Place of Grace COGIC", icon: Church },
-  { name: "COGIC International", icon: Globe },
-  { name: "Axtegrity", icon: Building2 },
+  { name: "The Place of Grace Church", icon: Church },
+  { name: "Church of God in Christ, Inc.", icon: Globe },
+  { name: "Axtegrity Consulting", icon: Building2 },
   { name: "TechChurch", icon: Cpu },
-  { name: "Church & Tech Summit", icon: CalendarDays },
+  { name: "Church & Technology Summit", icon: CalendarDays },
 ];
 
 export default function AffiliationStrip() {

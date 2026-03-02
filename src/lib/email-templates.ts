@@ -163,7 +163,7 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
 
     <p style="margin:0;font-size:14px;line-height:1.7;color:${BRAND.muted};text-align:center;">
       Questions? Reply to this email or reach out at
-      <a href="mailto:support@keithlodom.io" style="color:${BRAND.gold};text-decoration:none;">support@keithlodom.io</a>.
+      <a href="mailto:info@keithlodom.io" style="color:${BRAND.gold};text-decoration:none;">info@keithlodom.io</a>.
     </p>
   `;
 

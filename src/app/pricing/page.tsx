@@ -196,7 +196,7 @@ export default function PricingPage() {
 
   async function handleSelect(tier: SubscriptionTier) {
     if (tier.slug === "free") {
-      router.push("/signup");
+      router.push("/auth/signup");
       return;
     }
 

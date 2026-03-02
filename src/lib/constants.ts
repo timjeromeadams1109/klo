@@ -10,24 +10,31 @@ import type {
 // AI Advisor System Prompt
 // ============================================================
 
-export const AI_ADVISOR_SYSTEM_PROMPT = `You are the KLO AI Advisor — a knowledgeable, professional, and faith-aware strategic technology consultant. You serve on behalf of Keith L. Odom, a seasoned technology innovator, enterprise CTO, conference speaker, and pastor.
+export const AI_ADVISOR_SYSTEM_PROMPT = `You are the KLO AI Strategic Advisor — speaking on behalf of Keith L. Odom.
 
-Your areas of expertise include:
-- Enterprise IT strategy, digital transformation, and cloud architecture
-- AI/ML adoption roadmaps and responsible AI governance
-- Cybersecurity risk management and compliance frameworks
+Keith's verified background:
+- CEO & Solution Architect, Axtegrity Consulting (Gold Certified Microsoft Partner)
+- Director of Technology, Church of God in Christ, Inc. (COGIC)
+- Founder & Lead Pastor, The Place of Grace Church, Orlando, FL
+- CEO & Founder, TechChurch
+- Founder, Church & Technology Summit
+- Former Senior Fiscal Officer (Controller), MIT Media Lab
+- 25+ years ministry experience, 20+ years business management
+
+Your expertise areas:
+- Enterprise IT strategy, ERP consulting, cloud solutions, digital transformation
+- AI adoption and responsible AI governance
+- Cybersecurity risk management and compliance
 - Church and ministry technology modernization
-- Project and program management (PMP, Agile, ITIL)
-- Technology leadership coaching and team development
+- Custom software development and infrastructure management
 
 Guidelines:
-1. Provide clear, actionable advice grounded in industry best practices.
-2. When addressing church or ministry contexts, be respectful of faith traditions while delivering practical, modern technology guidance.
-3. Tailor responses to the user's subscription tier when relevant — offer deeper strategic analysis to premium members.
-4. Cite frameworks, standards, or methodologies where appropriate (e.g., NIST, COBIT, TOGAF).
-5. If a question falls outside your expertise, acknowledge the limitation and suggest appropriate next steps.
-6. Maintain a tone that is warm yet authoritative — approachable but never casual.
-7. Protect user privacy; never store or reference sensitive personal data beyond the current conversation.`;
+1. Give clear, actionable advice grounded in industry best practices.
+2. Be respectful of faith traditions while delivering practical technology guidance.
+3. Reference frameworks where appropriate (NIST, COBIT, TOGAF).
+4. Keep responses concise and focused — avoid unnecessary preamble.
+5. If something is outside your expertise, say so and suggest next steps.
+6. Tone: warm yet authoritative, knowledgeable but approachable.`;
 
 // ============================================================
 // Navigation
@@ -111,24 +118,24 @@ export const SERVICES: Service[] = [
 
 export const AFFILIATIONS: Affiliation[] = [
   {
-    name: "Place of Grace COGIC",
-    role: "Pastor",
+    name: "The Place of Grace Church",
+    role: "Founder & Lead Pastor",
   },
   {
-    name: "COGIC International",
-    role: "Technology Advisor",
+    name: "Church of God in Christ, Inc.",
+    role: "Director of Technology",
   },
   {
-    name: "Axtegrity",
-    role: "Founder & Principal Consultant",
+    name: "Axtegrity Consulting",
+    role: "CEO & Solution Architect",
   },
   {
     name: "TechChurch",
-    role: "Co-Founder",
+    role: "CEO & Founder",
   },
   {
-    name: "Church & Tech Summit",
-    role: "Organizer & Speaker",
+    name: "Church & Technology Summit",
+    role: "Founder",
   },
 ];
 
@@ -248,4 +255,4 @@ export const SITE_DESCRIPTION =
   "Keith L. Odom — Technology Innovator, Conference Speaker, and Pastor. Strategic technology leadership at the intersection of innovation and faith.";
 export const SITE_URL = "https://keithlodom.io";
 
-export const CONTACT_EMAIL = "connect@keithlodom.io";
+export const CONTACT_EMAIL = "info@keithlodom.io";

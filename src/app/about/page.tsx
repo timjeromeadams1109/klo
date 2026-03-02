@@ -147,23 +147,26 @@ export default function AboutPage() {
 
             <motion.p variants={fadeUp} custom={2}>
               Keith&rsquo;s journey through the technology landscape includes
-              formative work connected to the MIT Media Lab, where he engaged
-              with cutting-edge research in human-computer interaction, emerging
-              media, and the future of digital ecosystems. This experience
-              grounded his approach in rigorous, research-informed thinking
+              his role as Senior Fiscal Officer (Controller) at the MIT Media
+              Lab, where his oversight of fiscal operations and strategic
+              resource management deepened his understanding of how technology
+              institutions operate at the highest level. This experience
+              grounded his approach in rigorous, operations-informed thinking
               while fueling a passion for making technology accessible and
               impactful for everyday people and organizations.
             </motion.p>
 
             <motion.p variants={fadeUp} custom={3}>
-              As the founder of{" "}
-              <span className="text-klo-gold font-medium">Axtegrity</span>,
-              Keith leads a consultancy focused on IT strategy, governance, and
-              digital transformation for enterprises, nonprofits, and
-              faith-based organizations. Through Axtegrity, he has helped
-              organizations modernize their technology infrastructure,
-              strengthen their cybersecurity posture, and adopt AI-driven
-              strategies that create lasting competitive advantage.
+              As the CEO &amp; Solution Architect of{" "}
+              <span className="text-klo-gold font-medium">Axtegrity Consulting</span>,
+              a Gold Certified Microsoft Partner, Keith leads a consultancy
+              specializing in ERP consulting, implementations, digital
+              transformation, cloud solutions, custom app and software
+              development, cybersecurity oversight, and infrastructure
+              management. Through Axtegrity, he has helped organizations
+              modernize their technology infrastructure, strengthen their
+              cybersecurity posture, and adopt strategies that create lasting
+              competitive advantage.
             </motion.p>
 
             <motion.p variants={fadeUp} custom={4}>
@@ -184,14 +187,19 @@ export default function AboutPage() {
 
             <motion.p variants={fadeUp} custom={5}>
               Beyond the boardroom and the conference stage, Keith serves as
-              pastor at{" "}
+              Founder and Lead Pastor of{" "}
               <span className="text-klo-gold font-medium">
-                Place of Grace COGIC
+                The Place of Grace Church
+              </span>{" "}
+              in Pine Hills, Orlando &mdash; a 21st-century church bringing
+              about transformative change in the community. A son of the Church
+              of God in Christ, Keith also serves as the{" "}
+              <span className="text-klo-gold font-medium">
+                Director of Technology for COGIC
               </span>
-              , where he shepherds a vibrant congregation and models the
-              integration of faith with forward-thinking leadership. His
-              ministry work within the Church of God in Christ (COGIC)
-              denomination reflects a deep commitment to spiritual growth,
+              , overseeing infrastructure, cybersecurity, and software
+              applications for the denomination. His ministry and technology
+              leadership reflect a deep commitment to spiritual growth,
               community empowerment, and service.
             </motion.p>
 

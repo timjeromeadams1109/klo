@@ -2,10 +2,9 @@ import Link from "next/link";
 import Image from "next/image";
 
 const socialLinks = [
-  { label: "LinkedIn", href: "https://linkedin.com" },
-  { label: "Twitter", href: "https://twitter.com" },
-  { label: "Instagram", href: "https://instagram.com" },
-  { label: "YouTube", href: "https://youtube.com" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/keithlodom/" },
+  { label: "X (Twitter)", href: "https://twitter.com/keithlodom" },
+  { label: "Instagram", href: "https://www.instagram.com/pastorkeithodom/" },
 ];
 
 const quickLinks = [

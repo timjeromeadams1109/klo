@@ -91,8 +91,8 @@ interface QuickStat {
 const quickStats: QuickStat[] = [
   {
     icon: Mic2,
-    value: "100+",
-    label: "Keynotes Delivered",
+    value: "Speaker",
+    label: "& Advisor",
   },
   {
     icon: Building2,
@@ -101,13 +101,13 @@ const quickStats: QuickStat[] = [
   },
   {
     icon: Timer,
-    value: "15+",
+    value: "20+",
     label: "Years of Technology Leadership",
   },
   {
     icon: Award,
-    value: "98%",
-    label: "Audience Satisfaction",
+    value: "25+",
+    label: "Years of Ministry Experience",
   },
 ];
 

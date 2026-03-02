@@ -9,7 +9,7 @@ const mockBrief = {
   date: "February 24, 2026",
   excerpt:
     "A concise breakdown of the latest federal guidance on AI governance, what it means for enterprise leaders, and three action steps every organization should take this quarter.",
-  slug: "/vault/ai-executive-order-2026",
+  slug: "/vault/executives-ai-briefing-q1-2026",
 };
 
 export default function LatestBrief() {

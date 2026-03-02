@@ -63,9 +63,9 @@ const tierConfig: Record<
 /* ------------------------------------------------------------------ */
 
 const mockInvoices = [
-  { id: "INV-2026-003", date: "Feb 1, 2026", amount: "$49.00", status: "Paid" },
-  { id: "INV-2026-002", date: "Jan 1, 2026", amount: "$49.00", status: "Paid" },
-  { id: "INV-2025-001", date: "Dec 1, 2025", amount: "$49.00", status: "Paid" },
+  { id: "INV-2026-003", date: "Feb 1, 2026", amount: "$29.00", status: "Paid" },
+  { id: "INV-2026-002", date: "Jan 1, 2026", amount: "$29.00", status: "Paid" },
+  { id: "INV-2025-001", date: "Dec 1, 2025", amount: "$29.00", status: "Paid" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -377,11 +377,11 @@ export default function ManageSubscriptionPage() {
                   </p>
                   <div className="flex flex-wrap gap-4 text-sm">
                     <a
-                      href="mailto:support@keithlodom.io"
+                      href="mailto:info@keithlodom.io"
                       className="inline-flex items-center gap-1.5 text-klo-gold hover:underline"
                     >
                       <Mail className="w-3.5 h-3.5" />
-                      support@keithlodom.io
+                      info@keithlodom.io
                     </a>
                     <Link
                       href="/booking"

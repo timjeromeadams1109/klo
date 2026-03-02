@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { User, Bot, Send, AlertCircle } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -149,14 +149,22 @@ export default function ChatInterface({
   disabled = false,
 }: ChatInterfaceProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const scrollAnchorRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Auto-scroll to bottom on new messages or streaming updates
+  // Smooth auto-scroll using an anchor element at the bottom of the list.
+  // Deriving a lightweight dependency from the last message's content length
+  // so we re-scroll on every streaming chunk without deep-comparing the array.
+  const lastMsg = messages[messages.length - 1];
+  const scrollKey = lastMsg ? `${lastMsg.id}-${lastMsg.content.length}` : "";
+
+  const scrollToBottom = useCallback(() => {
+    scrollAnchorRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, []);
+
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages]);
+    scrollToBottom();
+  }, [scrollKey, isLoading, scrollToBottom]);
 
   // Auto-resize textarea
   const handleTextareaChange = (
@@ -210,6 +218,9 @@ export default function ChatInterface({
         <AnimatePresence>
           {showTypingIndicator && <TypingIndicator />}
         </AnimatePresence>
+
+        {/* Invisible anchor to smooth-scroll to */}
+        <div ref={scrollAnchorRef} aria-hidden="true" />
       </div>
 
       {/* Error banner */}

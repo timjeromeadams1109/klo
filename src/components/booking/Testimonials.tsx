@@ -17,53 +17,56 @@ interface Testimonial {
   rating: number;
 }
 
+/* NOTE: These are sample testimonials for illustrative purposes only.
+   They represent the types of feedback Keith typically receives.
+   Replace with verified testimonials as they become available. */
 const testimonials: Testimonial[] = [
   {
     quote:
-      "Keith brought a level of clarity and energy to our conference that we had never experienced before. His ability to bridge technology and faith resonated deeply with every attendee.",
-    name: "Rev. Dr. Angela M. Harris",
-    title: "Senior Pastor",
-    org: "New Hope Fellowship",
+      "Keith brought a level of clarity and energy to our event that resonated deeply with every attendee. His ability to bridge technology and faith is truly exceptional.",
+    name: "Conference Organizer",
+    title: "Faith & Technology Event",
+    org: "Sample Testimonial",
     rating: 5,
   },
   {
     quote:
-      "We hired Keith to keynote our annual technology summit and the feedback was overwhelmingly positive. He made complex AI concepts accessible and actionable for our executive audience.",
-    name: "Marcus T. Williams",
-    title: "VP of Innovation",
-    org: "Meridian Enterprises",
+      "The feedback from our technology summit was overwhelmingly positive. Keith made complex concepts accessible and actionable for our executive audience.",
+    name: "Event Director",
+    title: "Annual Technology Summit",
+    org: "Sample Testimonial",
     rating: 5,
   },
   {
     quote:
-      "Keith does not just speak — he transforms the room. His passion for empowering communities through technology is authentic and contagious. A truly world-class speaker.",
-    name: "Dr. Cynthia R. Brooks",
-    title: "Conference Director",
-    org: "National Leadership Forum",
+      "Keith does not just speak — he transforms the room. His passion for empowering communities through technology is authentic and contagious.",
+    name: "Program Coordinator",
+    title: "Leadership Conference",
+    org: "Sample Testimonial",
     rating: 5,
   },
   {
     quote:
-      "Our board members were captivated from the first minute. Keith presented a compelling vision for digital governance that was both practical and inspiring. We immediately began implementing his recommendations.",
-    name: "James L. Carter",
-    title: "Board Chair",
-    org: "Elevate Financial Group",
+      "Keith presented a compelling vision for digital governance that was both practical and inspiring. Our team immediately began implementing his recommendations.",
+    name: "Technology Leader",
+    title: "Enterprise Strategy Session",
+    org: "Sample Testimonial",
     rating: 5,
   },
   {
     quote:
-      "Keith has a rare gift for making technology feel human. His workshop on AI strategy gave our leadership team the confidence and framework to move forward boldly. Highly recommend.",
-    name: "Pastor Diane Whitfield",
-    title: "Executive Director",
-    org: "Grace Community Network",
+      "Keith has a rare gift for making technology feel human. His workshop on technology strategy gave our leadership team the confidence and framework to move forward boldly.",
+    name: "Ministry Leader",
+    title: "Church Technology Workshop",
+    org: "Sample Testimonial",
     rating: 5,
   },
   {
     quote:
-      "Booking Keith was the best decision we made for our annual gala. His message on faith-driven innovation left a lasting impact and our attendees are still talking about it months later.",
-    name: "Tamara S. Mitchell",
-    title: "Events Director",
-    org: "Urban Impact Alliance",
+      "The message on faith-driven innovation left a lasting impact. Our attendees are still talking about the insights and practical steps Keith shared.",
+    name: "Events Coordinator",
+    title: "Community Impact Event",
+    org: "Sample Testimonial",
     rating: 5,
   },
 ];

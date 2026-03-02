@@ -11,7 +11,7 @@ interface RateLimitEntry {
 }
 
 const rateLimitMap = new Map<string, RateLimitEntry>();
-const RATE_LIMIT = 5;
+const RATE_LIMIT = 30;
 const RATE_WINDOW_MS = 60 * 60 * 1000; // 1 hour
 
 function checkRateLimit(ip: string): { allowed: boolean; remaining: number } {
@@ -78,8 +78,9 @@ export async function POST(request: NextRequest) {
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 2048,
+          model: "claude-haiku-4-5-20251001",
+          max_tokens: 1024,
+          temperature: 0.7,
           system: AI_ADVISOR_SYSTEM_PROMPT,
           stream: true,
           messages: messages.map((m) => ({

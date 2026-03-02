@@ -5,13 +5,13 @@ import { motion } from "framer-motion";
 import { Calendar, Users, ArrowRight, Shield } from "lucide-react";
 
 const mockSession = {
-  title: "AI Governance Playbook: Building Your 90-Day Roadmap",
-  date: "March 20, 2026",
+  title: "AI Governance for Faith Organizations",
+  date: "April 15, 2026",
   description:
-    "Join Keith for an interactive strategy session where we build a practical AI governance framework tailored to your organization. Walk away with a concrete 90-day action plan.",
-  seatsRemaining: 4,
-  totalSeats: 12,
-  tier: "Pro" as const,
+    "Explore responsible AI adoption frameworks tailored for faith-based organizations. This session covers ethical AI policies, risk management, and governance structures that align technology decisions with your mission and values.",
+  seatsRemaining: 8,
+  totalSeats: 20,
+  tier: "Executive" as const,
 };
 
 export default function UpcomingStrategyRoom() {

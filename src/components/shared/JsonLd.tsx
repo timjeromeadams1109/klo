@@ -18,12 +18,13 @@ export function personJsonLd() {
     name: "Keith L. Odom",
     url: "https://keithlodom.io",
     image: "https://keithlodom.io/images/keith-odom.jpg",
-    jobTitle: "Technology Innovator, Speaker & Pastor",
+    jobTitle: "CEO & Solution Architect at Axtegrity Consulting | Director of Technology, COGIC",
     description:
       "AI Advisory, Leadership Assessments, and Strategic Insight for organizations navigating digital transformation.",
     sameAs: [
-      "https://www.linkedin.com/in/keithlodom",
+      "https://www.linkedin.com/in/keithlodom/",
       "https://twitter.com/keithlodom",
+      "https://www.instagram.com/pastorkeithodom/",
     ],
     knowsAbout: [
       "Artificial Intelligence",
@@ -49,9 +50,18 @@ export function organizationJsonLd() {
       "@type": "Person",
       name: "Keith L. Odom",
     },
+    email: "info@keithlodom.io",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Orlando",
+      addressRegion: "FL",
+      postalCode: "32822",
+      addressCountry: "US",
+    },
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer support",
+      email: "info@keithlodom.io",
       url: "https://keithlodom.io/booking",
     },
   };

@@ -13,7 +13,7 @@ import {
 
 export const resend = new Resend(process.env.RESEND_API_KEY || "re_placeholder");
 
-const FROM_ADDRESS = "KLO Advisory <hello@keithlodom.io>";
+const FROM_ADDRESS = "KLO Advisory <info@keithlodom.io>";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */

@@ -189,7 +189,7 @@ function SuccessContent() {
         >
           You are covered by our 30-day money-back guarantee. Questions?{" "}
           <a
-            href="mailto:connect@keithlodom.io"
+            href="mailto:info@keithlodom.io"
             className="text-klo-gold hover:underline"
           >
             Reach out anytime.

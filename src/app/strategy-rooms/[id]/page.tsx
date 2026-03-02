@@ -401,7 +401,7 @@ export default function StrategyRoomDetailPage({
     if (session) {
       setRegistered(getRegistration(session.id));
     }
-  }, [session?.id]);
+  }, [session]);
 
   const handleRegisterClick = useCallback(() => {
     if (!session) return;
