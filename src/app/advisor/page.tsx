@@ -1,8 +1,9 @@
 "use client";
 
+import { useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Bot, Trash2, FileText } from "lucide-react";
+import { Bot, Trash2, FileText, Send } from "lucide-react";
 import { useChat } from "@/hooks/useChat";
 import ChatInterface from "@/components/advisor/ChatInterface";
 import SuggestedPrompts from "@/components/advisor/SuggestedPrompts";
@@ -38,6 +39,23 @@ export default function AdvisorPage() {
 
   const hasMessages = messages.length > 0;
   const atLimit = usageCount >= usageLimit;
+  const initialInputRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleInitialSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!initialInputRef.current) return;
+    const content = initialInputRef.current.value.trim();
+    if (!content || isLoading || atLimit) return;
+    sendMessage(content);
+  };
+
+  const handleInitialKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      const form = e.currentTarget.closest("form");
+      form?.requestSubmit();
+    }
+  };
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] md:h-[calc(100vh-4rem)]">
@@ -113,8 +131,38 @@ export default function AdvisorPage() {
       {/* Main content area */}
       <div className="flex-1 flex flex-col max-w-3xl mx-auto w-full min-h-0">
         {!hasMessages ? (
-          <div className="flex-1 flex items-center justify-center">
-            <SuggestedPrompts onSelect={sendMessage} />
+          <div className="flex-1 flex flex-col">
+            <div className="flex-1 flex items-center justify-center">
+              <SuggestedPrompts onSelect={sendMessage} />
+            </div>
+
+            {/* Direct text input */}
+            <form
+              onSubmit={handleInitialSubmit}
+              className="px-4 pb-4 pt-2 border-t border-klo-slate"
+            >
+              <div className="flex items-end gap-2 bg-klo-dark border border-klo-slate rounded-xl px-3 py-2 focus-within:border-klo-gold/40 transition-colors">
+                <textarea
+                  ref={initialInputRef}
+                  rows={1}
+                  placeholder="Type your own question..."
+                  disabled={isLoading || atLimit}
+                  onKeyDown={handleInitialKeyDown}
+                  onChange={(e) => {
+                    e.target.style.height = "auto";
+                    e.target.style.height = `${Math.min(e.target.scrollHeight, 160)}px`;
+                  }}
+                  className="flex-1 bg-transparent text-sm text-klo-text placeholder:text-klo-muted resize-none outline-none max-h-40 py-1.5 disabled:opacity-50"
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading || atLimit}
+                  className="w-9 h-9 flex items-center justify-center rounded-lg bg-klo-gold text-klo-dark hover:brightness-110 active:brightness-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+                >
+                  <Send size={16} />
+                </button>
+              </div>
+            </form>
           </div>
         ) : (
           <div className="flex-1 min-h-0">
