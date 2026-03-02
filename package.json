@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit",
+    "ci": "npm run type-check && npm run build"
   },
   "dependencies": {
     "@stripe/stripe-js": "^8.8.0",
