@@ -189,6 +189,7 @@ function AssessmentsTab() {
 
   useEffect(() => {
     try {
+      if (typeof window === "undefined" || typeof localStorage === "undefined") return;
       const keys = Object.keys(localStorage);
       const assessmentResults: AssessmentResult[] = [];
       for (const key of keys) {
@@ -491,6 +492,9 @@ function SettingsTab() {
                   </div>
                 </div>
                 <button
+                  role="switch"
+                  aria-checked={notifications[pref.key]}
+                  aria-label={pref.label}
                   onClick={() =>
                     setNotifications({
                       ...notifications,

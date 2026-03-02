@@ -157,6 +157,7 @@ export default function AdvisorPage() {
                 <button
                   type="submit"
                   disabled={isLoading || atLimit}
+                  aria-label="Send message"
                   className="w-9 h-9 flex items-center justify-center rounded-lg bg-gradient-to-r from-[#2764FF] to-[#21B8CD] text-white hover:brightness-110 active:brightness-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
                 >
                   <Send size={16} />
@@ -165,7 +166,7 @@ export default function AdvisorPage() {
             </form>
           </div>
         ) : (
-          <div className="flex-1 min-h-0">
+          <div className="flex-1 min-h-0" aria-live="polite">
             <ChatInterface
               messages={messages}
               isLoading={isLoading}

@@ -92,7 +92,7 @@ function ProductCard({ product, index }: { product: MarketplaceProduct; index: n
 
       {/* Header: emoji + badges */}
       <div className="relative z-10 flex items-start justify-between mb-4">
-        <span className="text-4xl leading-none" role="img" aria-hidden="true">
+        <span className="text-4xl leading-none" aria-hidden="true">
           {product.imageTag}
         </span>
         <div className="flex items-center gap-2">

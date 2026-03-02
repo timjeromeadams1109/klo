@@ -14,7 +14,7 @@ interface UsageData {
 }
 
 const STORAGE_KEY = "klo-advisor-usage";
-const FREE_TIER_LIMIT = 15;
+const FREE_TIER_LIMIT = 5;
 
 function getUsage(): UsageData {
   if (typeof window === "undefined") {

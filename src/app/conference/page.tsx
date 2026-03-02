@@ -458,7 +458,7 @@ export default function ConferencePage() {
           </motion.div>
 
           {/* Queued questions */}
-          <motion.div variants={fadeUp} custom={2} className="space-y-3">
+          <motion.div variants={fadeUp} custom={2} className="space-y-3" aria-live="polite">
             <AnimatePresence mode="popLayout">
               {questions.map((q) => (
                 <motion.div

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
@@ -56,6 +56,9 @@ export default function Modal({
   children,
   size = "md",
 }: ModalProps) {
+  const modalRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<Element | null>(null);
+
   const handleEscape = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -63,16 +66,54 @@ export default function Modal({
     [onClose]
   );
 
+  // Focus trap: keep Tab cycling within the modal
+  const handleTab = useCallback((e: KeyboardEvent) => {
+    if (e.key !== "Tab" || !modalRef.current) return;
+
+    const focusable = modalRef.current.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      }
+    } else {
+      if (document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
+      triggerRef.current = document.activeElement;
       document.addEventListener("keydown", handleEscape);
+      document.addEventListener("keydown", handleTab);
       document.body.style.overflow = "hidden";
+
+      // Focus the modal on open
+      requestAnimationFrame(() => {
+        modalRef.current?.focus();
+      });
     }
     return () => {
       document.removeEventListener("keydown", handleEscape);
+      document.removeEventListener("keydown", handleTab);
       document.body.style.overflow = "";
+
+      // Restore focus to trigger element on close
+      if (triggerRef.current instanceof HTMLElement) {
+        triggerRef.current.focus();
+      }
     };
-  }, [isOpen, handleEscape]);
+  }, [isOpen, handleEscape, handleTab]);
 
   if (typeof window === "undefined") return null;
 
@@ -94,7 +135,12 @@ export default function Modal({
 
           {/* Modal */}
           <motion.div
-            className={`relative w-full ${sizeStyles[size]} bg-klo-dark border border-klo-slate rounded-2xl p-6 shadow-2xl`}
+            ref={modalRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby={title ? "modal-title" : undefined}
+            tabIndex={-1}
+            className={`relative w-full ${sizeStyles[size]} bg-klo-dark border border-klo-slate rounded-2xl p-6 shadow-2xl outline-none`}
             variants={modalVariants}
             initial="hidden"
             animate="visible"
@@ -105,7 +151,7 @@ export default function Modal({
             {(title || true) && (
               <div className="flex items-center justify-between mb-4">
                 {title && (
-                  <h2 className="font-display text-xl font-bold text-klo-text">
+                  <h2 id="modal-title" className="font-display text-xl font-bold text-klo-text">
                     {title}
                   </h2>
                 )}

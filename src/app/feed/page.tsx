@@ -109,7 +109,7 @@ function FeedCard({ post, index }: { post: FeedPost; index: number }) {
 
         {post.isPremium ? (
           <div className="relative">
-            <div className="text-klo-muted leading-relaxed select-none blur-[6px] pointer-events-none">
+            <div aria-hidden="true" className="text-klo-muted leading-relaxed select-none blur-[6px] pointer-events-none">
               <ReactMarkdown
                 components={{
                   p: ({ children }) => <p className="mb-4">{children}</p>,

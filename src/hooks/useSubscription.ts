@@ -47,18 +47,43 @@ const tierHierarchy: Record<SubscriptionTier, number> = {
   executive: 2,
 };
 
+function isValidTier(value: string): value is SubscriptionTier {
+  return value === "free" || value === "pro" || value === "executive";
+}
+
 export function useSubscription(): SubscriptionState {
   const [tier, setTier] = useState<SubscriptionTier>("free");
 
+  // Load cached value from localStorage immediately, then validate with server
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored && (stored === "free" || stored === "pro" || stored === "executive")) {
-        setTier(stored as SubscriptionTier);
+      if (stored && isValidTier(stored)) {
+        setTier(stored);
       }
     } catch {
       // localStorage unavailable
     }
+
+    // Fetch authoritative tier from server
+    fetch("/api/subscription")
+      .then((res) => {
+        if (!res.ok) return null;
+        return res.json();
+      })
+      .then((data) => {
+        if (data?.tier && isValidTier(data.tier)) {
+          setTier(data.tier);
+          try {
+            localStorage.setItem(STORAGE_KEY, data.tier);
+          } catch {
+            // localStorage unavailable
+          }
+        }
+      })
+      .catch(() => {
+        // Network error — keep cached value
+      });
   }, []);
 
   const canAccess = useCallback(

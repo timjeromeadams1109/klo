@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { stripe } from "@/lib/stripe";
 
 /* ------------------------------------------------------------------ */
@@ -13,6 +15,14 @@ interface CheckoutRequestBody {
 
 export async function POST(request: NextRequest) {
   try {
+    const authSession = await getServerSession(authOptions);
+    if (!authSession?.user) {
+      return NextResponse.json(
+        { error: "Authentication required." },
+        { status: 401 }
+      );
+    }
+
     const body = (await request.json()) as CheckoutRequestBody;
     const { priceId, tier } = body;
 

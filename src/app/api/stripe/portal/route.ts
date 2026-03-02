@@ -1,4 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { getServiceSupabase } from "@/lib/supabase";
 
 /* ------------------------------------------------------------------ */
 /*  POST /api/stripe/portal                                            */
@@ -7,6 +10,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
   try {
+    const authSession = await getServerSession(authOptions);
+    if (!authSession?.user) {
+      return NextResponse.json(
+        { error: "Authentication required." },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
     const customerId: string | undefined = body.customerId;
 
@@ -15,6 +26,23 @@ export async function POST(request: NextRequest) {
         { error: "Customer ID is required." },
         { status: 400 }
       );
+    }
+
+    // Verify the session user owns this customer ID
+    if (customerId !== "demo") {
+      const supabase = getServiceSupabase();
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("stripe_customer_id")
+        .eq("id", (authSession.user as { id?: string }).id)
+        .single();
+
+      if (profile?.stripe_customer_id !== customerId) {
+        return NextResponse.json(
+          { error: "Unauthorized: customer ID does not match." },
+          { status: 403 }
+        );
+      }
     }
 
     /* -------------------------------------------------------------- */

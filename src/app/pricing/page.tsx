@@ -219,7 +219,14 @@ export default function PricingPage() {
       }
 
       if (data.url) {
-        window.location.href = data.url;
+        // Use Capacitor Browser plugin for external URLs on native platforms
+        const { Capacitor } = await import("@capacitor/core");
+        if (Capacitor.isNativePlatform()) {
+          const { Browser } = await import("@capacitor/browser");
+          await Browser.open({ url: data.url });
+        } else {
+          window.location.href = data.url;
+        }
       }
     } catch (error) {
       console.error("Checkout error:", error);

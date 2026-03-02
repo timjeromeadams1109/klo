@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
+import { getServiceSupabase } from "@/lib/supabase";
 
 /* ------------------------------------------------------------------ */
 /*  POST /api/stripe/webhook                                           */
@@ -61,12 +62,14 @@ export async function POST(request: NextRequest) {
             `customer=${customerId}, subscription=${subscriptionId}, tier=${tier}`
         );
 
-        // TODO: Update user record in Supabase
-        // await supabase.from('profiles').update({
-        //   subscription_tier: tier,
-        //   stripe_customer_id: customerId,
-        //   stripe_subscription_id: subscriptionId,
-        // }).eq('stripe_customer_id', customerId);
+        const supabaseCheckout = getServiceSupabase();
+        await supabaseCheckout
+          .from("profiles")
+          .update({
+            subscription_tier: tier,
+            stripe_customer_id: customerId,
+          })
+          .eq("stripe_customer_id", customerId);
 
         break;
       }
@@ -82,11 +85,13 @@ export async function POST(request: NextRequest) {
             `customer=${customerId}, status=${status}, tier=${tier}`
         );
 
-        // TODO: Update subscription status in Supabase
-        // await supabase.from('profiles').update({
-        //   subscription_tier: status === 'active' ? tier : 'free',
-        //   subscription_status: status,
-        // }).eq('stripe_customer_id', customerId);
+        const supabaseUpdate = getServiceSupabase();
+        await supabaseUpdate
+          .from("profiles")
+          .update({
+            subscription_tier: status === "active" ? tier : "free",
+          })
+          .eq("stripe_customer_id", customerId);
 
         break;
       }
@@ -100,12 +105,13 @@ export async function POST(request: NextRequest) {
             `customer=${customerId}, downgrading to free tier`
         );
 
-        // TODO: Downgrade user in Supabase
-        // await supabase.from('profiles').update({
-        //   subscription_tier: 'free',
-        //   stripe_subscription_id: null,
-        //   subscription_status: 'canceled',
-        // }).eq('stripe_customer_id', customerId);
+        const supabaseDelete = getServiceSupabase();
+        await supabaseDelete
+          .from("profiles")
+          .update({
+            subscription_tier: "free",
+          })
+          .eq("stripe_customer_id", customerId);
 
         break;
       }
@@ -120,11 +126,33 @@ export async function POST(request: NextRequest) {
             `customer=${customerId}, attempt=${attemptCount}`
         );
 
-        // TODO: Flag the account and/or notify the user
-        // await supabase.from('profiles').update({
-        //   payment_failed: true,
-        //   payment_failed_at: new Date().toISOString(),
-        // }).eq('stripe_customer_id', customerId);
+        const supabaseFailed = getServiceSupabase();
+        await supabaseFailed
+          .from("profiles")
+          .update({
+            payment_failed: true,
+            payment_failed_at: new Date().toISOString(),
+          })
+          .eq("stripe_customer_id", customerId);
+
+        // Optionally notify user via Resend on final attempt
+        if (attemptCount >= 3) {
+          const customerEmail = invoice.customer_email;
+          if (customerEmail) {
+            try {
+              const { Resend } = await import("resend");
+              const resend = new Resend(process.env.RESEND_API_KEY);
+              await resend.emails.send({
+                from: "KLO <noreply@keithlodom.io>",
+                to: customerEmail,
+                subject: "Action Required: Payment Failed",
+                html: `<p>Hi there,</p><p>We were unable to process your subscription payment after multiple attempts. Please update your payment method to continue accessing your KLO subscription.</p><p>— The KLO Team</p>`,
+              });
+            } catch (emailErr) {
+              console.error("[Stripe Webhook] Failed to send payment failure email:", emailErr);
+            }
+          }
+        }
 
         break;
       }
