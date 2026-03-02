@@ -7,6 +7,7 @@ import AuthProvider from "@/components/layout/AuthProvider";
 import SkipLink from "@/components/layout/SkipLink";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
 import CapacitorInit from "@/components/layout/CapacitorInit";
+import TitleFade from "@/components/layout/TitleFade";
 import JsonLd, {
   personJsonLd,
   organizationJsonLd,
@@ -28,7 +29,7 @@ const dmSans = DM_Sans({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://keithlodom.io"),
-  title: "KLO | Keith L. Odom — Technology Innovator, Speaker & Pastor",
+  title: "KLO",
   description:
     "The official platform of Keith L. Odom. Access AI-powered advisory, leadership assessments, exclusive content vault, and personal booking — all in one premium experience.",
   manifest: "/manifest.json",
@@ -94,6 +95,7 @@ export default function RootLayout({
           <BottomNav />
           <Footer />
         </AuthProvider>
+        <TitleFade />
         <CapacitorInit />
         <ServiceWorkerRegister />
         <JsonLd data={personJsonLd()} />
