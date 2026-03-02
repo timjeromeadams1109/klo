@@ -42,12 +42,12 @@ const nextConfig: NextConfig = {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' https://vercel.live",
+              "script-src 'self' 'unsafe-inline' https://js.stripe.com https://vercel.live", // TODO: replace 'unsafe-inline' with nonce-based CSP
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: blob: https:",
               "font-src 'self' https://fonts.gstatic.com",
-              "connect-src 'self' https: wss:",
-              "frame-src 'self' https://vercel.live",
+              "connect-src 'self' https://api.stripe.com https://*.supabase.co wss://*.supabase.co https://vercel.live",
+              "frame-src 'self' https://js.stripe.com https://vercel.live",
               "frame-ancestors 'self' capacitor: https://localhost",
             ].join("; "),
           },
