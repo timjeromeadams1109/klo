@@ -124,7 +124,7 @@ function FeedCard({ post, index }: { post: FeedPost; index: number }) {
               </ReactMarkdown>
             </div>
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-klo-dark/60 rounded-lg">
-              <Lock size={28} className="text-klo-gold mb-3" />
+              <Lock size={28} className="text-[#C8A84E] mb-3" />
               <p className="text-klo-text font-semibold text-sm mb-1">
                 Premium Content
               </p>
@@ -154,7 +154,7 @@ function FeedCard({ post, index }: { post: FeedPost; index: number }) {
             {hasMoreContent && (
               <button
                 onClick={() => setExpanded(!expanded)}
-                className="mt-3 inline-flex items-center gap-1.5 text-klo-gold text-sm font-medium hover:brightness-110 transition-all cursor-pointer"
+                className="mt-3 inline-flex items-center gap-1.5 text-[#68E9FA] text-sm font-medium hover:brightness-110 transition-all cursor-pointer"
               >
                 {expanded ? (
                   <>
@@ -199,8 +199,8 @@ export default function FeedPage() {
             custom={0}
             className="flex items-center gap-3 mb-4"
           >
-            <div className="w-12 h-12 rounded-xl bg-klo-gold/10 flex items-center justify-center">
-              <Rss size={22} className="text-klo-gold" />
+            <div className="w-12 h-12 rounded-xl bg-[#68E9FA]/10 flex items-center justify-center">
+              <Rss size={22} className="text-[#68E9FA]" />
             </div>
             <div>
               <h1 className="font-display text-3xl md:text-4xl font-bold text-klo-text">
@@ -224,8 +224,8 @@ export default function FeedPage() {
                 onClick={() => setActiveCategory(cat)}
                 className={`whitespace-nowrap px-4 py-2 text-sm font-medium rounded-full border transition-all duration-200 cursor-pointer ${
                   activeCategory === cat
-                    ? "bg-klo-gold text-klo-dark border-klo-gold"
-                    : "bg-transparent text-klo-muted border-klo-slate hover:border-klo-gold/30 hover:text-klo-text"
+                    ? "bg-[#68E9FA] text-[#022886] border-[#68E9FA]"
+                    : "bg-[#011A5E] text-[#8BA3D4] border-[#0E3783] hover:border-[#68E9FA]/30 hover:text-klo-text"
                 }`}
               >
                 {cat}

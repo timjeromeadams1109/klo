@@ -49,8 +49,8 @@ export default function AssessmentCard({
         <div className="space-y-4">
           {/* Header row */}
           <div className="flex items-start justify-between">
-            <div className="w-12 h-12 rounded-lg bg-klo-gold/10 flex items-center justify-center">
-              <Icon size={22} className="text-klo-gold" />
+            <div className="w-12 h-12 rounded-lg bg-[#68E9FA]/10 flex items-center justify-center">
+              <Icon size={22} className="text-[#68E9FA]" />
             </div>
             <div className="flex items-center gap-2">
               {completed && (

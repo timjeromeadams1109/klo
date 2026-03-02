@@ -161,13 +161,13 @@ export default function InquiryForm() {
           initial="hidden"
           animate="visible"
         >
-          <div className="w-20 h-20 rounded-full bg-klo-gold/15 flex items-center justify-center mx-auto mb-6">
+          <div className="w-20 h-20 rounded-full bg-[#68E9FA]/15 flex items-center justify-center mx-auto mb-6">
             <motion.svg
               width="40"
               height="40"
               viewBox="0 0 40 40"
               fill="none"
-              className="text-klo-gold"
+              className="text-[#68E9FA]"
             >
               <motion.path
                 d="M10 20L17 27L30 13"
@@ -195,7 +195,7 @@ export default function InquiryForm() {
 
   /* ---- Form styles ---- */
   const inputBase =
-    "w-full bg-klo-navy/60 border border-klo-slate rounded-lg px-4 py-3 text-klo-text text-sm placeholder:text-klo-muted/50 focus:border-klo-gold/50 focus:ring-1 focus:ring-klo-gold/30 focus:outline-none transition-colors duration-200";
+    "w-full bg-[#011A5E] border border-[#0E3783] rounded-lg px-4 py-3 text-white text-sm placeholder:text-klo-muted/50 focus:border-[#68E9FA] focus:ring-1 focus:ring-[#68E9FA]/30 focus:outline-none transition-colors duration-200";
 
   const inputError = "border-red-500/60 focus:border-red-500/80 focus:ring-red-500/30";
 
@@ -226,9 +226,9 @@ export default function InquiryForm() {
           <div>
             <label
               htmlFor="name"
-              className="block text-sm font-medium text-klo-text mb-1.5"
+              className="block text-sm font-medium text-white mb-1.5"
             >
-              Full Name <span className="text-klo-gold">*</span>
+              Full Name <span className="text-[#68E9FA]">*</span>
             </label>
             <input
               id="name"
@@ -246,9 +246,9 @@ export default function InquiryForm() {
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-klo-text mb-1.5"
+              className="block text-sm font-medium text-white mb-1.5"
             >
-              Email <span className="text-klo-gold">*</span>
+              Email <span className="text-[#68E9FA]">*</span>
             </label>
             <input
               id="email"
@@ -270,7 +270,7 @@ export default function InquiryForm() {
           <div>
             <label
               htmlFor="organization"
-              className="block text-sm font-medium text-klo-text mb-1.5"
+              className="block text-sm font-medium text-white mb-1.5"
             >
               Organization
             </label>
@@ -287,9 +287,9 @@ export default function InquiryForm() {
           <div>
             <label
               htmlFor="eventName"
-              className="block text-sm font-medium text-klo-text mb-1.5"
+              className="block text-sm font-medium text-white mb-1.5"
             >
-              Event Name <span className="text-klo-gold">*</span>
+              Event Name <span className="text-[#68E9FA]">*</span>
             </label>
             <input
               id="eventName"
@@ -311,7 +311,7 @@ export default function InquiryForm() {
           <div>
             <label
               htmlFor="eventDate"
-              className="block text-sm font-medium text-klo-text mb-1.5"
+              className="block text-sm font-medium text-white mb-1.5"
             >
               Event Date
             </label>
@@ -327,9 +327,9 @@ export default function InquiryForm() {
           <div>
             <label
               htmlFor="eventType"
-              className="block text-sm font-medium text-klo-text mb-1.5"
+              className="block text-sm font-medium text-white mb-1.5"
             >
-              Event Type <span className="text-klo-gold">*</span>
+              Event Type <span className="text-[#68E9FA]">*</span>
             </label>
             <select
               id="eventType"
@@ -358,7 +358,7 @@ export default function InquiryForm() {
           <div>
             <label
               htmlFor="budgetRange"
-              className="block text-sm font-medium text-klo-text mb-1.5"
+              className="block text-sm font-medium text-white mb-1.5"
             >
               Budget Range
             </label>
@@ -382,7 +382,7 @@ export default function InquiryForm() {
           <div>
             <label
               htmlFor="audienceSize"
-              className="block text-sm font-medium text-klo-text mb-1.5"
+              className="block text-sm font-medium text-white mb-1.5"
             >
               Expected Audience Size
             </label>
@@ -402,7 +402,7 @@ export default function InquiryForm() {
         <div>
           <label
             htmlFor="message"
-            className="block text-sm font-medium text-klo-text mb-1.5"
+            className="block text-sm font-medium text-white mb-1.5"
           >
             Message
           </label>

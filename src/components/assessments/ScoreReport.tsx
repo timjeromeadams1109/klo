@@ -196,7 +196,7 @@ function ScoreRing({
           stroke="currentColor"
           strokeWidth={strokeWidth}
           strokeLinecap="round"
-          className="text-klo-gold"
+          className="text-[#68E9FA]"
           strokeDasharray={circumference}
           initial={{ strokeDashoffset: circumference }}
           animate={{ strokeDashoffset: offset }}
@@ -233,7 +233,7 @@ function CategoryBar({ category }: { category: CategoryScore }) {
       </div>
       <div className="w-full h-2.5 bg-klo-slate rounded-full overflow-hidden">
         <motion.div
-          className="h-full bg-klo-gold rounded-full"
+          className="h-full bg-[#68E9FA] rounded-full"
           initial={{ width: 0 }}
           animate={{ width: `${category.percentage}%` }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
@@ -330,7 +330,7 @@ export default function ScoreReport({
           <div className="space-y-4">
             {recommendations.map((rec, i) => (
               <div key={i} className="flex gap-3">
-                <div className="mt-1.5 w-2 h-2 rounded-full bg-klo-gold shrink-0" />
+                <div className="mt-1.5 w-2 h-2 rounded-full bg-[#68E9FA] shrink-0" />
                 <p className="text-klo-muted text-sm leading-relaxed">{rec}</p>
               </div>
             ))}

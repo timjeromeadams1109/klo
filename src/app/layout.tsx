@@ -73,14 +73,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfairDisplay.variable} ${dmSans.variable}`}>
       <head>
-        <meta name="theme-color" content="#C8A84E" />
+        <meta name="theme-color" content="#022886" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
-      <body className="font-body antialiased bg-klo-navy text-klo-text">
+      <body className="font-body antialiased bg-[#022886] text-klo-text">
         <AuthProvider>
           <SkipLink />
           <TopNav />
-          <main id="main-content" className="min-h-screen pt-16 pb-[72px] md:pb-0">
+          <main id="main-content" className="min-h-screen pt-[72px] pb-[72px] md:pb-0">
             {children}
           </main>
           <BottomNav />

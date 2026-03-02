@@ -95,7 +95,7 @@ const mockActivity = [
   {
     id: "act-1",
     text: "Completed Church Readiness Assessment — Score: 72%",
-    icon: <Brain size={16} className="text-klo-gold" />,
+    icon: <Brain size={16} className="text-[#C8A84E]" />,
     date: "2 days ago",
   },
   {
@@ -113,7 +113,7 @@ const mockActivity = [
   {
     id: "act-4",
     text: "Completed Executive AI Readiness Assessment — Score: 85%",
-    icon: <Brain size={16} className="text-klo-gold" />,
+    icon: <Brain size={16} className="text-[#C8A84E]" />,
     date: "2 weeks ago",
   },
 ];
@@ -130,7 +130,7 @@ function getMaturityBadgeVariant(level: string): "gold" | "blue" | "green" | "mu
 
 function OverviewTab() {
   const stats = [
-    { label: "Assessments Completed", value: "2", icon: <Brain size={20} className="text-klo-gold" /> },
+    { label: "Assessments Completed", value: "2", icon: <Brain size={20} className="text-[#C8A84E]" /> },
     { label: "Advisor Queries Used", value: "3/5", icon: <MessageSquare size={20} className="text-blue-400" /> },
     { label: "Vault Items Saved", value: "4", icon: <Archive size={20} className="text-emerald-400" /> },
     { label: "Member Since", value: "Feb 2026", icon: <CalendarDays size={20} className="text-klo-muted" /> },
@@ -352,7 +352,7 @@ function SettingsTab() {
   };
 
   const inputClasses =
-    "w-full bg-klo-navy border border-klo-slate rounded-lg px-4 py-3 text-sm text-klo-text placeholder:text-klo-muted/50 focus:outline-none focus:ring-2 focus:ring-klo-gold/50 focus:border-klo-gold/50 transition-all";
+    "w-full bg-[#011A5E] border border-[#0E3783] rounded-lg px-4 py-3 text-sm text-klo-text placeholder:text-[#8BA3D4]/50 focus:outline-none focus:ring-2 focus:ring-[#68E9FA]/50 focus:border-[#68E9FA]/50 transition-all";
 
   return (
     <motion.div
@@ -461,7 +461,7 @@ function SettingsTab() {
                 key: "emailDigests" as const,
                 label: "Email Digests",
                 description: "Weekly summary of new feed posts and updates",
-                icon: <Mail size={16} className="text-klo-gold" />,
+                icon: <Mail size={16} className="text-[#C8A84E]" />,
               },
               {
                 key: "assessmentReminders" as const,
@@ -498,7 +498,7 @@ function SettingsTab() {
                     })
                   }
                   className={`relative w-11 h-6 rounded-full transition-colors duration-200 cursor-pointer ${
-                    notifications[pref.key] ? "bg-klo-gold" : "bg-klo-slate"
+                    notifications[pref.key] ? "bg-[#68E9FA]" : "bg-klo-slate"
                   }`}
                 >
                   <span
@@ -553,8 +553,8 @@ export default function ProfilePage() {
             className="flex flex-col sm:flex-row items-center sm:items-start gap-6"
           >
             {/* Avatar */}
-            <div className="w-20 h-20 rounded-full bg-klo-gold/15 border-2 border-klo-gold/30 flex items-center justify-center shrink-0">
-              <span className="font-display text-3xl font-bold text-klo-gold">
+            <div className="w-20 h-20 rounded-full bg-[#68E9FA]/15 border-2 border-[#68E9FA]/30 flex items-center justify-center shrink-0">
+              <span className="font-display text-3xl font-bold text-[#68E9FA]">
                 K
               </span>
             </div>
@@ -591,8 +591,8 @@ export default function ProfilePage() {
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 whitespace-nowrap px-4 py-2.5 text-sm font-medium rounded-t-lg transition-all duration-200 cursor-pointer border-b-2 -mb-[1px] ${
                   activeTab === tab.id
-                    ? "text-klo-gold border-klo-gold bg-klo-gold/5"
-                    : "text-klo-muted border-transparent hover:text-klo-text hover:bg-white/5"
+                    ? "text-[#68E9FA] border-[#68E9FA] bg-[#68E9FA]/5"
+                    : "text-[#8BA3D4] border-transparent hover:text-klo-text hover:bg-white/5"
                 }`}
               >
                 {tab.icon}

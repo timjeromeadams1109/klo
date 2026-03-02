@@ -5,11 +5,11 @@ import { motion } from "framer-motion";
 import { TrendingUp } from "lucide-react";
 
 const trendingTopics = [
-  { label: "AI Regulation", category: "ai-regulation" },
-  { label: "Church Tech", category: "church-tech" },
-  { label: "Cybersecurity", category: "cybersecurity" },
-  { label: "Digital Ethics", category: "digital-ethics" },
-  { label: "AI in Education", category: "ai-education" },
+  { label: "AI Regulation", category: "ai-regulation", color: "border-[#68E9FA]/30 bg-[#68E9FA]/10 text-[#68E9FA] hover:border-[#68E9FA]/60 hover:bg-[#68E9FA]/15" },
+  { label: "Church Tech", category: "church-tech", color: "border-[#8840FF]/30 bg-[#8840FF]/10 text-[#8840FF] hover:border-[#8840FF]/60 hover:bg-[#8840FF]/15" },
+  { label: "Cybersecurity", category: "cybersecurity", color: "border-[#F77A81]/30 bg-[#F77A81]/10 text-[#F77A81] hover:border-[#F77A81]/60 hover:bg-[#F77A81]/15" },
+  { label: "Digital Ethics", category: "digital-ethics", color: "border-[#C8A84E]/30 bg-[#C8A84E]/10 text-[#C8A84E] hover:border-[#C8A84E]/60 hover:bg-[#C8A84E]/15" },
+  { label: "AI in Education", category: "ai-education", color: "border-[#37B1FF]/30 bg-[#37B1FF]/10 text-[#37B1FF] hover:border-[#37B1FF]/60 hover:bg-[#37B1FF]/15" },
 ];
 
 export default function TrendingTopics() {
@@ -17,8 +17,8 @@ export default function TrendingTopics() {
     <section>
       {/* Section heading */}
       <div className="flex items-center gap-4 mb-8">
-        <span className="w-8 h-0.5 bg-klo-gold rounded-full" />
-        <h2 className="font-display text-2xl sm:text-3xl font-semibold text-klo-text">
+        <span className="w-10 h-1 bg-gradient-to-r from-[#68E9FA] to-[#37B1FF] rounded-full" />
+        <h2 className="font-display text-3xl sm:text-4xl font-bold text-white uppercase tracking-wide">
           Trending in Tech &amp; Faith
         </h2>
       </div>
@@ -30,10 +30,10 @@ export default function TrendingTopics() {
         viewport={{ once: true, margin: "-60px" }}
         transition={{ duration: 0.5, ease: "easeOut" as const }}
       >
-        <div className="bg-klo-dark border border-klo-slate rounded-xl p-6 sm:p-8">
+        <div className="bg-[#011A5E] border border-[#0E3783] rounded-2xl p-6 sm:p-8">
           <div className="flex items-center gap-2 mb-5">
-            <TrendingUp className="w-4 h-4 text-klo-gold" />
-            <p className="text-xs font-semibold text-klo-muted uppercase tracking-wider">
+            <TrendingUp className="w-4 h-4 text-[#68E9FA]" />
+            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider">
               Popular this week
             </p>
           </div>
@@ -44,7 +44,7 @@ export default function TrendingTopics() {
               <Link
                 key={topic.category}
                 href={`/feed?category=${topic.category}`}
-                className="shrink-0 inline-flex items-center px-5 py-2.5 text-sm font-medium rounded-full border border-klo-slate bg-klo-slate/50 text-klo-text transition-all duration-200 hover:border-klo-gold/30 hover:bg-klo-gold/10 hover:text-klo-gold active:scale-[0.97]"
+                className={`shrink-0 inline-flex items-center px-5 py-2.5 text-sm font-medium rounded-full border transition-all duration-200 active:scale-[0.97] ${topic.color}`}
               >
                 {topic.label}
               </Link>

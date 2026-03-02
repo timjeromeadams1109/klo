@@ -58,14 +58,14 @@ export default function PricingCard({
       viewport={{ once: true, margin: "-50px" }}
       className={`relative flex flex-col rounded-2xl p-6 lg:p-8 transition-all duration-300 ${
         isHighlighted
-          ? "bg-klo-dark border-2 border-klo-gold shadow-lg shadow-klo-gold/10 scale-[1.02] lg:scale-105"
-          : "bg-klo-dark border border-klo-slate hover:border-klo-gold/30"
+          ? "bg-[#011A5E] border-2 border-[#68E9FA] shadow-lg shadow-[#68E9FA]/15 scale-[1.02] lg:scale-105"
+          : "bg-[#011A5E] border border-[#0E3783] hover:border-[#68E9FA]/30"
       }`}
     >
       {/* Most Popular Badge */}
       {isHighlighted && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <Badge variant="gold">Most Popular</Badge>
+          <Badge variant="cyan">Most Popular</Badge>
         </div>
       )}
 
@@ -82,7 +82,7 @@ export default function PricingCard({
       {/* Price */}
       <div className="mb-6">
         <div className="flex items-baseline gap-1">
-          <span className="text-klo-gold font-display text-4xl font-bold">
+          <span className="text-[#68E9FA] font-display text-4xl font-bold">
             ${tier.price}
           </span>
           <span className="text-klo-muted text-sm">/{tier.interval}</span>
@@ -101,7 +101,7 @@ export default function PricingCard({
             viewport={{ once: true }}
             className="flex items-start gap-3 text-sm"
           >
-            <Check className="h-4 w-4 text-klo-gold shrink-0 mt-0.5" />
+            <Check className="h-4 w-4 text-[#68E9FA] shrink-0 mt-0.5" />
             <span className="text-klo-text">{feature}</span>
           </motion.li>
         ))}
@@ -109,7 +109,7 @@ export default function PricingCard({
 
       {/* CTA Button */}
       <Button
-        variant={isHighlighted ? "primary" : "secondary"}
+        variant={isHighlighted ? "primary" : tier.slug === "executive" ? "gold" : "secondary"}
         size="lg"
         onClick={() => onSelect(tier)}
         disabled={loading}

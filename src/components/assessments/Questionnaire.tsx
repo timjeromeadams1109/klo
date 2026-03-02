@@ -122,16 +122,16 @@ export default function Questionnaire({
                     }
                     className={`w-full text-left p-4 rounded-xl border transition-all duration-200 cursor-pointer ${
                       isSelected
-                        ? "border-klo-gold bg-klo-gold/10 shadow-md shadow-klo-gold/5"
-                        : "border-klo-slate bg-klo-dark hover:border-klo-gold/30 hover:bg-klo-slate/50"
+                        ? "border-[#68E9FA] bg-[#68E9FA]/10 shadow-md shadow-[#68E9FA]/5"
+                        : "border-[#0E3783] bg-[#011A5E] hover:border-[#68E9FA]/30 hover:bg-[#011A5E]/80"
                     }`}
                   >
                     <div className="flex items-start gap-3">
                       <div
                         className={`mt-0.5 w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors ${
                           isSelected
-                            ? "border-klo-gold bg-klo-gold"
-                            : "border-klo-muted/40"
+                            ? "border-[#68E9FA] bg-[#68E9FA]"
+                            : "border-[#8BA3D4]/40"
                         }`}
                       >
                         {isSelected && (

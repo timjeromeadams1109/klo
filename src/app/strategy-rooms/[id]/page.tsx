@@ -109,7 +109,7 @@ function CountdownTimer({ dateStr }: { dateStr: string }) {
         { label: "Minutes", value: timeLeft.minutes },
       ].map((item) => (
         <div key={item.label} className="text-center">
-          <div className="w-16 h-16 bg-klo-gold/10 border border-klo-gold/20 rounded-xl flex items-center justify-center mb-1">
+          <div className="w-16 h-16 bg-[#68E9FA]/10 border border-[#68E9FA]/20 rounded-xl flex items-center justify-center mb-1">
             <span className="font-display text-2xl font-bold text-klo-gold">
               {item.value}
             </span>
@@ -135,7 +135,7 @@ function CommentItem({
   return (
     <motion.div variants={itemFade} className="flex gap-3">
       {/* Avatar */}
-      <div className="w-9 h-9 rounded-full bg-klo-gold/15 border border-klo-gold/20 flex items-center justify-center shrink-0">
+      <div className="w-9 h-9 rounded-full bg-[#68E9FA]/15 border border-[#68E9FA]/20 flex items-center justify-center shrink-0">
         <span className="text-xs font-bold text-klo-gold">
           {comment.authorInitials}
         </span>
@@ -171,7 +171,7 @@ function RelatedSessionCard({ session }: { session: StrategySession }) {
     <Link href={`/strategy-rooms/${session.id}`}>
       <Card hoverable className="p-4">
         <TierBadge tier={session.tier} />
-        <h4 className="font-display text-sm font-bold text-klo-text mt-2 mb-1 leading-snug hover:text-klo-gold transition-colors">
+        <h4 className="font-display text-sm font-bold text-klo-text mt-2 mb-1 leading-snug hover:text-[#68E9FA] transition-colors">
           {session.title}
         </h4>
         <div className="flex items-center gap-1.5 text-xs text-klo-muted">
@@ -269,8 +269,8 @@ function RegistrationModal({
         </button>
 
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-klo-gold/10 border border-klo-gold/20 flex items-center justify-center">
-            <CalendarCheck size={20} className="text-klo-gold" />
+          <div className="w-10 h-10 rounded-xl bg-[#68E9FA]/10 border border-[#68E9FA]/20 flex items-center justify-center">
+            <CalendarCheck size={20} className="text-[#68E9FA]" />
           </div>
           <h2 className="font-display text-lg font-bold text-klo-text">
             Confirm Registration
@@ -287,11 +287,11 @@ function RegistrationModal({
           </h3>
           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-klo-muted">
             <span className="inline-flex items-center gap-1.5">
-              <Calendar size={12} className="text-klo-gold" />
+              <Calendar size={12} className="text-[#68E9FA]" />
               {session.date}
             </span>
             <span className="inline-flex items-center gap-1.5">
-              <Clock size={12} className="text-klo-gold" />
+              <Clock size={12} className="text-[#68E9FA]" />
               {session.time}
             </span>
           </div>
@@ -348,8 +348,8 @@ function TierGateModal({
         </button>
 
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-klo-gold/10 border border-klo-gold/20 flex items-center justify-center">
-            <ShieldCheck size={20} className="text-klo-gold" />
+          <div className="w-10 h-10 rounded-xl bg-[#68E9FA]/10 border border-[#68E9FA]/20 flex items-center justify-center">
+            <ShieldCheck size={20} className="text-[#68E9FA]" />
           </div>
           <h2 className="font-display text-lg font-bold text-klo-text">
             {tierLabel} Access Required
@@ -357,7 +357,7 @@ function TierGateModal({
         </div>
 
         <p className="text-sm text-klo-muted leading-relaxed mb-5">
-          This strategy room session is available to <span className="text-klo-gold font-medium">{tierLabel}</span> members.
+          This strategy room session is available to <span className="text-[#68E9FA] font-medium">{tierLabel}</span> members.
           Upgrade your plan to register and join exclusive sessions led by Keith L. Odom.
         </p>
 
@@ -477,7 +477,7 @@ export default function StrategyRoomDetailPage({
           <motion.div variants={fadeUp} custom={0} className="mb-8">
             <Link
               href="/strategy-rooms"
-              className="inline-flex items-center gap-2 text-sm text-klo-muted hover:text-klo-gold transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-klo-muted hover:text-[#68E9FA] transition-colors"
             >
               <ArrowLeft size={16} />
               Back to Strategy Rooms
@@ -504,19 +504,19 @@ export default function StrategyRoomDetailPage({
 
                   <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-klo-muted mb-5">
                     <span className="inline-flex items-center gap-2">
-                      <Calendar size={15} className="text-klo-gold" />
+                      <Calendar size={15} className="text-[#68E9FA]" />
                       {session.date}
                     </span>
                     <span className="inline-flex items-center gap-2">
-                      <Clock size={15} className="text-klo-gold" />
+                      <Clock size={15} className="text-[#68E9FA]" />
                       {session.time}
                     </span>
                     <span className="inline-flex items-center gap-2">
-                      <User size={15} className="text-klo-gold" />
+                      <User size={15} className="text-[#68E9FA]" />
                       {session.facilitator}
                     </span>
                     <span className="inline-flex items-center gap-2">
-                      <Users size={15} className="text-klo-gold" />
+                      <Users size={15} className="text-[#68E9FA]" />
                       {session.isPast
                         ? `${session.attendees} attended`
                         : `${session.registeredCount}/${session.totalSeats} registered`}
@@ -597,7 +597,7 @@ export default function StrategyRoomDetailPage({
                         </div>
                         <div className="h-2 bg-white/5 rounded-full overflow-hidden">
                           <motion.div
-                            className="h-full rounded-full bg-gradient-to-r from-klo-gold to-amber-400"
+                            className="h-full rounded-full bg-gradient-to-r from-[#68E9FA] to-[#68E9FA]/70"
                             initial={{ width: 0 }}
                             animate={{
                               width: `${Math.round(
@@ -634,7 +634,7 @@ export default function StrategyRoomDetailPage({
                               }`}
                             >
                               <div className="shrink-0 w-20">
-                                <span className="text-xs font-mono text-klo-gold font-medium">
+                                <span className="text-xs font-mono text-[#68E9FA] font-medium">
                                   {item.time}
                                 </span>
                               </div>
@@ -668,10 +668,10 @@ export default function StrategyRoomDetailPage({
                         {/* Video placeholder */}
                         <div className="relative aspect-video bg-klo-navy rounded-xl overflow-hidden border border-klo-slate mb-4 flex items-center justify-center group cursor-pointer">
                           <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-                          <div className="relative z-10 w-16 h-16 rounded-full bg-klo-gold/20 border-2 border-klo-gold flex items-center justify-center group-hover:bg-klo-gold/30 transition-colors">
+                          <div className="relative z-10 w-16 h-16 rounded-full bg-[#68E9FA]/20 border-2 border-[#68E9FA] flex items-center justify-center group-hover:bg-[#68E9FA]/30 transition-colors">
                             <Play
                               size={28}
-                              className="text-klo-gold ml-1"
+                              className="text-[#68E9FA] ml-1"
                               fill="currentColor"
                             />
                           </div>
@@ -707,7 +707,7 @@ export default function StrategyRoomDetailPage({
                             >
                               <CheckCircle
                                 size={16}
-                                className="text-klo-gold shrink-0 mt-0.5"
+                                className="text-[#68E9FA] shrink-0 mt-0.5"
                               />
                               <span>{takeaway}</span>
                             </li>
@@ -723,7 +723,7 @@ export default function StrategyRoomDetailPage({
               <motion.div variants={fadeUp} custom={5}>
                 <Card className="mb-6">
                   <div className="flex items-center gap-2 mb-5">
-                    <MessageSquare size={18} className="text-klo-gold" />
+                    <MessageSquare size={18} className="text-[#68E9FA]" />
                     <h2 className="font-display text-lg font-bold text-klo-text">
                       Discussion ({comments.length})
                     </h2>
@@ -755,7 +755,7 @@ export default function StrategyRoomDetailPage({
                       onChange={(e) => setNewComment(e.target.value)}
                       placeholder="Share your thoughts or questions..."
                       rows={3}
-                      className="w-full bg-white/5 border border-klo-slate rounded-xl px-4 py-3 text-sm text-klo-text placeholder-klo-muted focus:outline-none focus:ring-2 focus:ring-klo-gold/30 focus:border-klo-gold/40 resize-none transition-all"
+                      className="w-full bg-white/5 border border-klo-slate rounded-xl px-4 py-3 text-sm text-klo-text placeholder-klo-muted focus:outline-none focus:ring-2 focus:ring-[#68E9FA]/30 focus:border-[#68E9FA]/40 resize-none transition-all"
                     />
                     <div className="flex justify-end mt-3">
                       <Button

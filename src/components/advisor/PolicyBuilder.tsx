@@ -437,9 +437,9 @@ function StepIndicator({ current }: { current: number }) {
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center border transition-all duration-300 ${
                   isActive
-                    ? "bg-klo-gold text-klo-dark border-klo-gold shadow-md shadow-klo-gold/20"
+                    ? "bg-[#68E9FA] text-[#022886] border-[#68E9FA] shadow-md shadow-[#68E9FA]/20"
                     : isComplete
-                    ? "bg-klo-gold/20 text-klo-gold border-klo-gold/40"
+                    ? "bg-[#68E9FA]/20 text-[#68E9FA] border-[#68E9FA]/40"
                     : "bg-klo-dark text-klo-muted border-klo-slate"
                 }`}
               >
@@ -447,7 +447,7 @@ function StepIndicator({ current }: { current: number }) {
               </div>
               <span
                 className={`text-xs font-medium ${
-                  isActive ? "text-klo-gold" : isComplete ? "text-klo-text" : "text-klo-muted"
+                  isActive ? "text-[#68E9FA]" : isComplete ? "text-klo-text" : "text-klo-muted"
                 }`}
               >
                 {step.label}
@@ -456,7 +456,7 @@ function StepIndicator({ current }: { current: number }) {
             {i < STEPS.length - 1 && (
               <div
                 className={`w-12 h-px mt-[-1.25rem] ${
-                  isComplete ? "bg-klo-gold/40" : "bg-klo-slate"
+                  isComplete ? "bg-[#68E9FA]/40" : "bg-klo-slate"
                 }`}
               />
             )}
@@ -577,8 +577,8 @@ export default function PolicyBuilder() {
               onClick={() => setPolicyType(type)}
               className={`text-left p-4 rounded-xl border transition-all duration-200 cursor-pointer ${
                 policyType === type
-                  ? "border-klo-gold bg-klo-gold/10 text-klo-text"
-                  : "border-klo-slate bg-klo-dark text-klo-muted hover:border-klo-gold/30 hover:text-klo-text"
+                  ? "border-[#68E9FA] bg-[#68E9FA]/10 text-klo-text"
+                  : "border-klo-slate bg-klo-dark text-klo-muted hover:border-[#68E9FA]/30 hover:text-klo-text"
               }`}
             >
               <span className="font-medium">{type}</span>
@@ -617,7 +617,7 @@ export default function PolicyBuilder() {
                 setOrgDetails((d) => ({ ...d, orgName: e.target.value }))
               }
               placeholder="e.g. Grace Community Church"
-              className="w-full px-4 py-3 rounded-xl bg-klo-dark border border-klo-slate text-klo-text placeholder:text-klo-muted/50 focus:outline-none focus:border-klo-gold/60 transition-colors"
+              className="w-full px-4 py-3 rounded-xl bg-klo-dark border border-klo-slate text-klo-text placeholder:text-klo-muted/50 focus:outline-none focus:border-[#68E9FA]/60 transition-colors"
             />
           </div>
 
@@ -633,7 +633,7 @@ export default function PolicyBuilder() {
                   orgType: e.target.value as OrgType,
                 }))
               }
-              className="w-full px-4 py-3 rounded-xl bg-klo-dark border border-klo-slate text-klo-text focus:outline-none focus:border-klo-gold/60 transition-colors appearance-none"
+              className="w-full px-4 py-3 rounded-xl bg-klo-dark border border-klo-slate text-klo-text focus:outline-none focus:border-[#68E9FA]/60 transition-colors appearance-none"
             >
               <option value="">Select type…</option>
               {ORG_TYPES.map((t) => (
@@ -655,7 +655,7 @@ export default function PolicyBuilder() {
                 setOrgDetails((d) => ({ ...d, teamSize: e.target.value }))
               }
               placeholder="e.g. 50"
-              className="w-full px-4 py-3 rounded-xl bg-klo-dark border border-klo-slate text-klo-text placeholder:text-klo-muted/50 focus:outline-none focus:border-klo-gold/60 transition-colors"
+              className="w-full px-4 py-3 rounded-xl bg-klo-dark border border-klo-slate text-klo-text placeholder:text-klo-muted/50 focus:outline-none focus:border-[#68E9FA]/60 transition-colors"
             />
           </div>
 
@@ -670,7 +670,7 @@ export default function PolicyBuilder() {
                 setOrgDetails((d) => ({ ...d, industry: e.target.value }))
               }
               placeholder="e.g. Faith-Based, Healthcare, Finance"
-              className="w-full px-4 py-3 rounded-xl bg-klo-dark border border-klo-slate text-klo-text placeholder:text-klo-muted/50 focus:outline-none focus:border-klo-gold/60 transition-colors"
+              className="w-full px-4 py-3 rounded-xl bg-klo-dark border border-klo-slate text-klo-text placeholder:text-klo-muted/50 focus:outline-none focus:border-[#68E9FA]/60 transition-colors"
             />
           </div>
         </div>
@@ -707,8 +707,8 @@ export default function PolicyBuilder() {
                 onClick={() => setPreferences((p) => ({ ...p, tone: t }))}
                 className={`px-5 py-2.5 rounded-xl border text-sm font-medium transition-all duration-200 cursor-pointer ${
                   preferences.tone === t
-                    ? "border-klo-gold bg-klo-gold/10 text-klo-gold"
-                    : "border-klo-slate bg-klo-dark text-klo-muted hover:border-klo-gold/30"
+                    ? "border-[#68E9FA] bg-[#68E9FA]/10 text-[#68E9FA]"
+                    : "border-klo-slate bg-klo-dark text-klo-muted hover:border-[#68E9FA]/30"
                 }`}
               >
                 {t}
@@ -730,8 +730,8 @@ export default function PolicyBuilder() {
                   key={concern}
                   className={`flex items-center gap-2.5 px-4 py-3 rounded-xl border cursor-pointer transition-all duration-200 ${
                     selected
-                      ? "border-klo-gold/50 bg-klo-gold/10"
-                      : "border-klo-slate bg-klo-dark hover:border-klo-gold/20"
+                      ? "border-[#68E9FA]/50 bg-[#68E9FA]/10"
+                      : "border-klo-slate bg-klo-dark hover:border-[#68E9FA]/20"
                   }`}
                 >
                   <input
@@ -743,11 +743,11 @@ export default function PolicyBuilder() {
                   <div
                     className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
                       selected
-                        ? "bg-klo-gold border-klo-gold"
+                        ? "bg-[#68E9FA] border-[#68E9FA]"
                         : "border-klo-slate bg-transparent"
                     }`}
                   >
-                    {selected && <Check className="w-3 h-3 text-klo-dark" />}
+                    {selected && <Check className="w-3 h-3 text-[#022886]" />}
                   </div>
                   <span
                     className={`text-sm ${
@@ -769,7 +769,7 @@ export default function PolicyBuilder() {
           <Button onClick={handleGenerate} disabled={isGenerating}>
             {isGenerating ? (
               <>
-                <span className="inline-block w-4 h-4 border-2 border-klo-dark border-t-transparent rounded-full animate-spin" />
+                <span className="inline-block w-4 h-4 border-2 border-[#022886] border-t-transparent rounded-full animate-spin" />
                 Generating…
               </>
             ) : (
@@ -813,7 +813,7 @@ export default function PolicyBuilder() {
                 return (
                   <h1
                     key={i}
-                    className="text-xl font-display text-klo-gold mt-0 mb-3"
+                    className="text-xl font-display text-[#68E9FA] mt-0 mb-3"
                   >
                     {line.replace("# ", "")}
                   </h1>
@@ -842,7 +842,7 @@ export default function PolicyBuilder() {
               if (line.startsWith("- ")) {
                 return (
                   <p key={i} className="text-klo-muted text-sm pl-4 my-0.5">
-                    <span className="text-klo-gold mr-2">&bull;</span>
+                    <span className="text-[#68E9FA] mr-2">&bull;</span>
                     {line.replace("- ", "")}
                   </p>
                 );

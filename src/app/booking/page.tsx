@@ -45,6 +45,8 @@ interface Keynote {
   title: string;
   description: string;
   audiences: string[];
+  accent: string;
+  accentBg: string;
 }
 
 const keynotes: Keynote[] = [
@@ -54,6 +56,8 @@ const keynotes: Keynote[] = [
     description:
       "How artificial intelligence is redefining executive decision-making, organizational strategy, and what it means to lead in the age of intelligent systems.",
     audiences: ["C-Suite", "Conferences", "Corporate"],
+    accent: "text-[#68E9FA]",
+    accentBg: "bg-[#68E9FA]/10",
   },
   {
     icon: Church,
@@ -61,6 +65,8 @@ const keynotes: Keynote[] = [
     description:
       "A transformative keynote exploring how faith-based organizations can harness technology to deepen community engagement, expand reach, and steward resources effectively.",
     audiences: ["Churches", "Ministries", "Nonprofits"],
+    accent: "text-[#8840FF]",
+    accentBg: "bg-[#8840FF]/10",
   },
   {
     icon: ShieldCheck,
@@ -68,6 +74,8 @@ const keynotes: Keynote[] = [
     description:
       "Practical frameworks for building robust digital governance structures and cybersecurity strategies that protect organizations and build stakeholder trust.",
     audiences: ["Boards", "IT Leaders", "Enterprises"],
+    accent: "text-[#C8A84E]",
+    accentBg: "bg-[#C8A84E]/10",
   },
   {
     icon: Mic2,
@@ -75,6 +83,8 @@ const keynotes: Keynote[] = [
     description:
       "A deep-dive into the TechChurch model — equipping ministry leaders with actionable steps to integrate technology into every dimension of church operations and outreach.",
     audiences: ["Pastors", "Church Leaders", "Denominations"],
+    accent: "text-[#6ECF55]",
+    accentBg: "bg-[#6ECF55]/10",
   },
 ];
 
@@ -120,7 +130,7 @@ export default function BookingPage() {
     <div className="min-h-screen">
       {/* ====== Hero ====== */}
       <section className="relative overflow-hidden py-24 md:py-32 px-6">
-        <div className="absolute inset-0 bg-gradient-to-b from-klo-gold/5 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#68E9FA]/5 via-transparent to-transparent pointer-events-none" />
 
         <motion.div
           initial="hidden"
@@ -129,7 +139,7 @@ export default function BookingPage() {
           className="relative z-10 max-w-4xl mx-auto text-center"
         >
           <motion.div variants={fadeUp} custom={0}>
-            <Badge variant="gold" className="mb-6">
+            <Badge variant="cyan" className="mb-6">
               Speaking &amp; Engagements
             </Badge>
           </motion.div>
@@ -168,10 +178,10 @@ export default function BookingPage() {
               return (
                 <motion.div key={stat.label} variants={fadeUp} custom={i}>
                   <Card className="text-center py-6 md:py-8">
-                    <div className="w-10 h-10 rounded-lg bg-klo-gold/10 flex items-center justify-center mx-auto mb-3">
-                      <Icon size={20} className="text-klo-gold" />
+                    <div className="w-10 h-10 rounded-lg bg-[#68E9FA]/10 flex items-center justify-center mx-auto mb-3">
+                      <Icon size={20} className="text-[#68E9FA]" />
                     </div>
-                    <p className="font-display text-2xl md:text-3xl font-bold text-klo-gold">
+                    <p className="font-display text-2xl md:text-3xl font-bold text-[#68E9FA]">
                       {stat.value}
                     </p>
                     <p className="text-klo-muted text-xs md:text-sm mt-1">
@@ -211,8 +221,8 @@ export default function BookingPage() {
                 <motion.div key={keynote.title} variants={fadeUp} custom={i + 1}>
                   <Card hoverable className="h-full">
                     <div className="space-y-4">
-                      <div className="w-12 h-12 rounded-lg bg-klo-gold/10 flex items-center justify-center">
-                        <Icon size={22} className="text-klo-gold" />
+                      <div className={`w-12 h-12 rounded-lg ${keynote.accentBg} flex items-center justify-center`}>
+                        <Icon size={22} className={keynote.accent} />
                       </div>
                       <h3 className="text-lg font-semibold text-klo-text">
                         {keynote.title}

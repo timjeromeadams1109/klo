@@ -42,8 +42,8 @@ export default function PremiumLock() {
             animate="visible"
             className="text-center px-6 max-w-md"
           >
-            <div className="w-16 h-16 rounded-2xl bg-klo-gold/10 border border-klo-gold/20 flex items-center justify-center mx-auto mb-6">
-              <Lock size={28} className="text-klo-gold" />
+            <div className="w-16 h-16 rounded-2xl bg-[#C8A84E]/10 border border-[#C8A84E]/20 flex items-center justify-center mx-auto mb-6">
+              <Lock size={28} className="text-[#C8A84E]" />
             </div>
 
             <h3 className="font-display text-xl font-bold text-klo-text mb-3">

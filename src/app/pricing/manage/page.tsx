@@ -51,10 +51,10 @@ const itemVariants = {
 
 const tierConfig: Record<
   SubscriptionTier,
-  { label: string; price: string; badge: "muted" | "blue" | "gold" }
+  { label: string; price: string; badge: "muted" | "cyan" | "gold" }
 > = {
   free: { label: "Explorer", price: "$0/mo", badge: "muted" },
-  pro: { label: "Pro", price: "$29/mo", badge: "blue" },
+  pro: { label: "Pro", price: "$29/mo", badge: "cyan" },
   executive: { label: "Executive", price: "$99/mo", badge: "gold" },
 };
 
@@ -130,7 +130,7 @@ export default function ManageSubscriptionPage() {
                 className="absolute inset-0 opacity-5"
                 style={{
                   background:
-                    "radial-gradient(ellipse at top right, rgba(200,168,78,0.4), transparent 60%)",
+                    "radial-gradient(ellipse at top right, rgba(104,233,250,0.4), transparent 60%)",
                 }}
               />
               <div className="relative">
@@ -147,7 +147,7 @@ export default function ManageSubscriptionPage() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-2xl font-bold text-klo-gold">
+                    <p className="text-2xl font-bold text-[#68E9FA]">
                       {config.price}
                     </p>
                     {isPaid && (
@@ -165,7 +165,7 @@ export default function ManageSubscriptionPage() {
                       key={feat}
                       className="flex items-start gap-2 text-sm text-klo-text"
                     >
-                      <Check className="w-4 h-4 text-klo-gold flex-shrink-0 mt-0.5" />
+                      <Check className="w-4 h-4 text-[#68E9FA] flex-shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </div>
                   ))}
@@ -248,8 +248,8 @@ export default function ManageSubscriptionPage() {
               <Card>
                 <div className="flex items-center justify-between mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-lg bg-klo-gold/10 flex items-center justify-center">
-                      <CreditCard className="w-4 h-4 text-klo-gold" />
+                    <div className="w-9 h-9 rounded-lg bg-[#68E9FA]/10 flex items-center justify-center">
+                      <CreditCard className="w-4 h-4 text-[#68E9FA]" />
                     </div>
                     <h3 className="text-lg font-display font-semibold text-klo-text">
                       Billing Information
@@ -258,7 +258,7 @@ export default function ManageSubscriptionPage() {
                   <button
                     onClick={handlePortal}
                     disabled={portalLoading}
-                    className="inline-flex items-center gap-1.5 text-sm text-klo-gold hover:underline disabled:opacity-50"
+                    className="inline-flex items-center gap-1.5 text-sm text-[#68E9FA] hover:underline disabled:opacity-50"
                   >
                     <ExternalLink className="w-3.5 h-3.5" />
                     {portalLoading ? "Loading..." : "Manage in Stripe"}
@@ -298,8 +298,8 @@ export default function ManageSubscriptionPage() {
             <motion.div variants={itemVariants}>
               <Card>
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-9 h-9 rounded-lg bg-klo-gold/10 flex items-center justify-center">
-                    <Receipt className="w-4 h-4 text-klo-gold" />
+                  <div className="w-9 h-9 rounded-lg bg-[#68E9FA]/10 flex items-center justify-center">
+                    <Receipt className="w-4 h-4 text-[#68E9FA]" />
                   </div>
                   <h3 className="text-lg font-display font-semibold text-klo-text">
                     Billing History
@@ -346,7 +346,7 @@ export default function ManageSubscriptionPage() {
                             <Badge variant="green">{invoice.status}</Badge>
                           </td>
                           <td className="py-3 px-4 text-right">
-                            <button className="inline-flex items-center gap-1 text-klo-gold hover:underline text-xs">
+                            <button className="inline-flex items-center gap-1 text-[#68E9FA] hover:underline text-xs">
                               <Download className="w-3.5 h-3.5" />
                               PDF
                             </button>
@@ -364,8 +364,8 @@ export default function ManageSubscriptionPage() {
           <motion.div variants={itemVariants}>
             <Card>
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-lg bg-klo-gold/10 flex items-center justify-center flex-shrink-0">
-                  <HelpCircle className="w-5 h-5 text-klo-gold" />
+                <div className="w-10 h-10 rounded-lg bg-[#68E9FA]/10 flex items-center justify-center flex-shrink-0">
+                  <HelpCircle className="w-5 h-5 text-[#68E9FA]" />
                 </div>
                 <div>
                   <h3 className="text-base font-display font-semibold text-klo-text mb-1">
@@ -378,14 +378,14 @@ export default function ManageSubscriptionPage() {
                   <div className="flex flex-wrap gap-4 text-sm">
                     <a
                       href="mailto:info@keithlodom.io"
-                      className="inline-flex items-center gap-1.5 text-klo-gold hover:underline"
+                      className="inline-flex items-center gap-1.5 text-[#68E9FA] hover:underline"
                     >
                       <Mail className="w-3.5 h-3.5" />
                       info@keithlodom.io
                     </a>
                     <Link
                       href="/booking"
-                      className="inline-flex items-center gap-1.5 text-klo-gold hover:underline"
+                      className="inline-flex items-center gap-1.5 text-[#68E9FA] hover:underline"
                     >
                       <Crown className="w-3.5 h-3.5" />
                       Book a Call

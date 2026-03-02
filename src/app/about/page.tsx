@@ -84,7 +84,7 @@ export default function AboutPage() {
       {/* ====== Hero ====== */}
       <section className="relative overflow-hidden py-24 md:py-32 px-6">
         {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-b from-klo-gold/5 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#68E9FA]/5 via-transparent to-transparent pointer-events-none" />
 
         <motion.div
           initial="hidden"
@@ -93,7 +93,7 @@ export default function AboutPage() {
           className="relative z-10 max-w-4xl mx-auto text-center"
         >
           <motion.div variants={fadeUp} custom={0}>
-            <Badge variant="gold" className="mb-6">
+            <Badge variant="cyan" className="mb-6">
               Technology Innovator &middot; Speaker &middot; Pastor
             </Badge>
           </motion.div>
@@ -158,7 +158,7 @@ export default function AboutPage() {
 
             <motion.p variants={fadeUp} custom={3}>
               As the CEO &amp; Solution Architect of{" "}
-              <span className="text-klo-gold font-medium">Axtegrity Consulting</span>,
+              <span className="text-[#68E9FA] font-medium">Axtegrity Consulting</span>,
               a Gold Certified Microsoft Partner, Keith leads a consultancy
               specializing in ERP consulting, implementations, digital
               transformation, cloud solutions, custom app and software
@@ -172,12 +172,12 @@ export default function AboutPage() {
             <motion.p variants={fadeUp} custom={4}>
               A visionary at the intersection of faith and technology, Keith
               created{" "}
-              <span className="text-klo-gold font-medium">TechChurch</span>
+              <span className="text-[#68E9FA] font-medium">TechChurch</span>
               &mdash;a pioneering initiative that equips churches and ministries
               with the tools, frameworks, and digital literacy needed to thrive
               in a rapidly evolving technological landscape. He also organizes
               the{" "}
-              <span className="text-klo-gold font-medium">
+              <span className="text-[#68E9FA] font-medium">
                 Church &amp; Tech Summit
               </span>
               , a premier gathering that convenes pastors, technologists, and
@@ -188,13 +188,13 @@ export default function AboutPage() {
             <motion.p variants={fadeUp} custom={5}>
               Beyond the boardroom and the conference stage, Keith serves as
               Founder and Lead Pastor of{" "}
-              <span className="text-klo-gold font-medium">
+              <span className="text-[#68E9FA] font-medium">
                 The Place of Grace Church
               </span>{" "}
               in Pine Hills, Orlando &mdash; a 21st-century church bringing
               about transformative change in the community. A son of the Church
               of God in Christ, Keith also serves as the{" "}
-              <span className="text-klo-gold font-medium">
+              <span className="text-[#68E9FA] font-medium">
                 Director of Technology for COGIC
               </span>
               , overseeing infrastructure, cybersecurity, and software
@@ -241,15 +241,15 @@ export default function AboutPage() {
                 <motion.div key={service.title} variants={fadeUp} custom={i + 1}>
                   <Card hoverable className="h-full">
                     <div className="flex items-start gap-4">
-                      <div className="shrink-0 w-12 h-12 rounded-lg bg-klo-gold/10 flex items-center justify-center">
-                        <Icon size={22} className="text-klo-gold" />
+                      <div className="shrink-0 w-12 h-12 rounded-lg bg-[#68E9FA]/10 flex items-center justify-center">
+                        <Icon size={22} className="text-[#68E9FA]" />
                       </div>
                       <div className="space-y-2">
                         <div className="flex items-center gap-3">
                           <h3 className="text-lg font-semibold text-klo-text">
                             {service.title}
                           </h3>
-                          <Badge variant="gold">{service.badge}</Badge>
+                          <Badge variant="cyan">{service.badge}</Badge>
                         </div>
                         <p className="text-klo-muted text-sm leading-relaxed">
                           {service.description}

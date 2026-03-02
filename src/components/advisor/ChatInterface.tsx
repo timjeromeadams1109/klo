@@ -46,14 +46,14 @@ function TypingIndicator() {
       exit={{ opacity: 0 }}
       className="flex items-center gap-2 px-4 py-3"
     >
-      <div className="w-8 h-8 rounded-full bg-klo-gold/10 flex items-center justify-center shrink-0">
-        <Bot size={16} className="text-klo-gold" />
+      <div className="w-8 h-8 rounded-full bg-[#68E9FA]/10 flex items-center justify-center shrink-0">
+        <Bot size={16} className="text-[#68E9FA]" />
       </div>
-      <div className="flex items-center gap-1 px-3 py-2 bg-klo-slate rounded-xl">
+      <div className="flex items-center gap-1 px-3 py-2 bg-[#011A5E] rounded-xl">
         {[0, 1, 2].map((i) => (
           <motion.span
             key={i}
-            className="w-2 h-2 rounded-full bg-klo-gold/60"
+            className="w-2 h-2 rounded-full bg-[#68E9FA]/60"
             animate={{ opacity: [0.3, 1, 0.3] }}
             transition={{
               duration: 1.2,
@@ -90,13 +90,13 @@ function MessageBubble({ message }: { message: AdvisorMessage }) {
       {/* Avatar */}
       <div
         className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-          isUser ? "bg-klo-gold/20" : "bg-klo-gold/10"
+          isUser ? "bg-[#68E9FA]/20" : "bg-[#68E9FA]/10"
         }`}
       >
         {isUser ? (
-          <User size={16} className="text-klo-gold" />
+          <User size={16} className="text-[#68E9FA]" />
         ) : (
-          <Bot size={16} className="text-klo-gold" />
+          <Bot size={16} className="text-[#68E9FA]" />
         )}
       </div>
 
@@ -109,8 +109,8 @@ function MessageBubble({ message }: { message: AdvisorMessage }) {
         <div
           className={`rounded-2xl px-4 py-3 ${
             isUser
-              ? "bg-klo-gold/10 border border-klo-gold/20 text-klo-text"
-              : "bg-klo-slate text-klo-text"
+              ? "bg-[#68E9FA]/10 border border-[#68E9FA]/20 text-klo-text"
+              : "bg-[#011A5E] text-klo-text"
           }`}
         >
           {isUser ? (
@@ -118,7 +118,7 @@ function MessageBubble({ message }: { message: AdvisorMessage }) {
               {message.content}
             </p>
           ) : (
-            <div className="prose prose-invert prose-sm max-w-none text-klo-text prose-headings:text-klo-text prose-headings:font-display prose-strong:text-klo-text prose-a:text-klo-gold prose-code:text-klo-gold/80 prose-code:bg-klo-dark prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-klo-dark prose-pre:border prose-pre:border-klo-slate prose-li:marker:text-klo-gold/60">
+            <div className="prose prose-invert prose-sm max-w-none text-klo-text prose-headings:text-klo-text prose-headings:font-display prose-strong:text-klo-text prose-a:text-[#68E9FA] prose-code:text-[#68E9FA]/80 prose-code:bg-[#011A5E] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-[#011A5E] prose-pre:border prose-pre:border-[#0E3783] prose-li:marker:text-[#68E9FA]/60">
               <ReactMarkdown remarkPlugins={[remarkGfm]}>
                 {message.content || "\u00A0"}
               </ReactMarkdown>
@@ -245,7 +245,7 @@ export default function ChatInterface({
         onSubmit={handleSubmit}
         className="px-4 pb-4 pt-2 border-t border-klo-slate"
       >
-        <div className="flex items-end gap-2 bg-klo-dark border border-klo-slate rounded-xl px-3 py-2 focus-within:border-klo-gold/40 transition-colors">
+        <div className="flex items-end gap-2 bg-[#011A5E] border border-[#0E3783] rounded-xl px-3 py-2 focus-within:border-[#68E9FA]/40 transition-colors">
           <textarea
             ref={textareaRef}
             rows={1}
@@ -262,7 +262,7 @@ export default function ChatInterface({
           <button
             type="submit"
             disabled={isLoading || disabled}
-            className="w-9 h-9 flex items-center justify-center rounded-lg bg-klo-gold text-klo-dark hover:brightness-110 active:brightness-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+            className="w-9 h-9 flex items-center justify-center rounded-lg bg-[#68E9FA] text-[#022886] hover:brightness-110 active:brightness-95 transition-all disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
           >
             <Send size={16} />
           </button>

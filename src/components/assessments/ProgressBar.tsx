@@ -21,13 +21,13 @@ export default function ProgressBar({
           <span className="text-klo-text font-medium">{currentStep + 1}</span>{" "}
           of {totalSteps}
         </span>
-        <span className="text-klo-gold font-medium text-xs uppercase tracking-wider">
+        <span className="text-[#68E9FA] font-medium text-xs uppercase tracking-wider">
           {categoryName}
         </span>
       </div>
       <div className="w-full h-2 bg-klo-slate rounded-full overflow-hidden">
         <div
-          className="h-full bg-klo-gold rounded-full transition-all duration-500 ease-out"
+          className="h-full bg-[#68E9FA] rounded-full transition-all duration-500 ease-out"
           style={{ width: `${percentage}%` }}
         />
       </div>

@@ -43,7 +43,7 @@ export default function ContentCard({ item, index = 0 }: ContentCardProps) {
       custom={index}
     >
       <Link href={`/vault/${item.slug}`} className="block group">
-        <div className="bg-klo-dark border border-klo-slate rounded-xl overflow-hidden transition-all duration-300 group-hover:-translate-y-1 group-hover:border-klo-gold/30 group-hover:shadow-lg group-hover:shadow-klo-gold/5">
+        <div className="bg-[#011A5E] border border-[#0E3783] rounded-2xl overflow-hidden transition-all duration-300 group-hover:-translate-y-1 group-hover:border-[#68E9FA]/30 group-hover:shadow-lg group-hover:shadow-[#68E9FA]/5">
           {/* Thumbnail */}
           <div
             className={`relative h-40 bg-gradient-to-br ${item.thumbnailGradient} flex items-center justify-center`}
@@ -80,7 +80,7 @@ export default function ContentCard({ item, index = 0 }: ContentCardProps) {
             </div>
 
             {/* Title */}
-            <h3 className="font-display text-base font-semibold text-klo-text mb-2 line-clamp-2 group-hover:text-klo-gold transition-colors duration-200">
+            <h3 className="font-display text-base font-semibold text-klo-text mb-2 line-clamp-2 group-hover:text-[#68E9FA] transition-colors duration-200">
               {item.title}
             </h3>
 

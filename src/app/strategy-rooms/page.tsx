@@ -103,8 +103,8 @@ function SeatsProgress({
         <motion.div
           className={`h-full rounded-full ${
             isAlmostFull
-              ? "bg-gradient-to-r from-klo-gold to-amber-400"
-              : "bg-klo-gold/60"
+              ? "bg-gradient-to-r from-[#68E9FA] to-[#68E9FA]/70"
+              : "bg-[#68E9FA]/60"
           }`}
           initial={{ width: 0 }}
           animate={{ width: `${pct}%` }}
@@ -134,7 +134,7 @@ function UpcomingSessionCard({ session }: { session: StrategySession }) {
 
         {/* Title */}
         <Link href={`/strategy-rooms/${session.id}`}>
-          <h3 className="font-display text-lg font-bold text-klo-text mb-2 hover:text-klo-gold transition-colors leading-snug">
+          <h3 className="font-display text-lg font-bold text-klo-text mb-2 hover:text-[#68E9FA] transition-colors leading-snug">
             {session.title}
           </h3>
         </Link>
@@ -142,15 +142,15 @@ function UpcomingSessionCard({ session }: { session: StrategySession }) {
         {/* Meta */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-klo-muted mb-3">
           <span className="inline-flex items-center gap-1.5">
-            <Calendar size={13} className="text-klo-gold" />
+            <Calendar size={13} className="text-[#68E9FA]" />
             {session.date}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <Clock size={13} className="text-klo-gold" />
+            <Clock size={13} className="text-[#68E9FA]" />
             {session.time}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <User size={13} className="text-klo-gold" />
+            <User size={13} className="text-[#68E9FA]" />
             {session.facilitator}
           </span>
         </div>
@@ -229,7 +229,7 @@ function PastSessionCard({ session }: { session: StrategySession }) {
 
         {/* Title */}
         <Link href={`/strategy-rooms/${session.id}`}>
-          <h3 className="font-display text-lg font-bold text-klo-text mb-2 hover:text-klo-gold transition-colors leading-snug">
+          <h3 className="font-display text-lg font-bold text-klo-text mb-2 hover:text-[#68E9FA] transition-colors leading-snug">
             {session.title}
           </h3>
         </Link>
@@ -237,11 +237,11 @@ function PastSessionCard({ session }: { session: StrategySession }) {
         {/* Meta */}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-klo-muted mb-3">
           <span className="inline-flex items-center gap-1.5">
-            <Calendar size={13} className="text-klo-gold" />
+            <Calendar size={13} className="text-[#68E9FA]" />
             {session.date}
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <MessageSquare size={13} className="text-klo-gold" />
+            <MessageSquare size={13} className="text-[#68E9FA]" />
             {session.discussionCount} comments
           </span>
         </div>
@@ -309,8 +309,8 @@ export default function StrategyRoomsPage() {
             custom={0}
             className="flex items-center gap-3 mb-4"
           >
-            <div className="w-12 h-12 rounded-xl bg-klo-gold/10 flex items-center justify-center">
-              <Users size={24} className="text-klo-gold" />
+            <div className="w-12 h-12 rounded-xl bg-[#68E9FA]/10 flex items-center justify-center">
+              <Users size={24} className="text-[#68E9FA]" />
             </div>
             <div>
               <h1 className="font-display text-3xl md:text-4xl font-bold text-klo-text">
@@ -329,8 +329,8 @@ export default function StrategyRoomsPage() {
                 onClick={() => setActiveTab("upcoming")}
                 className={`px-5 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer ${
                   activeTab === "upcoming"
-                    ? "bg-klo-gold text-klo-dark shadow-md"
-                    : "text-klo-muted hover:text-klo-text"
+                    ? "bg-[#68E9FA] text-[#022886] shadow-md"
+                    : "text-[#8BA3D4] hover:text-klo-text"
                 }`}
               >
                 Upcoming ({upcoming.length})
@@ -339,8 +339,8 @@ export default function StrategyRoomsPage() {
                 onClick={() => setActiveTab("past")}
                 className={`px-5 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 cursor-pointer ${
                   activeTab === "past"
-                    ? "bg-klo-gold text-klo-dark shadow-md"
-                    : "text-klo-muted hover:text-klo-text"
+                    ? "bg-[#68E9FA] text-[#022886] shadow-md"
+                    : "text-[#8BA3D4] hover:text-klo-text"
                 }`}
               >
                 Past Sessions ({past.length})

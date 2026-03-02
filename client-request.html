@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLO Platform — Client Information Request</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    color: #1E293B;
+    line-height: 1.6;
+    padding: 48px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 3px solid #C8A84E;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: #0A1628;
+    margin-bottom: 4px;
+  }
+
+  .header .subtitle {
+    font-size: 14px;
+    color: #64748B;
+    margin-bottom: 16px;
+  }
+
+  .header .date {
+    font-size: 12px;
+    color: #94A3B8;
+  }
+
+  .intro {
+    background: #F8FAFC;
+    border-left: 4px solid #C8A84E;
+    padding: 20px 24px;
+    margin-bottom: 36px;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .intro p {
+    font-size: 14px;
+    color: #475569;
+  }
+
+  .section {
+    margin-bottom: 32px;
+  }
+
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: #0A1628;
+    margin-bottom: 4px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #E2E8F0;
+  }
+
+  .section .section-desc {
+    font-size: 13px;
+    color: #64748B;
+    margin-bottom: 16px;
+    margin-top: 4px;
+  }
+
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #F1F5F9;
+    font-size: 14px;
+  }
+
+  .checklist li:last-child {
+    border-bottom: none;
+  }
+
+  .checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #C8A84E;
+    border-radius: 3px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .item-content {
+    flex: 1;
+  }
+
+  .item-title {
+    font-weight: 600;
+    color: #1E293B;
+  }
+
+  .item-desc {
+    font-size: 12px;
+    color: #64748B;
+    margin-top: 2px;
+  }
+
+  .priority {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+
+  .priority.high {
+    background: #FEF2F2;
+    color: #DC2626;
+  }
+
+  .priority.medium {
+    background: #FFFBEB;
+    color: #D97706;
+  }
+
+  .priority.low {
+    background: #F0FDF4;
+    color: #16A34A;
+  }
+
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #C8A84E, transparent);
+    margin: 36px 0;
+  }
+
+  .summary-box {
+    background: #0A1628;
+    color: white;
+    padding: 28px 32px;
+    border-radius: 12px;
+    margin-top: 36px;
+  }
+
+  .summary-box h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: #C8A84E;
+    margin-bottom: 16px;
+  }
+
+  .summary-box .stat-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .summary-box .stat {
+    text-align: center;
+  }
+
+  .summary-box .stat-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: #C8A84E;
+  }
+
+  .summary-box .stat-label {
+    font-size: 11px;
+    color: #94A3B8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .summary-box p {
+    font-size: 13px;
+    color: #94A3B8;
+    text-align: center;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #E2E8F0;
+    font-size: 12px;
+    color: #94A3B8;
+  }
+
+  .notes-area {
+    background: #F8FAFC;
+    border: 1px dashed #CBD5E1;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 12px;
+    min-height: 80px;
+  }
+
+  .notes-label {
+    font-size: 12px;
+    color: #94A3B8;
+    font-style: italic;
+  }
+
+  @page {
+    size: letter;
+    margin: 0.5in;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>KLO Platform</h1>
+  <div class="subtitle">Client Information Request — Production Launch Checklist</div>
+  <div class="date">Prepared: March 1, 2026 &nbsp;|&nbsp; For: Keith L. Odom</div>
+</div>
+
+<div class="intro">
+  <p>
+    Your KLO platform is built and live with 33 pages, AI-powered advisory, assessments, content vault,
+    marketplace, and Stripe billing. To take the site fully live in production, we need the following
+    items from you. Please check off each item and provide the requested assets or information.
+  </p>
+</div>
+
+<!-- Section 1: Accounts & Credentials -->
+<div class="section">
+  <h2>1. Accounts &amp; Credentials</h2>
+  <p class="section-desc">API keys and account credentials needed for production services.</p>
+
+  <ul class="checklist">
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Stripe Account &amp; Price IDs <span class="priority high">Required</span></div>
+        <div class="item-desc">
+          Create products in your Stripe Dashboard for Pro ($29/mo) and Executive ($99/mo) plans.
+          Provide the <strong>Price IDs</strong> (e.g., price_1Abc123...) for each. Also provide your
+          <strong>STRIPE_SECRET_KEY</strong> and <strong>STRIPE_WEBHOOK_SECRET</strong>.
+          <br>Sign up at: <em>dashboard.stripe.com</em>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Supabase Project Credentials <span class="priority high">Required</span></div>
+        <div class="item-desc">
+          Create a Supabase project and provide <strong>SUPABASE_URL</strong> and <strong>SUPABASE_ANON_KEY</strong>.
+          This stores user profiles, assessment results, and subscription data.
+          <br>Sign up at: <em>supabase.com</em>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Google OAuth Client ID &amp; Secret <span class="priority medium">Recommended</span></div>
+        <div class="item-desc">
+          For "Sign in with Google" functionality. Create OAuth credentials in Google Cloud Console.
+          Provide <strong>GOOGLE_CLIENT_ID</strong> and <strong>GOOGLE_CLIENT_SECRET</strong>.
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Resend API Key <span class="priority medium">Recommended</span></div>
+        <div class="item-desc">
+          For transactional emails (welcome, assessment reports, booking confirmations).
+          Provide <strong>RESEND_API_KEY</strong>. Also verify your domain (keithlodom.io) in Resend.
+          <br>Sign up at: <em>resend.com</em>
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">NextAuth Secret <span class="priority high">Required</span></div>
+        <div class="item-desc">
+          A random secret string for encrypting auth sessions. We can generate this for you.
+          Provide <strong>NEXTAUTH_SECRET</strong> (run: <code>openssl rand -base64 32</code>).
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- Section 2: Brand Assets -->
+<div class="section">
+  <h2>2. Brand &amp; Media Assets</h2>
+  <p class="section-desc">Visual assets needed for the site, social sharing, and marketing materials.</p>
+
+  <ul class="checklist">
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Professional Headshot <span class="priority high">Required</span></div>
+        <div class="item-desc">
+          High-resolution photo of Keith (minimum 800x800px, JPG or PNG). Used in About page, Open Graph
+          image, and JSON-LD structured data. Ideally a professional studio shot with dark background.
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Speaking/Event Photos (3-5) <span class="priority medium">Recommended</span></div>
+        <div class="item-desc">
+          Action shots from conferences, keynotes, or ministry events. Used across the homepage hero,
+          booking page, and about page. Landscape orientation preferred (1200x675px or larger).
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Speaker Kit / One-Sheet (PDF) <span class="priority medium">Recommended</span></div>
+        <div class="item-desc">
+          A downloadable PDF for event organizers. Includes bio, headshot, speaking topics, testimonials,
+          and booking information. Used on the Booking page "Download Speaker Kit" button.
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Favicon (ICO or PNG, 32x32 &amp; 512x512) <span class="priority low">Nice to Have</span></div>
+        <div class="item-desc">
+          A small icon version of the KLO logo for browser tabs. If not provided, we'll generate from
+          the existing logo files.
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- Section 3: Content -->
+<div class="section">
+  <h2>3. Content &amp; Copy</h2>
+  <p class="section-desc">Real content to replace sample/demo data on the site.</p>
+
+  <ul class="checklist">
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Client Testimonials (3-6) <span class="priority high">Required</span></div>
+        <div class="item-desc">
+          Real quotes from event organizers, consulting clients, or church leaders. For each, provide:
+          the quote text, person's name, their title/role, and organization. These replace sample
+          testimonials on the Booking page.
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Social Media Profile URLs <span class="priority medium">Recommended</span></div>
+        <div class="item-desc">
+          Confirm or update these links:<br>
+          &bull; LinkedIn: linkedin.com/in/keithlodom/ <em>(confirmed)</em><br>
+          &bull; Instagram: instagram.com/pastorkeithodom/ <em>(confirmed)</em><br>
+          &bull; X/Twitter: twitter.com/keithlodom <em>(confirmed)</em><br>
+          &bull; YouTube channel URL (if applicable)<br>
+          &bull; Facebook page URL (if applicable)
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Upcoming Events / Speaking Engagements <span class="priority medium">Recommended</span></div>
+        <div class="item-desc">
+          Real upcoming event details: event name, date, location, and topic. Will replace the sample
+          keynote announcement on the homepage and conference companion page.
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Executive Feed — First 3 Posts <span class="priority low">Nice to Have</span></div>
+        <div class="item-desc">
+          Keith's original commentary pieces (500-1000 words each) on AI, tech ethics, church tech, or
+          governance. These will seed the Executive Intelligence Feed. Topics currently have sample content.
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Vault Content — 2-3 Real Resources <span class="priority low">Nice to Have</span></div>
+        <div class="item-desc">
+          Actual downloadable resources (PDFs, frameworks, templates) to replace sample vault items.
+          The "Ministry Applications of AI" PDF from keithlodom.io would be a great first item.
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- Section 4: Domain & Infrastructure -->
+<div class="section">
+  <h2>4. Domain &amp; Infrastructure</h2>
+  <p class="section-desc">DNS and hosting configuration for the production launch.</p>
+
+  <ul class="checklist">
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">DNS Configuration for keithlodom.io <span class="priority high">Required</span></div>
+        <div class="item-desc">
+          Add an <strong>A record</strong> pointing to <strong>76.76.21.21</strong> in your domain registrar
+          (GoDaddy or wherever keithlodom.io is managed). This connects your custom domain to the Vercel deployment.
+          Also remove any conflicting A records for the root domain.
+        </div>
+      </div>
+    </li>
+    <li>
+      <div class="checkbox"></div>
+      <div class="item-content">
+        <div class="item-title">Calendar Booking Tool <span class="priority medium">Recommended</span></div>
+        <div class="item-desc">
+          Sign up for Cal.com (free) or Calendly and provide the embed URL. This replaces the
+          placeholder calendar on the Booking page with real scheduling functionality.
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<div class="divider"></div>
+
+<!-- Notes area -->
+<div class="section">
+  <h2>Notes &amp; Additional Information</h2>
+  <div class="notes-area">
+    <span class="notes-label">Use this space for any additional notes, preferences, or questions...</span>
+  </div>
+</div>
+
+<!-- Summary -->
+<div class="summary-box">
+  <h3>Platform Summary — What's Already Built</h3>
+  <div class="stat-grid">
+    <div class="stat">
+      <div class="stat-value">33</div>
+      <div class="stat-label">Pages &amp; Routes</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">18K+</div>
+      <div class="stat-label">Lines of Code</div>
+    </div>
+    <div class="stat">
+      <div class="stat-value">3</div>
+      <div class="stat-label">Revenue Tiers</div>
+    </div>
+  </div>
+  <p>
+    AI Advisor (live) &bull; 4 Assessments &bull; Content Vault &bull; Strategy Rooms &bull;
+    Marketplace &bull; Conference Mode &bull; Booking Portal &bull; Stripe Billing &bull;
+    Email Templates &bull; PWA &bull; SEO &bull; CI/CD Pipeline
+  </p>
+</div>
+
+<div class="footer">
+  KLO Platform &bull; Built for Keith L. Odom &bull; keithlodom.io<br>
+  Prepared by Tim Adams Development &bull; Confidential
+</div>
+
+</body>
+</html>
