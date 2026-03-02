@@ -14,8 +14,8 @@ const tierInfo: Record<
   string,
   { label: string; unlocked: string[]; color: string }
 > = {
-  member: {
-    label: "Member",
+  pro: {
+    label: "Pro",
     unlocked: [
       "All assessments with detailed reports",
       "Full Vault content library",
@@ -25,14 +25,14 @@ const tierInfo: Record<
     ],
     color: "text-klo-gold",
   },
-  premium: {
-    label: "Premium",
+  executive: {
+    label: "Executive",
     unlocked: [
-      "Everything in Member",
+      "Everything in Pro",
       "Unlimited AI Advisor access",
       "Private Strategy Rooms",
       "Priority consulting requests",
-      "Exclusive premium Vault content",
+      "Exclusive executive Vault content",
       "Quarterly 1-on-1 strategy call",
     ],
     color: "text-klo-gold",
@@ -93,8 +93,8 @@ const ringVariants = {
 
 function SuccessContent() {
   const searchParams = useSearchParams();
-  const tier = searchParams.get("tier") ?? "member";
-  const info = tierInfo[tier] ?? tierInfo.member;
+  const tier = searchParams.get("tier") ?? "pro";
+  const info = tierInfo[tier] ?? tierInfo.pro;
 
   return (
     <div className="min-h-screen bg-klo-navy flex items-center justify-center px-4 py-16">
@@ -168,9 +168,9 @@ function SuccessContent() {
           variants={itemVariants}
           className="flex flex-col sm:flex-row gap-3 justify-center"
         >
-          <Button variant="primary" size="md" href="/dashboard">
+          <Button variant="primary" size="md" href="/profile">
             <LayoutDashboard className="h-4 w-4" />
-            Go to Dashboard
+            Go to Profile
           </Button>
           <Button variant="secondary" size="md" href="/vault">
             <Lock className="h-4 w-4" />
@@ -189,7 +189,7 @@ function SuccessContent() {
         >
           You are covered by our 30-day money-back guarantee. Questions?{" "}
           <a
-            href="mailto:connect@keithodom.com"
+            href="mailto:connect@keithlodom.io"
             className="text-klo-gold hover:underline"
           >
             Reach out anytime.

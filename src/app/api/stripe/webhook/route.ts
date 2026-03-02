@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case "checkout.session.completed": {
         const session = event.data.object as Stripe.Checkout.Session;
-        const tier = session.metadata?.tier ?? "member";
+        const tier = session.metadata?.tier ?? "pro";
         const customerId = session.customer as string;
         const subscriptionId = session.subscription as string;
 
@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
 
       case "customer.subscription.updated": {
         const subscription = event.data.object as Stripe.Subscription;
-        const tier = subscription.metadata?.tier ?? "member";
+        const tier = subscription.metadata?.tier ?? "pro";
         const customerId = subscription.customer as string;
         const status = subscription.status;
 

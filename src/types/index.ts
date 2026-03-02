@@ -28,7 +28,7 @@ export interface User {
   email: string;
   displayName: string;
   avatarUrl?: string;
-  role: "free" | "member" | "premium" | "admin";
+  role: "free" | "pro" | "executive" | "admin";
   createdAt: string;
   updatedAt: string;
 }
@@ -51,7 +51,7 @@ export interface Profile extends User {
 // Subscription
 // ------------------------------------------------------------
 
-export type SubscriptionTierSlug = "free" | "member" | "premium";
+export type SubscriptionTierSlug = "free" | "pro" | "executive";
 
 export interface SubscriptionTier {
   slug: SubscriptionTierSlug;

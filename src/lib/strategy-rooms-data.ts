@@ -1,6 +1,6 @@
 // ── Strategy Rooms Mock Data ──────────────────────────────────────────────────
 
-export type Tier = "pro" | "premium";
+export type Tier = "pro" | "executive";
 
 export interface StrategySession {
   id: string;
@@ -51,7 +51,7 @@ const upcomingSessions: StrategySession[] = [
     totalSeats: 20,
     registeredCount: 12,
     isPast: false,
-    tier: "premium",
+    tier: "executive",
     topics: ["AI Governance", "Ethics", "Faith Organizations", "Policy"],
     discussionCount: 7,
     agenda: [
@@ -195,7 +195,7 @@ const upcomingSessions: StrategySession[] = [
     totalSeats: 30,
     registeredCount: 18,
     isPast: false,
-    tier: "premium",
+    tier: "executive",
     topics: [
       "Church Technology",
       "Emerging Tech",
@@ -249,7 +249,7 @@ const pastSessions: StrategySession[] = [
     isPast: true,
     replayUrl: "#replay-ai-ready",
     notesUrl: "#notes-ai-ready",
-    tier: "premium",
+    tier: "executive",
     topics: ["AI Readiness", "Culture", "Data Strategy", "Implementation"],
     discussionCount: 14,
     attendees: 22,
@@ -303,7 +303,7 @@ const pastSessions: StrategySession[] = [
     isPast: true,
     replayUrl: "#replay-ministry-digital",
     notesUrl: "#notes-ministry-digital",
-    tier: "premium",
+    tier: "executive",
     topics: [
       "Ministry",
       "Digital Strategy",

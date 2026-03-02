@@ -58,12 +58,12 @@ const itemFade = {
 
 // ── Tier Badge ───────────────────────────────────────────────────────────────
 
-function TierBadge({ tier }: { tier: "pro" | "premium" }) {
-  if (tier === "premium") {
+function TierBadge({ tier }: { tier: "pro" | "executive" }) {
+  if (tier === "executive") {
     return (
       <Badge variant="gold">
         <Crown size={12} className="mr-1" />
-        Premium
+        Executive
       </Badge>
     );
   }

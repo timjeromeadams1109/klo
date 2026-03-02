@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, MessageSquare, ClipboardCheck, BookOpen, User } from "lucide-react";
+import { Home, MessageSquare, ClipboardCheck, BookOpen, Mic2 } from "lucide-react";
 import { motion } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
 
@@ -17,7 +17,7 @@ const navItems: NavItem[] = [
   { label: "Advisor", href: "/advisor", icon: MessageSquare },
   { label: "Assess", href: "/assessments", icon: ClipboardCheck },
   { label: "Vault", href: "/vault", icon: BookOpen },
-  { label: "Profile", href: "/profile", icon: User },
+  { label: "Booking", href: "/booking", icon: Mic2 },
 ];
 
 export default function BottomNav() {

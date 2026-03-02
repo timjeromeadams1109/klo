@@ -8,7 +8,7 @@ import { stripe } from "@/lib/stripe";
 
 interface CheckoutRequestBody {
   priceId: string;
-  tier: "member" | "premium";
+  tier: "pro" | "executive";
 }
 
 export async function POST(request: NextRequest) {
@@ -23,9 +23,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!["member", "premium"].includes(tier)) {
+    if (!["pro", "executive"].includes(tier)) {
       return NextResponse.json(
-        { error: "Invalid tier. Must be 'member' or 'premium'." },
+        { error: "Invalid tier. Must be 'pro' or 'executive'." },
         { status: 400 }
       );
     }

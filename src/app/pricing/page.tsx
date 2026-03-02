@@ -18,8 +18,8 @@ import type { SubscriptionTier } from "@/types";
 /* ------------------------------------------------------------------ */
 
 const PRICE_IDS: Record<string, string> = {
-  member: process.env.NEXT_PUBLIC_STRIPE_MEMBER_PRICE_ID ?? "price_member_placeholder",
-  premium: process.env.NEXT_PUBLIC_STRIPE_PREMIUM_PRICE_ID ?? "price_premium_placeholder",
+  pro: process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID ?? "price_pro_placeholder",
+  executive: process.env.NEXT_PUBLIC_STRIPE_EXECUTIVE_PRICE_ID ?? "price_executive_placeholder",
 };
 
 /* ------------------------------------------------------------------ */
@@ -63,23 +63,23 @@ const fadeUp = {
 interface ComparisonRow {
   feature: string;
   free: string | boolean;
-  member: string | boolean;
-  premium: string | boolean;
+  pro: string | boolean;
+  executive: string | boolean;
 }
 
 const comparisonData: ComparisonRow[] = [
-  { feature: "Church Readiness Assessment", free: true, member: true, premium: true },
-  { feature: "AI Readiness Assessment", free: true, member: true, premium: true },
-  { feature: "Governance Assessment", free: false, member: true, premium: true },
-  { feature: "Cyber Risk Assessment", free: false, member: true, premium: true },
-  { feature: "Detailed Assessment Reports", free: false, member: true, premium: true },
-  { feature: "Community Feed Access", free: "Read-only", member: true, premium: true },
-  { feature: "Vault Content Library", free: "Previews only", member: true, premium: true },
-  { feature: "AI Advisor", free: false, member: "50 msgs/mo", premium: "Unlimited" },
-  { feature: "Strategy Rooms", free: false, member: false, premium: true },
-  { feature: "Priority Consulting", free: false, member: false, premium: true },
-  { feature: "Premium Vault Content", free: false, member: false, premium: true },
-  { feature: "Quarterly Strategy Call", free: false, member: false, premium: true },
+  { feature: "Church Readiness Assessment", free: true, pro: true, executive: true },
+  { feature: "AI Readiness Assessment", free: true, pro: true, executive: true },
+  { feature: "Governance Assessment", free: false, pro: true, executive: true },
+  { feature: "Cyber Risk Assessment", free: false, pro: true, executive: true },
+  { feature: "Detailed Assessment Reports", free: false, pro: true, executive: true },
+  { feature: "Community Feed Access", free: "Read-only", pro: true, executive: true },
+  { feature: "Vault Content Library", free: "Previews only", pro: true, executive: true },
+  { feature: "AI Advisor", free: false, pro: "50 msgs/mo", executive: "Unlimited" },
+  { feature: "Strategy Rooms", free: false, pro: false, executive: true },
+  { feature: "Priority Consulting", free: false, pro: false, executive: true },
+  { feature: "Executive Vault Content", free: false, pro: false, executive: true },
+  { feature: "Quarterly Strategy Call", free: false, pro: false, executive: true },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -130,6 +130,7 @@ function FAQAccordion({ item }: { item: FAQItem }) {
     <div className="border-b border-klo-slate">
       <button
         onClick={() => setOpen(!open)}
+        aria-expanded={open}
         className="flex items-center justify-between w-full py-5 text-left gap-4 group cursor-pointer"
       >
         <span className="font-display text-base font-semibold text-klo-text group-hover:text-klo-gold transition-colors">
@@ -320,10 +321,10 @@ export default function PricingPage() {
                       <ComparisonCell value={row.free} />
                     </td>
                     <td className="py-3.5 px-3 text-center">
-                      <ComparisonCell value={row.member} />
+                      <ComparisonCell value={row.pro} />
                     </td>
                     <td className="py-3.5 px-3 text-center">
-                      <ComparisonCell value={row.premium} />
+                      <ComparisonCell value={row.executive} />
                     </td>
                   </tr>
                 ))}

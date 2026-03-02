@@ -50,7 +50,7 @@ export default function UserMenu() {
 
   const menuItems = [
     { label: "Profile", href: "/profile", icon: User },
-    { label: "Settings", href: "/settings", icon: Settings },
+    { label: "Settings", href: "/profile", icon: Settings },
   ];
 
   return (

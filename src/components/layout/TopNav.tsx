@@ -17,6 +17,7 @@ const navLinks: NavLink[] = [
   { label: "AI Advisor", href: "/advisor" },
   { label: "Assessments", href: "/assessments" },
   { label: "Vault", href: "/vault" },
+  { label: "Strategy Rooms", href: "/strategy-rooms" },
   { label: "Booking", href: "/booking" },
 ];
 

@@ -47,7 +47,7 @@ function emailWrapper(content: string): string {
           <tr>
             <td style="background-color:${BRAND.dark};padding:32px 40px;border-top:1px solid ${BRAND.slate};text-align:center;">
               <p style="margin:0 0 16px;font-size:13px;color:${BRAND.muted};">
-                <a href="https://kloadvisory.com" style="color:${BRAND.gold};text-decoration:none;">Website</a>
+                <a href="https://keithlodom.io" style="color:${BRAND.gold};text-decoration:none;">Website</a>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
                 <a href="https://linkedin.com/company/kloadvisory" style="color:${BRAND.gold};text-decoration:none;">LinkedIn</a>
                 &nbsp;&nbsp;|&nbsp;&nbsp;
@@ -124,7 +124,7 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
           <p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:${BRAND.muted};">
             Measure your organization's AI readiness with our proprietary assessment framework. Get a detailed maturity score and actionable recommendations.
           </p>
-          ${ctaButton("Start Assessment", "https://kloadvisory.com/assessments")}
+          ${ctaButton("Start Assessment", "https://keithlodom.io/assessments")}
         </td>
       </tr>
     </table>
@@ -139,7 +139,7 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
           <p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:${BRAND.muted};">
             Access curated strategy resources, frameworks, and executive playbooks designed to accelerate your AI transformation.
           </p>
-          ${ctaButton("Open the Vault", "https://kloadvisory.com/vault")}
+          ${ctaButton("Open the Vault", "https://keithlodom.io/vault")}
         </td>
       </tr>
     </table>
@@ -154,7 +154,7 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
           <p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:${BRAND.muted};">
             Get instant, tailored strategic advice from our AI-powered advisor. Ask about adoption strategies, risk management, or implementation roadmaps.
           </p>
-          ${ctaButton("Chat with Advisor", "https://kloadvisory.com/advisor")}
+          ${ctaButton("Chat with Advisor", "https://keithlodom.io/advisor")}
         </td>
       </tr>
     </table>
@@ -163,7 +163,7 @@ export function welcomeEmail(name: string): { subject: string; html: string } {
 
     <p style="margin:0;font-size:14px;line-height:1.7;color:${BRAND.muted};text-align:center;">
       Questions? Reply to this email or reach out at
-      <a href="mailto:support@kloadvisory.com" style="color:${BRAND.gold};text-decoration:none;">support@kloadvisory.com</a>.
+      <a href="mailto:support@keithlodom.io" style="color:${BRAND.gold};text-decoration:none;">support@keithlodom.io</a>.
     </p>
   `;
 
@@ -264,12 +264,12 @@ export function assessmentReportEmail(
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
       <tr>
         <td align="center" style="padding-bottom:12px;">
-          ${ctaButton("View Full Report", "https://kloadvisory.com/assessments")}
+          ${ctaButton("View Full Report", "https://keithlodom.io/assessments")}
         </td>
       </tr>
       <tr>
         <td align="center">
-          ${secondaryButton("Book a Strategy Session", "https://kloadvisory.com/booking")}
+          ${secondaryButton("Book a Strategy Session", "https://keithlodom.io/booking")}
         </td>
       </tr>
     </table>
@@ -441,7 +441,7 @@ export function weeklyDigestEmail(
     ${postsHtml}
 
     <div style="text-align:center;padding-top:12px;">
-      ${ctaButton("Read Full Feed", "https://kloadvisory.com/feed")}
+      ${ctaButton("Read Full Feed", "https://keithlodom.io/feed")}
     </div>
   `;
 
@@ -482,14 +482,14 @@ export function upgradeEmail(
 
   const quickStartMap: Record<string, { title: string; desc: string; href: string }[]> = {
     pro: [
-      { title: "Run a Full Assessment", desc: "Take any assessment to receive your detailed maturity report with PDF export.", href: "https://kloadvisory.com/assessments" },
-      { title: "Explore Premium Vault", desc: "Browse strategy frameworks and resources now available to you.", href: "https://kloadvisory.com/vault" },
-      { title: "Chat Unlimited", desc: "Ask the AI Advisor anything — no more monthly limits.", href: "https://kloadvisory.com/advisor" },
+      { title: "Run a Full Assessment", desc: "Take any assessment to receive your detailed maturity report with PDF export.", href: "https://keithlodom.io/assessments" },
+      { title: "Explore Premium Vault", desc: "Browse strategy frameworks and resources now available to you.", href: "https://keithlodom.io/vault" },
+      { title: "Chat Unlimited", desc: "Ask the AI Advisor anything — no more monthly limits.", href: "https://keithlodom.io/advisor" },
     ],
     executive: [
-      { title: "Book Your Advisory Session", desc: "Schedule your first 1-on-1 session with Keith L. Odom.", href: "https://kloadvisory.com/booking" },
-      { title: "Set Up Your Dashboard", desc: "Configure your organization-wide analytics dashboard.", href: "https://kloadvisory.com/profile" },
-      { title: "Access Executive Briefings", desc: "Download your first tailored executive briefing document.", href: "https://kloadvisory.com/vault" },
+      { title: "Book Your Advisory Session", desc: "Schedule your first 1-on-1 session with Keith L. Odom.", href: "https://keithlodom.io/booking" },
+      { title: "Set Up Your Dashboard", desc: "Configure your organization-wide analytics dashboard.", href: "https://keithlodom.io/profile" },
+      { title: "Access Executive Briefings", desc: "Download your first tailored executive briefing document.", href: "https://keithlodom.io/vault" },
     ],
   };
 
@@ -560,7 +560,7 @@ export function upgradeEmail(
     ${quickStartHtml}
 
     <div style="text-align:center;padding-top:16px;">
-      ${ctaButton("Go to Dashboard", "https://kloadvisory.com/profile")}
+      ${ctaButton("Go to Dashboard", "https://keithlodom.io/profile")}
     </div>
   `;
 

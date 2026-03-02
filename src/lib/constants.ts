@@ -38,17 +38,16 @@ export const NAV_ITEMS: NavigationItem[] = [
   { label: "Assessments", href: "/assessments", icon: "ClipboardCheck" },
   { label: "Vault", href: "/vault", icon: "Lock", requiresAuth: true },
   { label: "Advisor", href: "/advisor", icon: "BotMessageSquare", requiresAuth: true },
-  { label: "Strategy Room", href: "/strategy", icon: "LayoutDashboard", requiresAuth: true },
-  { label: "Community", href: "/community", icon: "Users", requiresAuth: true },
-  { label: "Profile", href: "/profile", icon: "UserCircle", requiresAuth: true },
+  { label: "Strategy Rooms", href: "/strategy-rooms", icon: "LayoutDashboard", requiresAuth: true },
+  { label: "Booking", href: "/booking", icon: "Mic" },
 ];
 
 export const MOBILE_NAV_ITEMS: NavigationItem[] = [
   { label: "Home", href: "/", icon: "Home" },
+  { label: "Advisor", href: "/advisor", icon: "BotMessageSquare", requiresAuth: true },
   { label: "Assess", href: "/assessments", icon: "ClipboardCheck" },
   { label: "Vault", href: "/vault", icon: "Lock", requiresAuth: true },
-  { label: "Advisor", href: "/advisor", icon: "BotMessageSquare", requiresAuth: true },
-  { label: "More", href: "/menu", icon: "Menu" },
+  { label: "Booking", href: "/booking", icon: "Mic" },
 ];
 
 // ============================================================
@@ -154,8 +153,8 @@ export const SUBSCRIPTION_TIERS: SubscriptionTier[] = [
     cta: "Get Started",
   },
   {
-    slug: "member",
-    name: "Member",
+    slug: "pro",
+    name: "Pro",
     price: 29,
     interval: "month",
     description:
@@ -171,21 +170,21 @@ export const SUBSCRIPTION_TIERS: SubscriptionTier[] = [
     cta: "Join Now",
   },
   {
-    slug: "premium",
-    name: "Premium",
+    slug: "executive",
+    name: "Executive",
     price: 99,
     interval: "month",
     description:
       "Elite access with unlimited AI advisory, private Strategy Rooms, and direct consulting priority.",
     features: [
-      "Everything in Member",
+      "Everything in Pro",
       "Unlimited AI Advisor access",
       "Private Strategy Rooms",
       "Priority consulting requests",
-      "Exclusive premium Vault content",
+      "Exclusive executive Vault content",
       "Quarterly 1-on-1 strategy call",
     ],
-    cta: "Go Premium",
+    cta: "Go Executive",
   },
 ];
 
@@ -247,6 +246,6 @@ export const ASSESSMENTS: Assessment[] = [
 export const SITE_NAME = "KLO";
 export const SITE_DESCRIPTION =
   "Keith L. Odom — Technology Innovator, Conference Speaker, and Pastor. Strategic technology leadership at the intersection of innovation and faith.";
-export const SITE_URL = "https://keithodom.com";
+export const SITE_URL = "https://keithlodom.io";
 
-export const CONTACT_EMAIL = "connect@keithodom.com";
+export const CONTACT_EMAIL = "connect@keithlodom.io";

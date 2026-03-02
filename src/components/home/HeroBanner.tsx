@@ -33,7 +33,7 @@ export default function HeroBanner() {
         className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-[120px] pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(200,168,78,0.4) 0%, rgba(200,168,78,0.1) 40%, transparent 70%)",
+            "radial-gradient(circle, oklch(from var(--color-klo-gold) l c h / 0.4) 0%, oklch(from var(--color-klo-gold) l c h / 0.1) 40%, transparent 70%)",
         }}
         animate={{
           scale: [1, 1.15, 1],
@@ -51,7 +51,7 @@ export default function HeroBanner() {
         className="absolute bottom-0 right-1/4 w-[400px] h-[400px] rounded-full opacity-10 blur-[100px] pointer-events-none"
         style={{
           background:
-            "radial-gradient(circle, rgba(59,130,246,0.3) 0%, transparent 70%)",
+            "radial-gradient(circle, oklch(from var(--color-klo-accent) l c h / 0.3) 0%, transparent 70%)",
         }}
         animate={{
           scale: [1, 1.1, 1],

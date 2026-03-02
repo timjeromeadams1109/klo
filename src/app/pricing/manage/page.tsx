@@ -53,9 +53,9 @@ const tierConfig: Record<
   SubscriptionTier,
   { label: string; price: string; badge: "muted" | "blue" | "gold" }
 > = {
-  free: { label: "Free", price: "$0/mo", badge: "muted" },
-  pro: { label: "Pro", price: "$49/mo", badge: "blue" },
-  executive: { label: "Executive", price: "$199/mo", badge: "gold" },
+  free: { label: "Explorer", price: "$0/mo", badge: "muted" },
+  pro: { label: "Pro", price: "$29/mo", badge: "blue" },
+  executive: { label: "Executive", price: "$99/mo", badge: "gold" },
 };
 
 /* ------------------------------------------------------------------ */
@@ -377,11 +377,11 @@ export default function ManageSubscriptionPage() {
                   </p>
                   <div className="flex flex-wrap gap-4 text-sm">
                     <a
-                      href="mailto:support@kloadvisory.com"
+                      href="mailto:support@keithlodom.io"
                       className="inline-flex items-center gap-1.5 text-klo-gold hover:underline"
                     >
                       <Mail className="w-3.5 h-3.5" />
-                      support@kloadvisory.com
+                      support@keithlodom.io
                     </a>
                     <Link
                       href="/booking"

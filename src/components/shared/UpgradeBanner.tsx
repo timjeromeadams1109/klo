@@ -16,8 +16,8 @@ interface UpgradeBannerProps {
 
 const tierLabels: Record<SubscriptionTierSlug, string> = {
   free: "Explorer",
-  member: "Member",
-  premium: "Premium",
+  pro: "Pro",
+  executive: "Executive",
 };
 
 const bannerVariants = {
