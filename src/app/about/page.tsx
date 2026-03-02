@@ -12,6 +12,8 @@ import Card from "@/components/shared/Card";
 import Badge from "@/components/shared/Badge";
 import Button from "@/components/shared/Button";
 import AffiliationStrip from "@/components/affiliations/AffiliationStrip";
+import AnimatedImage from "@/components/shared/AnimatedImage";
+import FadeInOnScroll from "@/components/shared/FadeInOnScroll";
 import type { LucideIcon } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -136,8 +138,15 @@ export default function AboutPage() {
 
           {/* Keith Hero Image */}
         <div className="mb-10 flex justify-center">
-          <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-2xl overflow-hidden border-2 border-[#21262D] hover:shadow-[0_0_30px_rgba(39,100,255,0.1)] transition-shadow duration-300">
-            <img src="/images/keith/KO.jpg" alt="Keith L. Odom" className="w-full h-full object-cover" />
+          <div className="relative w-48 h-48 md:w-64 md:h-64 rounded-2xl border-2 border-[#21262D] hover:shadow-[0_0_30px_rgba(39,100,255,0.1)] transition-shadow duration-300 group">
+            <AnimatedImage
+              src="/images/keith/KO.jpg"
+              alt="Keith L. Odom"
+              fill
+              effect="zoom-hover"
+              className="object-cover rounded-2xl"
+              containerClassName="w-full h-full rounded-2xl"
+            />
           </div>
         </div>
 
@@ -223,6 +232,7 @@ export default function AboutPage() {
       </section>
 
       {/* ====== Services ====== */}
+      <FadeInOnScroll>
       <section className="px-6 py-16 md:py-24 bg-klo-dark/40">
         <motion.div
           initial="hidden"
@@ -281,6 +291,7 @@ export default function AboutPage() {
           </motion.div>
         </motion.div>
       </section>
+      </FadeInOnScroll>
 
       {/* ====== Affiliations ====== */}
       <AffiliationStrip />

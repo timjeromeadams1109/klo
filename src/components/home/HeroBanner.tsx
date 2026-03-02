@@ -110,20 +110,6 @@ export default function HeroBanner() {
         </div>
       </motion.div>
 
-      {/* Ken Burns keyframes injected via style tag */}
-      <style jsx global>{`
-        @keyframes kenburns {
-          0% {
-            transform: scale(1);
-          }
-          100% {
-            transform: scale(1.08);
-          }
-        }
-        .animate-kenburns {
-          animation: kenburns 20s ease-out forwards;
-        }
-      `}</style>
     </section>
   );
 }

@@ -16,6 +16,7 @@ import InquiryForm from "@/components/booking/InquiryForm";
 import SpeakerKit from "@/components/booking/SpeakerKit";
 import Testimonials from "@/components/booking/Testimonials";
 import CalendarEmbed from "@/components/booking/CalendarEmbed";
+import FadeInOnScroll from "@/components/shared/FadeInOnScroll";
 import type { LucideIcon } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -164,6 +165,7 @@ export default function BookingPage() {
       </section>
 
       {/* ====== Quick Stats ====== */}
+      <FadeInOnScroll>
       <section className="px-6 pb-16 md:pb-20 -mt-4">
         <motion.div
           initial="hidden"
@@ -194,8 +196,10 @@ export default function BookingPage() {
           </div>
         </motion.div>
       </section>
+      </FadeInOnScroll>
 
       {/* ====== Signature Keynotes ====== */}
+      <FadeInOnScroll delay={0.05}>
       <section className="px-6 py-16 md:py-24">
         <motion.div
           initial="hidden"
@@ -245,8 +249,10 @@ export default function BookingPage() {
           </div>
         </motion.div>
       </section>
+      </FadeInOnScroll>
 
       {/* ====== Inquiry Form ====== */}
+      <FadeInOnScroll delay={0.1}>
       <section id="inquiry-form" className="px-6 py-16 md:py-24 bg-klo-dark/40">
         <motion.div
           initial="hidden"
@@ -270,8 +276,10 @@ export default function BookingPage() {
           </motion.div>
         </motion.div>
       </section>
+      </FadeInOnScroll>
 
       {/* ====== Calendar Embed ====== */}
+      <FadeInOnScroll delay={0.05}>
       <section className="px-6 py-16 md:py-24">
         <motion.div
           initial="hidden"
@@ -285,8 +293,10 @@ export default function BookingPage() {
           </motion.div>
         </motion.div>
       </section>
+      </FadeInOnScroll>
 
       {/* ====== Testimonials ====== */}
+      <FadeInOnScroll delay={0.1}>
       <section className="px-6 py-16 md:py-24 bg-klo-dark/40">
         <motion.div
           initial="hidden"
@@ -306,8 +316,10 @@ export default function BookingPage() {
           </motion.div>
         </motion.div>
       </section>
+      </FadeInOnScroll>
 
       {/* ====== Speaker Kit ====== */}
+      <FadeInOnScroll delay={0.05}>
       <section className="px-6 py-16 md:py-20">
         <motion.div
           initial="hidden"
@@ -319,6 +331,7 @@ export default function BookingPage() {
           <SpeakerKit />
         </motion.div>
       </section>
+      </FadeInOnScroll>
     </div>
   );
 }

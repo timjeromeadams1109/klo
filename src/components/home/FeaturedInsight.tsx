@@ -33,9 +33,13 @@ export default function FeaturedInsight() {
       >
         <Link href={mockInsight.slug} className="block group">
           <div className="relative bg-[#161B22] border border-[#21262D] rounded-2xl p-6 sm:p-8 lg:p-10 transition-all duration-300 group-hover:-translate-y-1 group-hover:shadow-lg group-hover:shadow-[#2764FF]/10 group-hover:border-[#2764FF]/30 overflow-hidden">
-            {/* Background accent image */}
-            <div
-              className="absolute top-0 right-0 w-72 h-72 opacity-10 pointer-events-none bg-cover bg-center rounded-bl-full"
+            {/* Background accent image with subtle animation */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 0.1, scale: 1 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 1.2, ease: [0.25, 0.4, 0.25, 1] as const }}
+              className="absolute top-0 right-0 w-72 h-72 pointer-events-none bg-cover bg-center rounded-bl-full"
               style={{ backgroundImage: "url(/images/keith/a.jpg)" }}
             />
             {/* Decorative gradient corner */}

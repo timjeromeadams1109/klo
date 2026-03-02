@@ -31,9 +31,9 @@ export default function UpcomingKeynote() {
         <div
           className="relative rounded-2xl overflow-hidden border border-[#21262D]"
         >
-          {/* Background image */}
+          {/* Background image with Ken Burns */}
           <div
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute inset-0 bg-cover bg-center animate-kenburns"
             style={{ backgroundImage: "url(/images/keith/c.jpg)" }}
           />
           {/* Overlay */}

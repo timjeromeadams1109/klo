@@ -96,8 +96,14 @@ const slideVariants = {
 /*  Testimonial card                                                    */
 /* ------------------------------------------------------------------ */
 
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+function TestimonialCard({ testimonial, index = 0 }: { testimonial: Testimonial; index?: number }) {
   return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-40px" }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: [0.25, 0.4, 0.25, 1] as const }}
+    >
     <Card className="h-full flex flex-col relative overflow-hidden">
       {/* Left accent bar */}
       <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#2764FF] to-[#21B8CD]" />
@@ -128,6 +134,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
         </div>
       </div>
     </Card>
+    </motion.div>
   );
 }
 
@@ -221,8 +228,8 @@ export default function Testimonials() {
               exit="exit"
               className="grid grid-cols-1 md:grid-cols-3 gap-6"
             >
-              {visibleTestimonials.map((t) => (
-                <TestimonialCard key={t.name} testimonial={t} />
+              {visibleTestimonials.map((t, idx) => (
+                <TestimonialCard key={t.name} testimonial={t} index={idx} />
               ))}
             </motion.div>
           </AnimatePresence>
