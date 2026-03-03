@@ -1,6 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import AppleProvider from "next-auth/providers/apple";
+import { getServiceSupabase } from "@/lib/supabase";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -30,7 +31,28 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.subscriptionTier = "free";
+        token.role = "user";
       }
+
+      // Refresh role from DB on every token refresh (cached in JWT)
+      if (token.id) {
+        try {
+          const supabase = getServiceSupabase();
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("subscription_tier, role")
+            .eq("id", token.id)
+            .single();
+
+          if (profile) {
+            token.subscriptionTier = profile.subscription_tier ?? "free";
+            token.role = profile.role ?? "user";
+          }
+        } catch {
+          // If DB query fails, keep existing token values
+        }
+      }
+
       return token;
     },
 
@@ -39,6 +61,7 @@ export const authOptions: NextAuthOptions = {
         (session.user as { id?: string }).id = token.id as string;
         (session.user as { subscriptionTier?: string }).subscriptionTier =
           token.subscriptionTier as string;
+        (session.user as { role?: string }).role = token.role as string;
       }
       return session;
     },

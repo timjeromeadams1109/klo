@@ -26,5 +26,6 @@ export const config = {
     // "/strategy-rooms/:path*",
     // "/vault/:path*",
     // "/advisor/:path*",
+    // "/admin/:path*",
   ],
 };

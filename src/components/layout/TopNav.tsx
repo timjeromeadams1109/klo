@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
 import UserMenu from "@/components/layout/UserMenu";
 
 interface NavLink {
@@ -26,6 +27,16 @@ const navLinks: NavLink[] = [
 export default function TopNav() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session } = useSession();
+  const isAdmin = (session?.user as { role?: string } | undefined)?.role === "admin";
+
+  const activeNavLinks = useMemo(
+    () =>
+      isAdmin
+        ? [...navLinks, { label: "Admin", href: "/admin" }]
+        : navLinks,
+    [isAdmin]
+  );
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
 
@@ -101,7 +112,7 @@ export default function TopNav() {
 
         {/* Desktop nav links */}
         <ul className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
+          {activeNavLinks.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
@@ -157,7 +168,7 @@ export default function TopNav() {
             className="fixed inset-0 z-40 bg-[#0D1117]/98 backdrop-blur-lg pt-20 px-8 md:hidden"
           >
             <ul className="flex flex-col gap-6">
-              {navLinks.map((link, index) => (
+              {activeNavLinks.map((link, index) => (
                 <motion.li
                   key={link.href}
                   initial={{ opacity: 0, x: -20 }}

@@ -234,3 +234,60 @@ export interface Affiliation {
   logoUrl?: string;
   url?: string;
 }
+
+// ------------------------------------------------------------
+// Admin Analytics
+// ------------------------------------------------------------
+
+export interface AdminDashboardStats {
+  users: {
+    total: number;
+    newLast7Days: number;
+    newLast30Days: number;
+    byTier: { free: number; pro: number; executive: number };
+  };
+  subscriptions: {
+    total: number;
+    mrr: number;
+  };
+  advisor: {
+    totalMessages: number;
+    totalTokens: number;
+    avgPerUser: number;
+  };
+  assessments: {
+    totalCompleted: number;
+    byType: Record<string, number>;
+  };
+  strategyRooms: {
+    activeRooms: number;
+  };
+  vault: {
+    totalContent: number;
+    byType: Record<string, number>;
+    byTier: Record<string, number>;
+  };
+}
+
+export interface AdminUser {
+  id: string;
+  full_name: string | null;
+  email: string;
+  organization_name: string | null;
+  subscription_tier: string;
+  role: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AdminTimeSeriesPoint {
+  date: string;
+  count: number;
+}
+
+export interface AdminActivityData {
+  signups: AdminTimeSeriesPoint[];
+  advisorUsage: AdminTimeSeriesPoint[];
+  assessments: AdminTimeSeriesPoint[];
+  subscriptionConversions: AdminTimeSeriesPoint[];
+}

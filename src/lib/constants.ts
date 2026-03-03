@@ -256,3 +256,11 @@ export const SITE_DESCRIPTION =
 export const SITE_URL = "https://keithlodom.io";
 
 export const CONTACT_EMAIL = "info@keithlodom.io";
+
+/** Admin-only navigation item — shown conditionally based on user role. */
+export const ADMIN_NAV_ITEM: NavigationItem = {
+  label: "Admin",
+  href: "/admin",
+  icon: "ShieldCheck",
+  requiresAuth: true,
+};
