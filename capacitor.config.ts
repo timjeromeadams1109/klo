@@ -7,13 +7,14 @@ const config: CapacitorConfig = {
   webDir: "out",
 
   server: {
-    url: "https://keithlodom.io",
+    url: "https://klo-app-tim-adams-projects-6c46d12d.vercel.app",
     cleartext: false,
   },
 
   ios: {
     scheme: "KLO",
-    contentInset: "automatic",
+    contentInset: "always",
+    backgroundColor: "#0D1117",
   },
 
   android: {
