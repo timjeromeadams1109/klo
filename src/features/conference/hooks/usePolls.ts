@@ -2,28 +2,35 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useConferenceRealtime } from "./useConferenceRealtime";
-import type { Poll, PollWithVotes } from "../types";
+import type { PollWithVotes } from "../types";
 
 export function usePolls() {
   const [polls, setPolls] = useState<PollWithVotes[]>([]);
   const [loading, setLoading] = useState(true);
-  const [votedPolls, setVotedPolls] = useState<Set<string>>(new Set());
+  const [votedPolls, setVotedPolls] = useState<Set<string>>(() => {
+    if (typeof window === "undefined") return new Set();
+    try {
+      const stored = sessionStorage.getItem("klo-voted-polls");
+      return stored ? new Set(JSON.parse(stored)) : new Set();
+    } catch {
+      return new Set();
+    }
+  });
 
   const fetchPolls = useCallback(async () => {
     try {
       const res = await fetch("/api/conference/polls");
       if (!res.ok) return;
-      const data: Poll[] = await res.json();
+      const data = await res.json();
 
-      // For each poll, we need vote counts
-      const pollsWithVotes: PollWithVotes[] = data.map((poll) => ({
-        ...poll,
-        votes: new Array((poll.options as string[]).length).fill(0),
-        totalVotes: 0,
-        hasVoted: votedPolls.has(poll.id),
-      }));
+      const pollsWithVoted: PollWithVotes[] = data.map(
+        (poll: PollWithVotes) => ({
+          ...poll,
+          hasVoted: votedPolls.has(poll.id),
+        })
+      );
 
-      setPolls(pollsWithVotes);
+      setPolls(pollsWithVoted);
     } catch {
       // Keep current state
     } finally {
@@ -50,8 +57,11 @@ export function usePolls() {
         });
 
         if (res.ok || res.status === 409) {
-          setVotedPolls((prev) => new Set([...prev, pollId]));
-          // Re-fetch to get updated counts
+          setVotedPolls((prev) => {
+            const next = new Set([...prev, pollId]);
+            sessionStorage.setItem("klo-voted-polls", JSON.stringify([...next]));
+            return next;
+          });
           fetchPolls();
         }
 

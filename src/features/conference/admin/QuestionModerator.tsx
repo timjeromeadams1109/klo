@@ -10,8 +10,7 @@ export default function QuestionModerator() {
 
   const fetchQuestions = useCallback(async () => {
     try {
-      // Admin fetch gets all questions (uses service role which bypasses RLS)
-      const res = await fetch("/api/conference/questions");
+      const res = await fetch("/api/conference/questions?admin=true");
       if (res.ok) setQuestions(await res.json());
     } finally {
       setLoading(false);

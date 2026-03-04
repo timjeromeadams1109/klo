@@ -28,26 +28,8 @@ export async function POST(
     return NextResponse.json({ error: upvoteError.message }, { status: 500 });
   }
 
-  // Increment denormalized counter
-  const { error: updateError } = await supabase.rpc("increment_question_upvotes", {
-    question_id: id,
-  });
-
-  // Fallback: manual increment if RPC doesn't exist
-  if (updateError) {
-    const { data: question } = await supabase
-      .from("conference_questions")
-      .select("upvotes")
-      .eq("id", id)
-      .single();
-
-    if (question) {
-      await supabase
-        .from("conference_questions")
-        .update({ upvotes: question.upvotes + 1 })
-        .eq("id", id);
-    }
-  }
+  // Atomic increment via RPC
+  await supabase.rpc("increment_question_upvotes", { question_id: id });
 
   return NextResponse.json({ success: true }, { status: 201 });
 }

@@ -115,6 +115,19 @@ create policy "conference_word_cloud_public_insert" on conference_word_cloud
   for insert with check (true);
 
 -- ============================================================
+-- RPC: atomic upvote increment
+-- ============================================================
+
+create or replace function increment_question_upvotes(question_id uuid)
+returns void as $$
+begin
+  update conference_questions
+  set upvotes = upvotes + 1
+  where id = question_id;
+end;
+$$ language plpgsql security definer;
+
+-- ============================================================
 -- Realtime publication
 -- ============================================================
 
