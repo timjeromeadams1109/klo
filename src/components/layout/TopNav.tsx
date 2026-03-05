@@ -19,9 +19,9 @@ const navLinks: NavLink[] = [
   { label: "KLO Intelligence", href: "/advisor" },
   { label: "Assessments", href: "/assessments" },
   { label: "Vault", href: "/vault" },
-  { label: "Consult with Keith", href: "/consult" },
+  { label: "Book A Consultation", href: "/consult" },
   { label: "Conference", href: "/conference" },
-  { label: "Booking", href: "/booking" },
+  { label: "Invite Keith To Speak", href: "/booking" },
 ];
 
 export default function TopNav() {

@@ -12,8 +12,8 @@ const quickLinks = [
   { label: "KLO Intelligence", href: "/advisor" },
   { label: "Assessments", href: "/assessments" },
   { label: "Vault", href: "/vault" },
-  { label: "Booking", href: "/booking" },
-  { label: "Consult with Keith", href: "/consult" },
+  { label: "Invite Keith To Speak", href: "/booking" },
+  { label: "Book A Consultation", href: "/consult" },
   { label: "Conference", href: "/conference" },
 ];
 
