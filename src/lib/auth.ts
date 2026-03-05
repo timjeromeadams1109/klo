@@ -4,6 +4,10 @@ import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getServiceSupabase } from "@/lib/supabase";
 
+// Owner account — Keith Odom (full unlimited access)
+const OWNER_EMAIL = "keith@keithlodom.io";
+const OWNER_ID = "00000000-0000-0000-0000-000000000001";
+
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
@@ -16,6 +20,32 @@ export const authOptions: NextAuthOptions = {
   },
 
   providers: [
+    // Owner login — Keith Odom
+    CredentialsProvider({
+      id: "owner-login",
+      name: "Owner Login",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      async authorize(credentials) {
+        const ownerPassword = process.env.OWNER_PASSWORD;
+        if (!ownerPassword) return null;
+
+        if (
+          credentials?.email === OWNER_EMAIL &&
+          credentials?.password === ownerPassword
+        ) {
+          return {
+            id: OWNER_ID,
+            name: "Keith L. Odom",
+            email: OWNER_EMAIL,
+          };
+        }
+        return null;
+      },
+    }),
+
     // Dev-only credential login (bypasses OAuth)
     CredentialsProvider({
       id: "dev-admin",
@@ -47,6 +77,13 @@ export const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.subscriptionTier = "free";
         token.role = "user";
+      }
+
+      // Owner bypass — Keith Odom gets unlimited access
+      if (token.email === OWNER_EMAIL) {
+        token.role = "admin";
+        token.subscriptionTier = "executive";
+        return token;
       }
 
       // Dev admin bypass

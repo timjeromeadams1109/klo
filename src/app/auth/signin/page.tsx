@@ -20,7 +20,28 @@ function SignInContent() {
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
   const errorParam = searchParams.get("error");
 
-  const [error] = useState(errorParam ?? "");
+  const [error, setError] = useState(errorParam ?? "");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleEmailSignIn = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+    const result = await signIn("owner-login", {
+      email,
+      password,
+      redirect: false,
+      callbackUrl,
+    });
+    setIsLoading(false);
+    if (result?.error) {
+      setError("Invalid email or password.");
+    } else if (result?.url) {
+      router.push(result.url);
+    }
+  };
 
   const handleGoogleSignIn = () => {
     signIn("google", { callbackUrl });
@@ -95,21 +116,40 @@ function SignInContent() {
             </div>
           )}
 
+          {/* Email/Password login */}
+          <form onSubmit={handleEmailSignIn} className="space-y-3 mb-4">
+            <input
+              type="email"
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className="w-full bg-[#0D1117] border border-[#30363D] text-klo-text py-3 px-4 rounded-xl focus:outline-none focus:border-[#C8A84E] transition-colors placeholder:text-klo-muted/50"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full bg-[#0D1117] border border-[#30363D] text-klo-text py-3 px-4 rounded-xl focus:outline-none focus:border-[#C8A84E] transition-colors placeholder:text-klo-muted/50"
+            />
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full flex items-center justify-center gap-2 bg-[#C8A84E] text-[#0D1117] py-3 rounded-xl hover:bg-[#d4b85e] transition-all duration-200 cursor-pointer font-semibold disabled:opacity-50"
+            >
+              {isLoading ? "Signing in..." : "Sign In"}
+            </button>
+          </form>
+
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/10" /></div>
+            <div className="relative flex justify-center text-xs"><span className="bg-[#161B22] px-2 text-klo-muted">or continue with</span></div>
+          </div>
+
           {/* OAuth buttons */}
           <div className="space-y-3">
-            {/* Dev-only admin login */}
-            <button
-              onClick={() => signIn("dev-admin", { callbackUrl })}
-              className="w-full flex items-center justify-center gap-3 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 py-3 rounded-xl hover:bg-emerald-500/20 transition-all duration-200 cursor-pointer text-sm font-semibold"
-            >
-              Dev Admin Login
-            </button>
-
-            <div className="relative my-2">
-              <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/10" /></div>
-              <div className="relative flex justify-center text-xs"><span className="bg-[#161B22] px-2 text-klo-muted">or</span></div>
-            </div>
-
             <button
               onClick={handleGoogleSignIn}
               className="w-full flex items-center justify-center gap-3 border border-klo-slate text-klo-text py-3 rounded-xl hover:bg-white/5 active:bg-white/10 transition-all duration-200 cursor-pointer"
