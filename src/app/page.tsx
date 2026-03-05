@@ -5,7 +5,6 @@ import FeaturedInsight from "@/components/home/FeaturedInsight";
 import AIToolOfTheWeek from "@/components/home/AIToolOfTheWeek";
 import QuickAssessmentCTA from "@/components/home/QuickAssessmentCTA";
 import UpcomingKeynote from "@/components/home/UpcomingKeynote";
-import UpcomingStrategyRoom from "@/components/home/UpcomingStrategyRoom";
 import FadeInOnScroll from "@/components/shared/FadeInOnScroll";
 
 export default function Home() {
@@ -38,9 +37,6 @@ export default function Home() {
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.05}>
             <UpcomingKeynote />
-          </FadeInOnScroll>
-          <FadeInOnScroll delay={0.1}>
-            <UpcomingStrategyRoom />
           </FadeInOnScroll>
         </div>
       </div>
