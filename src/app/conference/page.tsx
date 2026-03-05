@@ -670,7 +670,7 @@ export default function ConferencePage() {
                     className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-[#2764FF] to-[#21B8CD] text-white font-semibold text-sm rounded-lg hover:brightness-110 transition-colors"
                   >
                     <Bot size={16} />
-                    Launch AI Advisor
+                    Launch KLO Intelligence
                     <ChevronRight size={16} />
                   </Link>
                 </div>

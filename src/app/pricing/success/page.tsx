@@ -178,7 +178,7 @@ function SuccessContent() {
           </Button>
           <Button variant="ghost" size="md" href="/advisor">
             <BotMessageSquare className="h-4 w-4" />
-            Try the AI Advisor
+            Try KLO Intelligence
           </Button>
         </motion.div>
 

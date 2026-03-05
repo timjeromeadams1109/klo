@@ -28,7 +28,7 @@ const itemVariants = {
 };
 
 const popularLinks = [
-  { label: "AI Advisor", href: "/advisor", icon: MessageSquare },
+  { label: "KLO Intelligence", href: "/advisor", icon: MessageSquare },
   { label: "Content Vault", href: "/vault", icon: BookOpen },
   { label: "Assessments", href: "/assessments", icon: Search },
 ];

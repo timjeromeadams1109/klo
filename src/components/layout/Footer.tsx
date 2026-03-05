@@ -9,7 +9,7 @@ const socialLinks = [
 
 const quickLinks = [
   { label: "About", href: "/about" },
-  { label: "AI Advisor", href: "/advisor" },
+  { label: "KLO Intelligence", href: "/advisor" },
   { label: "Assessments", href: "/assessments" },
   { label: "Vault", href: "/vault" },
   { label: "Booking", href: "/booking" },

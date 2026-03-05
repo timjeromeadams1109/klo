@@ -14,7 +14,7 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { label: "Home", href: "/", icon: Home },
-  { label: "Advisor", href: "/advisor", icon: MessageSquare },
+  { label: "KLO Intel", href: "/advisor", icon: MessageSquare },
   { label: "Assess", href: "/assessments", icon: ClipboardCheck },
   { label: "Vault", href: "/vault", icon: BookOpen },
   { label: "Rooms", href: "/strategy-rooms", icon: Users },

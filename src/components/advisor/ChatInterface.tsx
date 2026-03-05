@@ -252,7 +252,7 @@ export default function ChatInterface({
             placeholder={
               disabled
                 ? "Usage limit reached"
-                : "Ask the KLO AI Advisor..."
+                : "Ask KLO Intelligence..."
             }
             disabled={isLoading || disabled}
             onChange={handleTextareaChange}

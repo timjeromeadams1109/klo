@@ -16,7 +16,7 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
   { label: "Home", href: "/" },
-  { label: "AI Advisor", href: "/advisor" },
+  { label: "KLO Intelligence", href: "/advisor" },
   { label: "Assessments", href: "/assessments" },
   { label: "Vault", href: "/vault" },
   { label: "Marketplace", href: "/marketplace" },
