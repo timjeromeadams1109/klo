@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import {
   Download,
   FileText,
-  Camera,
-  ListChecks,
-  Settings2,
-  MessageSquareQuote,
+  Monitor,
+  Layout,
+  Plane,
+  Video,
   ArrowRight,
 } from "lucide-react";
 import Card from "@/components/shared/Card";
@@ -33,7 +33,7 @@ const staggerContainer = {
 };
 
 /* ------------------------------------------------------------------ */
-/*  Kit items data                                                      */
+/*  Kit items data (from KLO Speaker Kit PDF)                           */
 /* ------------------------------------------------------------------ */
 
 interface KitItem {
@@ -46,27 +46,32 @@ const kitItems: KitItem[] = [
   {
     icon: FileText,
     label: "Professional Bio",
-    description: "Short and extended biography in multiple formats",
+    description:
+      "Director of Technology for COGIC, CEO of Axtegrity Consulting, Lead Pastor of The Place of Grace Church (Orlando, FL)",
   },
   {
-    icon: Camera,
-    label: "Headshot Photos",
-    description: "High-resolution professional headshots for print and web",
+    icon: Monitor,
+    label: "A/V & Presentation",
+    description:
+      "Wireless handheld mic preferred, HDMI at stage, 16:9 slides, clicker for slide control, confidence monitor",
   },
   {
-    icon: ListChecks,
-    label: "Past Engagement List",
-    description: "Notable conferences, organizations, and events",
+    icon: Layout,
+    label: "Stage Setup",
+    description:
+      "Open stage with freedom of movement, podium optional, small table for water/iPad, clean environment",
   },
   {
-    icon: Settings2,
-    label: "Technical Requirements",
-    description: "A/V setup, stage preferences, and travel logistics",
+    icon: Plane,
+    label: "Travel & Logistics",
+    description:
+      "Roundtrip airfare from Orlando (MCO), ground transportation, hotel near venue, itinerary in advance",
   },
   {
-    icon: MessageSquareQuote,
-    label: "Suggested Introduction",
-    description: "Ready-to-use introduction text for your MC or host",
+    icon: Video,
+    label: "Recording & Media",
+    description:
+      "Clear audio capture, copy of final recording requested, permission to use short clips for promo",
   },
 ];
 
@@ -95,8 +100,9 @@ export default function SpeakerKit() {
               Speaker Kit
             </h3>
             <p className="text-klo-muted max-w-lg mx-auto">
-              Everything you need to promote Keith L. Odom at your event,
-              packaged in one convenient download.
+              Everything you need to promote Keith L. Odom at your event —
+              bio, technical requirements, logistics, and media guidelines
+              in one convenient download.
             </p>
           </div>
 
@@ -129,7 +135,7 @@ export default function SpeakerKit() {
 
           {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="primary" size="lg" href="#">
+            <Button variant="primary" size="lg" href="/KLO-Speaker-Kit.pdf">
               <Download size={16} />
               Download Speaker Kit
             </Button>

@@ -28,6 +28,7 @@ export async function GET(request: Request) {
   let query = supabase
     .from("conference_questions")
     .select("*")
+    .order("likes", { ascending: false })
     .order("upvotes", { ascending: false })
     .order("created_at", { ascending: false });
 

@@ -157,14 +157,15 @@ export default function SessionManager() {
               </button>
               <button
                 onClick={() => toggleQA(s.id, s.qa_enabled)}
-                className={`p-2 rounded-lg transition-colors ${
+                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors ${
                   s.qa_enabled
-                    ? "text-[#2764FF] hover:bg-[#2764FF]/10"
-                    : "text-klo-muted hover:bg-white/5"
+                    ? "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/30"
+                    : "bg-gray-500/20 text-klo-muted border border-white/10 hover:bg-white/10"
                 }`}
                 title={s.qa_enabled ? "Disable Q&A" : "Enable Q&A"}
               >
-                <MessageSquare size={16} />
+                <MessageSquare size={14} />
+                {s.qa_enabled ? "Q&A On" : "Q&A Off"}
               </button>
               <button
                 onClick={() => deleteSession(s.id)}
