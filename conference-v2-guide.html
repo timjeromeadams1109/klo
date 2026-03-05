@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KLO Conference Companion V2 — User Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
+body {
+  font-family: 'DM Sans', sans-serif; background: #0D1117; color: #E6EDF3; overflow: hidden;
+  display: flex; justify-content: center; align-items: center;
+}
+
+.slide-wrapper {
+  width: 1920px; height: 1080px;
+  transform-origin: center center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.slide {
+  width: 1920px; height: 1080px;
+  display: none; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 80px 120px;
+  position: absolute; top: 0; left: 0;
+  background: #0D1117;
+  overflow: hidden;
+}
+.slide.active { display: flex; }
+
+/* Decorative corner accents */
+.slide::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle at top left, rgba(200,168,78,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.slide::after {
+  content: '';
+  position: absolute; bottom: 0; right: 0;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle at bottom right, rgba(39,100,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Bottom bar */
+.slide-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #C8A84E, #2764FF, #21B8CD);
+}
+
+/* Slide number */
+.slide-num {
+  position: absolute; bottom: 28px; right: 60px;
+  font-size: 14px; color: #484F58; font-weight: 600;
+  letter-spacing: 2px;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 800; font-size: 56px;
+  color: #C8A84E;
+  margin-bottom: 20px;
+  line-height: 1.15;
+}
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700; font-size: 44px;
+  color: #C8A84E;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600; font-size: 22px;
+  color: #21B8CD;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  font-size: 24px; color: #8B949E;
+  margin-bottom: 10px; font-weight: 500;
+}
+
+.icon {
+  font-size: 60px; margin-bottom: 20px;
+  display: block;
+}
+
+ul {
+  list-style: none; padding: 0;
+  max-width: 1400px;
+}
+ul li {
+  font-size: 26px; line-height: 1.6;
+  padding: 10px 0 10px 40px;
+  position: relative;
+  color: #C9D1D9;
+}
+ul li::before {
+  content: '';
+  position: absolute; left: 0; top: 22px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #2764FF;
+}
+ul li strong { color: #E6EDF3; }
+ul li em { color: #C8A84E; font-style: normal; font-weight: 600; }
+
+/* Two-column layout */
+.two-col {
+  display: flex; gap: 80px;
+  width: 100%;
+}
+.two-col .col { flex: 1; }
+
+/* Feature matrix table */
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 22px;
+  margin-top: 20px;
+}
+.matrix th {
+  background: #161B22;
+  color: #C8A84E;
+  padding: 16px 24px;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid #30363D;
+}
+.matrix td {
+  padding: 14px 24px;
+  border-bottom: 1px solid #21262D;
+  color: #C9D1D9;
+}
+.matrix tr:nth-child(even) td { background: rgba(22,27,34,0.5); }
+.matrix .check { color: #3FB950; font-weight: 700; font-size: 24px; }
+.matrix .dash { color: #484F58; }
+
+/* Title slide special */
+.title-slide {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.title-slide h1 {
+  font-size: 72px;
+  margin-bottom: 30px;
+}
+.title-slide .subtitle {
+  font-size: 28px;
+}
+.title-slide .version-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #2764FF, #21B8CD);
+  color: #fff;
+  font-size: 18px; font-weight: 700;
+  padding: 10px 28px;
+  border-radius: 30px;
+  margin-top: 30px;
+  letter-spacing: 2px;
+}
+
+/* Highlight box */
+.highlight-box {
+  background: rgba(39,100,255,0.08);
+  border-left: 4px solid #2764FF;
+  padding: 24px 32px;
+  border-radius: 0 12px 12px 0;
+  margin-top: 20px;
+  font-size: 24px;
+  color: #8B949E;
+  max-width: 1400px;
+}
+.highlight-box strong { color: #E6EDF3; }
+
+.gold-box {
+  background: rgba(200,168,78,0.08);
+  border-left: 4px solid #C8A84E;
+  padding: 24px 32px;
+  border-radius: 0 12px 12px 0;
+  margin-top: 20px;
+  font-size: 24px;
+  color: #8B949E;
+  max-width: 1400px;
+}
+
+/* Mode cards */
+.mode-cards {
+  display: flex; gap: 40px;
+  margin-top: 24px;
+  width: 100%;
+}
+.mode-card {
+  flex: 1;
+  background: #161B22;
+  border: 1px solid #30363D;
+  border-radius: 16px;
+  padding: 32px;
+}
+.mode-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: #C8A84E;
+  margin-bottom: 12px;
+}
+.mode-card p {
+  font-size: 22px;
+  color: #8B949E;
+  line-height: 1.5;
+}
+.mode-card .mode-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* Navigation */
+.nav {
+  position: fixed; bottom: 30px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 12px;
+  z-index: 100;
+}
+.nav button {
+  background: #161B22; border: 1px solid #30363D;
+  color: #C9D1D9; padding: 10px 20px;
+  border-radius: 8px; cursor: pointer;
+  font-size: 14px; font-family: 'DM Sans', sans-serif;
+}
+.nav button:hover { background: #21262D; }
+.slide-counter {
+  position: fixed; bottom: 36px; right: 40px;
+  color: #484F58; font-size: 14px; z-index: 100;
+}
+
+/* Section divider */
+.section-label {
+  font-size: 16px; font-weight: 700;
+  color: #2764FF; letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+</style>
+</head>
+<body>
+
+<div class="slide-wrapper" id="slideWrapper">
+
+<!-- SLIDE 1: Title -->
+<div class="slide title-slide active">
+  <span class="icon">&#x1F3A4;</span>
+  <h1>KLO Conference Companion V2</h1>
+  <p class="subtitle">User Guide — Attendees &amp; Administrators</p>
+  <div class="version-badge">VERSION 2.0</div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">01 / 15</div>
+</div>
+
+<!-- SLIDE 2: What's New -->
+<div class="slide">
+  <span class="icon">&#x2728;</span>
+  <h2>What's New in V2</h2>
+  <p class="subtitle">A complete upgrade to the Conference Companion experience</p>
+  <ul>
+    <li><strong>Session Management</strong> — Organize content into named sessions with independent controls</li>
+    <li><strong>Role-Based Access</strong> — Admin, Moderator, Presenter, and Attendee roles</li>
+    <li><strong>Question Likes &amp; Top 5</strong> — Authenticated users can heart questions; top 5 get highlighted</li>
+    <li><strong>Profanity Filter</strong> — Customizable word list with audit logging of blocked submissions</li>
+    <li><strong>Soft-Delete Archive</strong> — Questions are archived, not destroyed — restorable anytime</li>
+    <li><strong>Release Modes</strong> — Control exactly which questions the audience sees: all, one-at-a-time, or none</li>
+  </ul>
+  <div class="slide-bar"></div>
+  <div class="slide-num">02 / 15</div>
+</div>
+
+<!-- SLIDE 3: Attendee — Joining -->
+<div class="slide">
+  <div class="section-label">For Attendees</div>
+  <span class="icon">&#x1F4F1;</span>
+  <h2>Joining the Conference</h2>
+  <ul>
+    <li>Navigate to <em>/conference</em> in the KLO app</li>
+    <li>Conference tools activate automatically when <strong>Seminar Mode</strong> is turned on by an admin</li>
+    <li>You'll see the active session name and available interaction panels</li>
+    <li>No special login required — anonymous participation is supported for Q&amp;A and Word Cloud</li>
+    <li><strong>Authenticated users</strong> unlock additional features like question likes</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Tip:</strong> Sign in to your KLO account to access the "heart" feature and see your submitted questions.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">03 / 15</div>
+</div>
+
+<!-- SLIDE 4: Attendee — Live Polls -->
+<div class="slide">
+  <div class="section-label">For Attendees</div>
+  <span class="icon">&#x1F4CA;</span>
+  <h2>Live Polls</h2>
+  <ul>
+    <li>When a poll is active, it appears on your conference screen automatically</li>
+    <li>Tap your choice to <strong>cast your vote</strong> — results update in real time</li>
+    <li>Poll results are displayed as animated bar charts visible to everyone</li>
+    <li>Each device gets <strong>one vote per poll</strong> to ensure fair results</li>
+    <li>Admins control when polls open and close</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Note:</strong> Once you vote, your selection is final. Choose carefully!
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">04 / 15</div>
+</div>
+
+<!-- SLIDE 5: Attendee — Q&A -->
+<div class="slide">
+  <div class="section-label">For Attendees</div>
+  <span class="icon">&#x2753;</span>
+  <h2>Q&amp;A — Ask Questions</h2>
+  <ul>
+    <li>Type your question in the input field and tap <strong>Submit</strong></li>
+    <li>Questions are <strong>anonymous by default</strong> — your name is not displayed</li>
+    <li>A <strong>profanity filter</strong> screens submissions — blocked words will prevent posting</li>
+    <li>Your question enters the moderation queue and appears once released by an admin</li>
+    <li>You can submit multiple questions throughout the session</li>
+  </ul>
+  <div class="gold-box">
+    <strong>Moderated Experience:</strong> Admins review questions before they appear on the main screen. This keeps the Q&amp;A focused and productive.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">05 / 15</div>
+</div>
+
+<!-- SLIDE 6: Attendee — Likes & Top 5 -->
+<div class="slide">
+  <div class="section-label">For Attendees</div>
+  <span class="icon">&#x2764;</span>
+  <h2>Likes &amp; Top 5</h2>
+  <ul>
+    <li>Authenticated users can tap the <strong>heart icon</strong> on any visible question to like it</li>
+    <li>Like counts are displayed in real time next to each question</li>
+    <li>The <strong>Top 5 most-liked questions</strong> receive a special gold badge</li>
+    <li>Top 5 questions are featured prominently on the Monitor View projection</li>
+    <li>You can unlike a question by tapping the heart again</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Why it matters:</strong> Liking helps surface the most important questions for the speaker to address. The Top 5 ensures the best questions get answered.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">06 / 15</div>
+</div>
+
+<!-- SLIDE 7: Attendee — Word Cloud -->
+<div class="slide">
+  <div class="section-label">For Attendees</div>
+  <span class="icon">&#x2601;</span>
+  <h2>Word Cloud</h2>
+  <ul>
+    <li>When a Word Cloud session is active, you'll see a text input prompt</li>
+    <li>Submit a <strong>single word or short phrase</strong> that captures your thought</li>
+    <li>The cloud updates <strong>live</strong> — popular words appear larger</li>
+    <li>Profanity filter applies here too — inappropriate words are blocked</li>
+    <li>Great for brainstorming, pulse checks, and audience engagement</li>
+  </ul>
+  <div class="gold-box">
+    <strong>Best Practice:</strong> Keep submissions to 1–3 words for the clearest visual impact on the cloud.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">07 / 15</div>
+</div>
+
+<!-- SLIDE 8: Admin — Getting Started -->
+<div class="slide">
+  <div class="section-label">For Admins</div>
+  <span class="icon">&#x2699;</span>
+  <h2>Getting Started — Admin Panel</h2>
+  <ul>
+    <li>Access the admin panel from the <strong>Admin tab</strong> in the conference interface</li>
+    <li>Only users with <em>Admin</em> or <em>Moderator</em> roles can see this tab</li>
+    <li>The panel provides controls for: Sessions, Questions, Polls, Word Cloud, Roles, and Settings</li>
+    <li>Toggle <strong>Seminar Mode</strong> on/off to control when attendees can interact</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>First time?</strong> Start by creating a session, then toggle Seminar Mode on. Attendees will see the conference tools appear automatically.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">08 / 15</div>
+</div>
+
+<!-- SLIDE 9: Admin — Session Management -->
+<div class="slide">
+  <div class="section-label">For Admins</div>
+  <span class="icon">&#x1F4C1;</span>
+  <h2>Session Management</h2>
+  <ul>
+    <li><strong>Create a session</strong> — Give it a name (e.g., "Morning Keynote", "Panel Discussion")</li>
+    <li><strong>Activate a session</strong> — Only one session is active at a time; switching is instant</li>
+    <li><strong>Toggle Q&amp;A</strong> — Enable or disable question submissions per session</li>
+    <li><strong>Set Release Mode</strong> — Control how questions are shown to the audience</li>
+    <li>Each session maintains its own questions, polls, and word cloud data independently</li>
+  </ul>
+  <div class="gold-box">
+    <strong>Pro Tip:</strong> Create all your sessions ahead of time. During the event, just switch between them with one tap.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">09 / 15</div>
+</div>
+
+<!-- SLIDE 10: Admin — Question Moderation -->
+<div class="slide">
+  <div class="section-label">For Admins</div>
+  <span class="icon">&#x1F6E1;</span>
+  <h2>Question Moderation</h2>
+  <ul>
+    <li><strong>Mark Answered</strong> — Flag questions the speaker has addressed</li>
+    <li><strong>Hide</strong> — Remove a question from the audience view without deleting it</li>
+    <li><strong>Archive</strong> — Soft-delete a question; it moves to the archive and can be restored</li>
+    <li><strong>Release Toggle</strong> — In "Single Release" mode, release questions one at a time</li>
+    <li><strong>Restore</strong> — Bring back any archived question with full like count preserved</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Nothing is permanently deleted.</strong> The archive system ensures you can always recover questions. Use Archive freely to keep the Q&amp;A clean.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">10 / 15</div>
+</div>
+
+<!-- SLIDE 11: Admin — Release Modes -->
+<div class="slide">
+  <div class="section-label">For Admins</div>
+  <span class="icon">&#x1F4E4;</span>
+  <h2>Release Modes</h2>
+  <p class="subtitle">Control exactly what the audience sees</p>
+  <div class="mode-cards">
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F50D;</span>
+      <h4>Show All</h4>
+      <p>Every approved question is visible to the audience immediately. Best for open, informal sessions.</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x261D;</span>
+      <h4>Single Release</h4>
+      <p>Release questions one at a time. The speaker addresses each before the next appears. Best for structured Q&amp;A.</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F6AB;</span>
+      <h4>Hide All</h4>
+      <p>No questions are shown to the audience. Useful during presentations or breaks. Questions still collect in the queue.</p>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">11 / 15</div>
+</div>
+
+<!-- SLIDE 12: Admin — Profanity Filter -->
+<div class="slide">
+  <div class="section-label">For Admins</div>
+  <span class="icon">&#x1F6AB;</span>
+  <h2>Profanity Filter</h2>
+  <ul>
+    <li><strong>View current word list</strong> — See all terms currently being filtered</li>
+    <li><strong>Add terms</strong> — Type a word or phrase to add it to the block list</li>
+    <li><strong>Remove terms</strong> — Delete words that were added by mistake</li>
+    <li><strong>Audit log</strong> — Every blocked submission is logged with timestamp and content</li>
+    <li>Filter applies to both <strong>Q&amp;A submissions</strong> and <strong>Word Cloud entries</strong></li>
+  </ul>
+  <div class="gold-box">
+    <strong>Audit Log:</strong> Check the log periodically during events to see if attendees are attempting inappropriate submissions. The log helps you decide if additional terms should be added.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">12 / 15</div>
+</div>
+
+<!-- SLIDE 13: Admin — Role Management -->
+<div class="slide">
+  <div class="section-label">For Admins</div>
+  <span class="icon">&#x1F465;</span>
+  <h2>Role Management</h2>
+  <div class="two-col">
+    <div class="col">
+      <ul>
+        <li><strong>Admin</strong> — Full access: sessions, moderation, roles, settings, profanity filter</li>
+        <li><strong>Moderator</strong> — Can moderate questions, manage sessions, view audit logs</li>
+        <li><strong>Presenter</strong> — Can view the monitor/projection view and see Top 5 questions</li>
+        <li><strong>Attendee</strong> — Default role: vote, ask questions, submit words, like questions</li>
+      </ul>
+    </div>
+    <div class="col">
+      <ul>
+        <li>Assign roles by <strong>user ID</strong> from the admin panel</li>
+        <li>Role changes take effect <strong>immediately</strong> — no refresh required</li>
+        <li>Multiple admins and moderators can manage simultaneously</li>
+        <li>Roles persist across sessions within the same event</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">13 / 15</div>
+</div>
+
+<!-- SLIDE 14: Admin — Monitor View -->
+<div class="slide">
+  <div class="section-label">For Admins</div>
+  <span class="icon">&#x1F4FA;</span>
+  <h2>Monitor View</h2>
+  <p class="subtitle">Full-screen projection for the big screen</p>
+  <ul>
+    <li>Displays the <strong>Top 5 questions</strong> ranked by like count</li>
+    <li><strong>Auto-cycling</strong> — Questions rotate automatically for continuous display</li>
+    <li>Shows the <strong>active session title</strong> prominently at the top</li>
+    <li>Designed for projectors and large screens — high contrast, large text</li>
+    <li>Updates <strong>in real time</strong> as likes change and new questions are released</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Setup:</strong> Open the Monitor View URL on the projection computer and go full-screen (F11). It runs independently — no interaction needed once started.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">14 / 15</div>
+</div>
+
+<!-- SLIDE 15: Quick Reference Matrix -->
+<div class="slide">
+  <span class="icon">&#x1F4CB;</span>
+  <h2>Quick Reference — Role Permissions</h2>
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Attendee</th>
+        <th>Presenter</th>
+        <th>Moderator</th>
+        <th>Admin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Submit Questions</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Vote in Polls</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Like Questions</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Word Cloud</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Monitor View</td><td class="dash">—</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Moderate Questions</td><td class="dash">—</td><td class="dash">—</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Manage Sessions</td><td class="dash">—</td><td class="dash">—</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Profanity Filter</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="check">&#10003;</td></tr>
+      <tr><td>Role Management</td><td class="dash">—</td><td class="dash">—</td><td class="dash">—</td><td class="check">&#10003;</td></tr>
+      <tr><td>Release Modes</td><td class="dash">—</td><td class="dash">—</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+    </tbody>
+  </table>
+  <div class="slide-bar"></div>
+  <div class="slide-num">15 / 15</div>
+</div>
+
+</div><!-- end slide-wrapper -->
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prev()">&#9664; Prev</button>
+  <button onclick="next()">Next &#9654;</button>
+</div>
+<div class="slide-counter" id="counter">1 / 15</div>
+
+<script>
+const wrapper = document.getElementById('slideWrapper');
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+
+function scaleToFit() {
+  const scaleX = window.innerWidth / 1920;
+  const scaleY = window.innerHeight / 1080;
+  const scale = Math.min(scaleX, scaleY);
+  wrapper.style.transform = `scale(${scale})`;
+}
+scaleToFit();
+window.addEventListener('resize', scaleToFit);
+
+function show(n) {
+  slides[current].classList.remove('active');
+  slides[current].style.display = 'none';
+  current = (n + slides.length) % slides.length;
+  slides[current].classList.add('active');
+  slides[current].style.display = 'flex';
+  document.getElementById('counter').textContent = `${current + 1} / ${slides.length}`;
+}
+
+function next() { show(current + 1); }
+function prev() { show(current - 1); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') next();
+  if (e.key === 'ArrowLeft') prev();
+});
+</script>
+</body>
+</html>
