@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowLeft, BookOpen } from "lucide-react";
@@ -19,7 +19,10 @@ import {
   getVaultItemBySlug,
   getRelatedItems,
 } from "@/lib/vault-data";
+import type { VaultItem } from "@/lib/vault-data";
 import { getVaultContent } from "@/lib/vault-content";
+import { fetchEventItems } from "@/lib/vault-events";
+import EventPresentation from "@/components/vault/detail/EventPresentation";
 
 export default function VaultDetailPage({
   params,
@@ -28,7 +31,33 @@ export default function VaultDetailPage({
 }) {
   const { slug } = use(params);
   const router = useRouter();
-  const item = getVaultItemBySlug(slug);
+  const [eventItem, setEventItem] = useState<VaultItem | null>(null);
+  const [eventLoading, setEventLoading] = useState(false);
+
+  const staticItem = getVaultItemBySlug(slug);
+
+  // If not found in static data, try fetching from events
+  useEffect(() => {
+    if (!staticItem) {
+      setEventLoading(true);
+      fetchEventItems()
+        .then((items) => {
+          const found = items.find((i) => i.slug === slug) ?? null;
+          setEventItem(found);
+        })
+        .finally(() => setEventLoading(false));
+    }
+  }, [slug, staticItem]);
+
+  const item = staticItem ?? eventItem;
+
+  if (eventLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-klo-gold border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
 
   if (!item) {
     return (
@@ -90,7 +119,9 @@ export default function VaultDetailPage({
           <div className="flex flex-col lg:flex-row gap-10">
             {/* Main content */}
             <div className="flex-1 min-w-0">
-              {item.isPremium ? (
+              {item.type === "event" ? (
+                <EventPresentation item={item} />
+              ) : item.isPremium ? (
                 <PremiumLock />
               ) : content ? (
                 <div className="space-y-10">

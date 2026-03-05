@@ -1,3 +1,11 @@
+export interface EventFile {
+  id: string;
+  name: string;
+  type: "pdf" | "doc" | "docx" | "xls" | "xlsx" | "txt";
+  url: string;
+  size: string;
+}
+
 export interface VaultItem {
   id: string;
   title: string;
@@ -11,6 +19,9 @@ export interface VaultItem {
   duration: string;
   publishedAt: string;
   author: string;
+  conferenceName?: string;
+  conferenceLocation?: string;
+  files?: EventFile[];
 }
 
 export type VaultCategory =
@@ -18,7 +29,9 @@ export type VaultCategory =
   | "Church & Tech"
   | "Governance"
   | "Leadership"
-  | "Youth & Workforce";
+  | "Youth & Workforce"
+  | "Previous Events"
+  | "Current Events";
 
 export type VaultLevel = "Beginner" | "Intermediate" | "Executive";
 
@@ -28,7 +41,8 @@ export type VaultType =
   | "template"
   | "policy"
   | "framework"
-  | "replay";
+  | "replay"
+  | "event";
 
 export const VAULT_CATEGORIES: VaultCategory[] = [
   "AI & Ethics",
@@ -36,6 +50,8 @@ export const VAULT_CATEGORIES: VaultCategory[] = [
   "Governance",
   "Leadership",
   "Youth & Workforce",
+  "Previous Events",
+  "Current Events",
 ];
 
 export const VAULT_LEVELS: VaultLevel[] = [
@@ -51,6 +67,7 @@ export const VAULT_TYPES: VaultType[] = [
   "policy",
   "framework",
   "replay",
+  "event",
 ];
 
 const gradients = [
@@ -328,6 +345,7 @@ export function getTypeLabel(type: VaultType): string {
     policy: "Policy",
     framework: "Framework",
     replay: "Replay",
+    event: "Event Presentation",
   };
   return labels[type];
 }

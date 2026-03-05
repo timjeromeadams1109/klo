@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Clock, Lock, Play, FileText, Layout, Shield, Layers, Video } from "lucide-react";
+import { Clock, Lock, Play, FileText, Layout, Shield, Layers, Video, Presentation } from "lucide-react";
 import Badge from "@/components/shared/Badge";
 import type { VaultItem, VaultType } from "@/lib/vault-data";
 import { getTypeLabel } from "@/lib/vault-data";
@@ -19,6 +19,7 @@ const typeIcons: Record<VaultType, React.ReactNode> = {
   policy: <Shield size={14} />,
   framework: <Layers size={14} />,
   replay: <Video size={14} />,
+  event: <Presentation size={14} />,
 };
 
 const cardVariants = {
@@ -80,9 +81,14 @@ export default function ContentCard({ item, index = 0 }: ContentCardProps) {
             </div>
 
             {/* Title */}
-            <h3 className="font-display text-base font-semibold text-klo-text mb-2 line-clamp-2 group-hover:text-[#68E9FA] transition-colors duration-200">
+            <h3 className="font-display text-base font-semibold text-klo-text mb-1 line-clamp-2 group-hover:text-[#68E9FA] transition-colors duration-200">
               {item.title}
             </h3>
+
+            {/* Conference subtitle for events */}
+            {item.conferenceName && (
+              <p className="text-xs text-[#68E9FA]/70 mb-1">{item.conferenceName}</p>
+            )}
 
             {/* Description */}
             <p className="text-sm text-klo-muted leading-relaxed line-clamp-2 mb-4">

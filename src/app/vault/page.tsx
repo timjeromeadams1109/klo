@@ -1,12 +1,15 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { BookOpen, Search, X } from "lucide-react";
 import CategoryTabs from "@/components/vault/CategoryTabs";
 import FilterBar from "@/components/vault/FilterBar";
 import ContentCard from "@/components/vault/ContentCard";
 import { vaultItems, VAULT_CATEGORIES } from "@/lib/vault-data";
+import type { VaultItem } from "@/lib/vault-data";
+import { fetchEventItems } from "@/lib/vault-events";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -25,14 +28,38 @@ const staggerContainer = {
 const allCategories = ["All", ...VAULT_CATEGORIES];
 
 export default function VaultPage() {
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
+
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("All");
   const [level, setLevel] = useState("");
   const [type, setType] = useState("");
   const [freeOnly, setFreeOnly] = useState(false);
+  const [eventItems, setEventItems] = useState<VaultItem[]>([]);
+  const [eventsLoading, setEventsLoading] = useState(true);
+
+  // Pre-set category from URL tab param
+  useEffect(() => {
+    if (tabParam && [...VAULT_CATEGORIES, "All"].includes(tabParam)) {
+      setActiveCategory(tabParam);
+    }
+  }, [tabParam]);
+
+  // Fetch dynamic event items
+  useEffect(() => {
+    fetchEventItems()
+      .then(setEventItems)
+      .finally(() => setEventsLoading(false));
+  }, []);
+
+  const allItems = useMemo(
+    () => [...vaultItems, ...eventItems],
+    [eventItems]
+  );
 
   const filteredItems = useMemo(() => {
-    return vaultItems.filter((item) => {
+    return allItems.filter((item) => {
       // Search filter
       if (search) {
         const q = search.toLowerCase();
@@ -59,7 +86,7 @@ export default function VaultPage() {
 
       return true;
     });
-  }, [search, activeCategory, level, type, freeOnly]);
+  }, [search, activeCategory, level, type, freeOnly, allItems]);
 
   const clearFilters = () => {
     setSearch("");
@@ -179,7 +206,7 @@ export default function VaultPage() {
             </span>{" "}
             of{" "}
             <span className="text-klo-text font-medium">
-              {vaultItems.length}
+              {allItems.length}
             </span>{" "}
             resources
           </p>

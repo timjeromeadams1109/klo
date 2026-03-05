@@ -38,6 +38,7 @@ import type {
   AdminUser,
 } from "@/types";
 import ConferenceAdminTab from "@/features/conference/admin/ConferenceAdminTab";
+import EventsAdminTab from "@/features/admin/EventsAdminTab";
 
 // ------------------------------------------------------------
 // Animation variants
@@ -109,7 +110,7 @@ function StatCard({
 // Tab definitions
 // ------------------------------------------------------------
 
-type TabId = "overview" | "users" | "content" | "revenue" | "conference";
+type TabId = "overview" | "users" | "content" | "revenue" | "conference" | "events";
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "overview", label: "Overview" },
@@ -117,6 +118,7 @@ const TABS: { id: TabId; label: string }[] = [
   { id: "content", label: "Content" },
   { id: "revenue", label: "Revenue" },
   { id: "conference", label: "Conference" },
+  { id: "events", label: "Events" },
 ];
 
 // ------------------------------------------------------------
@@ -300,7 +302,7 @@ export default function AdminPage() {
         )}
 
         {/* Loading state (only for data-dependent tabs) */}
-        {loading && activeTab !== "conference" && (
+        {loading && activeTab !== "conference" && activeTab !== "events" && (
           <div className="flex items-center justify-center py-20">
             <RefreshCw className="w-8 h-8 text-klo-gold animate-spin" />
           </div>
@@ -827,6 +829,11 @@ export default function AdminPage() {
         {/* CONFERENCE TAB */}
         {activeTab === "conference" && (
           <ConferenceAdminTab />
+        )}
+
+        {/* EVENTS TAB */}
+        {activeTab === "events" && (
+          <EventsAdminTab />
         )}
       </motion.div>
     </div>
