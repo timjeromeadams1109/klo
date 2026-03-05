@@ -280,6 +280,16 @@ export interface AdminUser {
   updated_at: string;
 }
 
+export interface AdminAssessmentResult {
+  id: string;
+  user_id: string;
+  user_name: string | null;
+  user_email: string | null;
+  assessment_type: string;
+  score: number;
+  created_at: string;
+}
+
 export interface AdminTimeSeriesPoint {
   date: string;
   count: number;

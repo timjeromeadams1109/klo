@@ -17,7 +17,10 @@ import {
   ChevronLeft,
   ChevronRight,
   RefreshCw,
+  Trash2,
+  AlertTriangle,
 } from "lucide-react";
+import Modal from "@/components/shared/Modal";
 import {
   LineChart,
   Line,
@@ -36,7 +39,9 @@ import type {
   AdminDashboardStats,
   AdminActivityData,
   AdminUser,
+  AdminAssessmentResult,
 } from "@/types";
+import { ASSESSMENTS } from "@/lib/constants";
 import ConferenceAdminTab from "@/features/conference/admin/ConferenceAdminTab";
 import EventsAdminTab from "@/features/admin/EventsAdminTab";
 
@@ -110,7 +115,7 @@ function StatCard({
 // Tab definitions
 // ------------------------------------------------------------
 
-type TabId = "overview" | "users" | "content" | "revenue" | "conference" | "events";
+type TabId = "overview" | "users" | "content" | "revenue" | "conference" | "events" | "tools";
 
 const TABS: { id: TabId; label: string }[] = [
   { id: "overview", label: "Overview" },
@@ -119,6 +124,7 @@ const TABS: { id: TabId; label: string }[] = [
   { id: "revenue", label: "Revenue" },
   { id: "conference", label: "Conference" },
   { id: "events", label: "Events" },
+  { id: "tools", label: "Tools" },
 ];
 
 // ------------------------------------------------------------
@@ -159,8 +165,21 @@ export default function AdminPage() {
   const [usersTotalPages, setUsersTotalPages] = useState(1);
   const [userSearch, setUserSearch] = useState("");
   const [userTierFilter, setUserTierFilter] = useState("all");
+  const [assessmentResults, setAssessmentResults] = useState<AdminAssessmentResult[]>([]);
+  const [assessmentsTotal, setAssessmentsTotal] = useState(0);
+  const [assessmentsPage, setAssessmentsPage] = useState(1);
+  const [assessmentsTotalPages, setAssessmentsTotalPages] = useState(1);
+  const [assessmentSearch, setAssessmentSearch] = useState("");
+  const [assessmentTypeFilter, setAssessmentTypeFilter] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Delete modals
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [deleteTargetId, setDeleteTargetId] = useState<string | null>(null);
+  const [resetModalOpen, setResetModalOpen] = useState(false);
+  const [resetConfirmText, setResetConfirmText] = useState("");
+  const [deleting, setDeleting] = useState(false);
 
   const userRole = (session?.user as { role?: string } | undefined)?.role;
   const isAdmin = ["owner", "admin"].includes(userRole ?? "");
@@ -223,6 +242,68 @@ export default function AdminPage() {
   useEffect(() => {
     if (isAdmin && activeTab === "users") fetchUsers();
   }, [isAdmin, activeTab, fetchUsers]);
+
+  // Fetch assessment results
+  const fetchAssessmentResults = useCallback(async () => {
+    try {
+      const params = new URLSearchParams({
+        page: String(assessmentsPage),
+        limit: "20",
+        search: assessmentSearch,
+        type: assessmentTypeFilter,
+      });
+      const res = await fetch(`/api/admin/assessments?${params}`);
+      if (!res.ok) throw new Error("Failed to load assessment results");
+      const data = await res.json();
+      setAssessmentResults(data.results);
+      setAssessmentsTotal(data.total);
+      setAssessmentsTotalPages(data.totalPages);
+    } catch {
+      // Silently handle — stats area will show main error
+    }
+  }, [assessmentsPage, assessmentSearch, assessmentTypeFilter]);
+
+  useEffect(() => {
+    if (isAdmin && (activeTab === "content" || activeTab === "tools")) fetchAssessmentResults();
+  }, [isAdmin, activeTab, fetchAssessmentResults]);
+
+  // Delete assessment result(s)
+  const deleteAssessments = useCallback(
+    async (ids?: string[]) => {
+      setDeleting(true);
+      try {
+        const res = await fetch("/api/admin/assessments", {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(ids ? { ids } : {}),
+        });
+        if (!res.ok) throw new Error("Delete failed");
+        const data = await res.json();
+        // Refresh both the results table and dashboard stats
+        await Promise.all([fetchAssessmentResults(), fetchDashboardData()]);
+        return data.deleted as number;
+      } catch {
+        setError("Failed to delete assessment results");
+        return 0;
+      } finally {
+        setDeleting(false);
+      }
+    },
+    [fetchAssessmentResults, fetchDashboardData]
+  );
+
+  const handleDeleteSingle = useCallback(async () => {
+    if (!deleteTargetId) return;
+    await deleteAssessments([deleteTargetId]);
+    setDeleteModalOpen(false);
+    setDeleteTargetId(null);
+  }, [deleteTargetId, deleteAssessments]);
+
+  const handleResetAll = useCallback(async () => {
+    await deleteAssessments();
+    setResetModalOpen(false);
+    setResetConfirmText("");
+  }, [deleteAssessments]);
 
   // Don't render until auth check completes
   if (status === "loading" || !isAdmin) {
@@ -302,7 +383,7 @@ export default function AdminPage() {
         )}
 
         {/* Loading state (only for data-dependent tabs) */}
-        {loading && activeTab !== "conference" && activeTab !== "events" && (
+        {loading && activeTab !== "conference" && activeTab !== "events" && activeTab !== "tools" && (
           <div className="flex items-center justify-center py-20">
             <RefreshCw className="w-8 h-8 text-klo-gold animate-spin" />
           </div>
@@ -667,6 +748,149 @@ export default function AdminPage() {
                 )}
               </motion.div>
             </div>
+
+            {/* Assessment Results Table */}
+            <motion.div variants={fadeUp} custom={6}>
+              <h3 className="text-lg font-semibold text-klo-text mb-4">
+                Individual Assessment Results
+              </h3>
+
+              {/* Search & filter */}
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-klo-muted" />
+                  <input
+                    type="text"
+                    placeholder="Search by user name..."
+                    value={assessmentSearch}
+                    onChange={(e) => {
+                      setAssessmentSearch(e.target.value);
+                      setAssessmentsPage(1);
+                    }}
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-klo-dark border border-white/10 text-klo-text placeholder:text-klo-muted text-sm focus:outline-none focus:border-klo-gold/50"
+                  />
+                </div>
+                <select
+                  value={assessmentTypeFilter}
+                  onChange={(e) => {
+                    setAssessmentTypeFilter(e.target.value);
+                    setAssessmentsPage(1);
+                  }}
+                  className="px-4 py-2.5 rounded-xl bg-klo-dark border border-white/10 text-klo-text text-sm focus:outline-none focus:border-klo-gold/50"
+                >
+                  <option value="all">All Types</option>
+                  {ASSESSMENTS.map((a) => (
+                    <option key={a.id} value={a.id}>
+                      {a.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Table */}
+              <div className="glass rounded-2xl border border-white/5 overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="border-b border-white/5">
+                        <th className="text-left px-6 py-4 text-klo-muted font-medium">User</th>
+                        <th className="text-left px-6 py-4 text-klo-muted font-medium">Type</th>
+                        <th className="text-left px-6 py-4 text-klo-muted font-medium">Score</th>
+                        <th className="text-left px-6 py-4 text-klo-muted font-medium hidden sm:table-cell">Date</th>
+                        <th className="px-6 py-4 w-12"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {assessmentResults.map((result) => {
+                        const pct = Math.round(result.score * 100);
+                        const assessmentTitle =
+                          ASSESSMENTS.find((a) => a.id === result.assessment_type)?.title ??
+                          result.assessment_type.replace(/-/g, " ");
+                        return (
+                          <tr
+                            key={result.id}
+                            className="border-b border-white/5 hover:bg-white/[0.02] transition-colors"
+                          >
+                            <td className="px-6 py-4">
+                              <p className="text-klo-text font-medium">
+                                {result.user_name || "—"}
+                              </p>
+                              <p className="text-xs text-klo-muted">{result.user_email || ""}</p>
+                            </td>
+                            <td className="px-6 py-4 text-klo-muted capitalize">
+                              {assessmentTitle}
+                            </td>
+                            <td className="px-6 py-4">
+                              <span
+                                className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                  pct >= 70
+                                    ? "bg-green-500/20 text-green-400"
+                                    : pct >= 40
+                                    ? "bg-yellow-500/20 text-yellow-400"
+                                    : "bg-red-500/20 text-red-400"
+                                }`}
+                              >
+                                {pct}%
+                              </span>
+                            </td>
+                            <td className="px-6 py-4 text-klo-muted hidden sm:table-cell">
+                              {new Date(result.created_at).toLocaleDateString()}
+                            </td>
+                            <td className="px-6 py-4">
+                              <button
+                                onClick={() => {
+                                  setDeleteTargetId(result.id);
+                                  setDeleteModalOpen(true);
+                                }}
+                                className="p-1.5 rounded-lg text-klo-muted hover:text-red-400 hover:bg-red-500/10 transition-colors"
+                                aria-label="Delete result"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                      {assessmentResults.length === 0 && (
+                        <tr>
+                          <td colSpan={5} className="px-6 py-12 text-center text-klo-muted">
+                            No assessment results found
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Pagination */}
+                {assessmentsTotalPages > 1 && (
+                  <div className="flex items-center justify-between px-6 py-4 border-t border-white/5">
+                    <p className="text-sm text-klo-muted">
+                      {assessmentsTotal} results total
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setAssessmentsPage((p) => Math.max(1, p - 1))}
+                        disabled={assessmentsPage <= 1}
+                        className="p-2 rounded-lg hover:bg-white/5 text-klo-muted disabled:opacity-30"
+                      >
+                        <ChevronLeft className="w-4 h-4" />
+                      </button>
+                      <span className="text-sm text-klo-text">
+                        {assessmentsPage} / {assessmentsTotalPages}
+                      </span>
+                      <button
+                        onClick={() => setAssessmentsPage((p) => Math.min(assessmentsTotalPages, p + 1))}
+                        disabled={assessmentsPage >= assessmentsTotalPages}
+                        className="p-2 rounded-lg hover:bg-white/5 text-klo-muted disabled:opacity-30"
+                      >
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </motion.div>
           </div>
         )}
 
@@ -835,6 +1059,126 @@ export default function AdminPage() {
         {activeTab === "events" && (
           <EventsAdminTab />
         )}
+
+        {/* TOOLS TAB */}
+        {activeTab === "tools" && (
+          <div className="space-y-6">
+            <motion.div variants={fadeUp} custom={2}>
+              <div className="glass rounded-2xl p-6 border border-red-500/20">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 rounded-xl bg-red-500/10">
+                    <AlertTriangle className="w-5 h-5 text-red-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-klo-text">Danger Zone</h3>
+                    <p className="text-sm text-klo-muted">
+                      Destructive actions that cannot be undone
+                    </p>
+                  </div>
+                </div>
+
+                <div className="border-t border-red-500/10 pt-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-klo-text font-medium">Reset All Assessment Results</p>
+                      <p className="text-sm text-klo-muted">
+                        Permanently delete all {assessmentsTotal} assessment results from the database
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setResetModalOpen(true)}
+                      className="px-4 py-2 rounded-xl bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 transition-colors text-sm font-medium whitespace-nowrap"
+                    >
+                      Reset All
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+
+        {/* Single delete confirmation modal */}
+        <Modal
+          isOpen={deleteModalOpen}
+          onClose={() => {
+            setDeleteModalOpen(false);
+            setDeleteTargetId(null);
+          }}
+          title="Delete Assessment Result"
+          size="sm"
+        >
+          <p className="text-klo-muted mb-6">
+            Are you sure you want to delete this assessment result? This action cannot be undone.
+          </p>
+          <div className="flex justify-end gap-3">
+            <button
+              onClick={() => {
+                setDeleteModalOpen(false);
+                setDeleteTargetId(null);
+              }}
+              className="px-4 py-2 rounded-xl bg-klo-slate border border-white/10 text-klo-muted hover:text-klo-text transition-colors text-sm"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleDeleteSingle}
+              disabled={deleting}
+              className="px-4 py-2 rounded-xl bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-colors text-sm font-medium disabled:opacity-50"
+            >
+              {deleting ? "Deleting..." : "Delete"}
+            </button>
+          </div>
+        </Modal>
+
+        {/* Reset all confirmation modal */}
+        <Modal
+          isOpen={resetModalOpen}
+          onClose={() => {
+            setResetModalOpen(false);
+            setResetConfirmText("");
+          }}
+          title="Reset All Assessment Results"
+          size="sm"
+        >
+          <div className="space-y-4">
+            <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20">
+              <p className="text-red-400 text-sm">
+                This will permanently delete all {assessmentsTotal} assessment results. This action cannot be undone.
+              </p>
+            </div>
+            <div>
+              <label className="block text-sm text-klo-muted mb-2">
+                Type <span className="text-klo-text font-mono font-bold">RESET</span> to confirm
+              </label>
+              <input
+                type="text"
+                value={resetConfirmText}
+                onChange={(e) => setResetConfirmText(e.target.value)}
+                placeholder="RESET"
+                className="w-full px-4 py-2.5 rounded-xl bg-klo-dark border border-white/10 text-klo-text placeholder:text-klo-muted text-sm focus:outline-none focus:border-red-500/50"
+              />
+            </div>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setResetModalOpen(false);
+                  setResetConfirmText("");
+                }}
+                className="px-4 py-2 rounded-xl bg-klo-slate border border-white/10 text-klo-muted hover:text-klo-text transition-colors text-sm"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleResetAll}
+                disabled={resetConfirmText !== "RESET" || deleting}
+                className="px-4 py-2 rounded-xl bg-red-500/20 border border-red-500/30 text-red-400 hover:bg-red-500/30 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {deleting ? "Resetting..." : "Reset All Results"}
+              </button>
+            </div>
+          </div>
+        </Modal>
       </motion.div>
     </div>
   );
