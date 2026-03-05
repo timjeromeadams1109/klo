@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Monitor,
@@ -19,7 +18,7 @@ import Badge from "@/components/shared/Badge";
 import Button from "@/components/shared/Button";
 import Card from "@/components/shared/Card";
 import FadeInOnScroll from "@/components/shared/FadeInOnScroll";
-import CalendarEmbed from "@/components/booking/CalendarEmbed";
+import ConsultIntakeForm from "@/components/consult/ConsultIntakeForm";
 import type { LucideIcon } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -345,7 +344,7 @@ export default function ConsultPage() {
         </section>
       </FadeInOnScroll>
 
-      {/* ====== Calendar Embed ====== */}
+      {/* ====== Consultation Intake Form ====== */}
       <FadeInOnScroll delay={0.05}>
         <section className="px-6 py-16 md:py-24 bg-klo-dark/40">
           <motion.div
@@ -355,8 +354,18 @@ export default function ConsultPage() {
             variants={staggerContainer}
             className="max-w-3xl mx-auto"
           >
-            <motion.div variants={fadeUp} custom={0}>
-              <CalendarEmbed />
+            <motion.div variants={fadeUp} custom={0} className="mb-10">
+              <h2 className="font-display text-3xl md:text-4xl font-bold text-klo-text mb-4">
+                Request a Consultation
+              </h2>
+              <p className="text-klo-muted">
+                Fill out the form below and our team will follow up with
+                availability and next steps.
+              </p>
+            </motion.div>
+
+            <motion.div variants={fadeUp} custom={1}>
+              <ConsultIntakeForm />
             </motion.div>
           </motion.div>
         </section>

@@ -3,9 +3,6 @@
 import { motion } from "framer-motion";
 import {
   Mic2,
-  Lightbulb,
-  Church,
-  ShieldCheck,
   Award,
   Building2,
   Timer,
@@ -36,58 +33,6 @@ const staggerContainer = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.12 } },
 };
-
-/* ------------------------------------------------------------------ */
-/*  Keynote topics data                                                 */
-/* ------------------------------------------------------------------ */
-
-interface Keynote {
-  icon: LucideIcon;
-  title: string;
-  description: string;
-  audiences: string[];
-  accent: string;
-  accentBg: string;
-}
-
-const keynotes: Keynote[] = [
-  {
-    icon: Lightbulb,
-    title: "AI and the Future of Leadership",
-    description:
-      "How artificial intelligence is redefining executive decision-making, organizational strategy, and what it means to lead in the age of intelligent systems.",
-    audiences: ["C-Suite", "Conferences", "Corporate"],
-    accent: "text-[#2764FF]",
-    accentBg: "bg-[#2764FF]/10",
-  },
-  {
-    icon: Church,
-    title: "Faith Meets Innovation",
-    description:
-      "A transformative keynote exploring how faith-based organizations can harness technology to deepen community engagement, expand reach, and steward resources effectively.",
-    audiences: ["Churches", "Ministries", "Nonprofits"],
-    accent: "text-[#8840FF]",
-    accentBg: "bg-[#8840FF]/10",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Digital Governance & Cyber Resilience",
-    description:
-      "Practical frameworks for building robust digital governance structures and cybersecurity strategies that protect organizations and build stakeholder trust.",
-    audiences: ["Boards", "IT Leaders", "Enterprises"],
-    accent: "text-[#C8A84E]",
-    accentBg: "bg-[#C8A84E]/10",
-  },
-  {
-    icon: Mic2,
-    title: "The TechChurch Blueprint",
-    description:
-      "A deep-dive into the TechChurch model — equipping ministry leaders with actionable steps to integrate technology into every dimension of church operations and outreach.",
-    audiences: ["Pastors", "Church Leaders", "Denominations"],
-    accent: "text-[#6ECF55]",
-    accentBg: "bg-[#6ECF55]/10",
-  },
-];
 
 /* ------------------------------------------------------------------ */
 /*  Quick stats data                                                    */
@@ -190,61 +135,6 @@ export default function BookingPage() {
                       {stat.label}
                     </p>
                   </Card>
-                </motion.div>
-              );
-            })}
-          </div>
-        </motion.div>
-      </section>
-      </FadeInOnScroll>
-
-      {/* ====== Signature Keynotes ====== */}
-      <FadeInOnScroll delay={0.05}>
-      <section className="px-6 py-16 md:py-24">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          variants={staggerContainer}
-          className="max-w-6xl mx-auto"
-        >
-          <motion.div variants={fadeUp} custom={0} className="mb-12">
-            <h2 className="font-display text-3xl md:text-4xl font-bold text-klo-text mb-4">
-              Signature Keynotes
-            </h2>
-            <p className="text-klo-muted max-w-xl">
-              Each keynote is crafted to inform, inspire, and activate. Topics
-              can be customized for your audience and event format.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {keynotes.map((keynote, i) => {
-              const Icon = keynote.icon;
-              return (
-                <motion.div key={keynote.title} variants={fadeUp} custom={i + 1}>
-                  <div className="group relative h-full bg-[#161B22] border border-[#21262D] rounded-xl p-8 overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:border-[#2764FF]/30 hover:shadow-[0_0_30px_rgba(39,100,255,0.1)]">
-                    {/* Left accent bar */}
-                    <div className="absolute left-0 top-8 bottom-8 w-0.5 bg-gradient-to-b from-[#2764FF] to-[#21B8CD] rounded-full opacity-50 group-hover:opacity-100 transition-opacity" />
-                    <div className="relative z-10 space-y-4">
-                      <div className={`w-12 h-12 rounded-lg ${keynote.accentBg} flex items-center justify-center`}>
-                        <Icon size={22} className={keynote.accent} />
-                      </div>
-                      <h3 className="text-lg font-semibold text-klo-text">
-                        {keynote.title}
-                      </h3>
-                      <p className="text-klo-muted text-sm leading-relaxed">
-                        {keynote.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2 pt-1">
-                        {keynote.audiences.map((audience) => (
-                          <Badge key={audience} variant="muted">
-                            {audience}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
                 </motion.div>
               );
             })}
