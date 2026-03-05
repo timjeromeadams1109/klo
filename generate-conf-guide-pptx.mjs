@@ -8,7 +8,7 @@ try { mkdirSync(slideDir, { recursive: true }); } catch {}
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
 
-await page.goto("file:///Users/timothyadams/klo-app/conference-v2-guide.html", { waitUntil: "networkidle" });
+await page.goto("file:///Users/timothyadams/klo-app/public/conference-v2-guide.html", { waitUntil: "networkidle" });
 await page.waitForTimeout(2000);
 
 // Hide navigation UI
@@ -51,6 +51,6 @@ for (let i = 1; i <= slideCount; i++) {
   s.addImage({ path: `${slideDir}slide-${num}.png`, x: 0, y: 0, w: 10, h: 5.63 });
 }
 
-const outPath = "/Users/timothyadams/klo-app/conference-v2-guide.pptx";
+const outPath = "/Users/timothyadams/klo-app/public/conference-v2-guide.pptx";
 await pptx.writeFile({ fileName: outPath });
 console.log("PPTX saved to " + outPath);

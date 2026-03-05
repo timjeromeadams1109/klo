@@ -3,7 +3,7 @@ import { chromium } from "playwright";
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1920, height: 1080 } });
 
-await page.goto("file:///Users/timothyadams/klo-app/conference-v2-guide.html", { waitUntil: "networkidle" });
+await page.goto("file:///Users/timothyadams/klo-app/public/conference-v2-guide.html", { waitUntil: "networkidle" });
 await page.waitForTimeout(2000);
 
 // Hide navigation, show all slides for PDF
@@ -20,7 +20,7 @@ await page.evaluate(() => {
 
 await page.waitForTimeout(1000);
 
-const outPath = "/Users/timothyadams/klo-app/conference-v2-guide.pdf";
+const outPath = "/Users/timothyadams/klo-app/public/conference-v2-guide.pdf";
 await page.pdf({
   path: outPath,
   width: "1920px",

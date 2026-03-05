@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The KLO Platform — Complete Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; }
+body {
+  font-family: 'DM Sans', sans-serif; background: #0D1117; color: #E6EDF3; overflow: hidden;
+  display: flex; justify-content: center; align-items: center;
+}
+
+.slide-wrapper {
+  width: 1920px; height: 1080px;
+  transform-origin: center center;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.slide {
+  width: 1920px; height: 1080px;
+  display: none; flex-direction: column;
+  justify-content: center; align-items: flex-start;
+  padding: 80px 120px;
+  position: absolute; top: 0; left: 0;
+  background: #0D1117;
+  overflow: hidden;
+}
+.slide.active { display: flex; }
+
+/* Decorative corner accents */
+.slide::before {
+  content: '';
+  position: absolute; top: 0; left: 0;
+  width: 400px; height: 400px;
+  background: radial-gradient(circle at top left, rgba(200,168,78,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.slide::after {
+  content: '';
+  position: absolute; bottom: 0; right: 0;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle at bottom right, rgba(39,100,255,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+/* Bottom bar */
+.slide-bar {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #C8A84E, #2764FF, #21B8CD);
+}
+
+/* Slide number */
+.slide-num {
+  position: absolute; bottom: 28px; right: 60px;
+  font-size: 14px; color: #484F58; font-weight: 600;
+  letter-spacing: 2px;
+}
+
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 800; font-size: 56px;
+  color: #C8A84E;
+  margin-bottom: 20px;
+  line-height: 1.15;
+}
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700; font-size: 44px;
+  color: #C8A84E;
+  margin-bottom: 16px;
+  line-height: 1.2;
+}
+h3 {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600; font-size: 22px;
+  color: #21B8CD;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
+}
+
+.subtitle {
+  font-size: 24px; color: #8B949E;
+  margin-bottom: 10px; font-weight: 500;
+}
+
+.icon {
+  font-size: 60px; margin-bottom: 20px;
+  display: block;
+}
+
+ul {
+  list-style: none; padding: 0;
+  max-width: 1400px;
+}
+ul li {
+  font-size: 26px; line-height: 1.6;
+  padding: 10px 0 10px 40px;
+  position: relative;
+  color: #C9D1D9;
+}
+ul li::before {
+  content: '';
+  position: absolute; left: 0; top: 22px;
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  background: #2764FF;
+}
+ul li strong { color: #E6EDF3; }
+ul li em { color: #C8A84E; font-style: normal; font-weight: 600; }
+
+/* Two-column layout */
+.two-col {
+  display: flex; gap: 80px;
+  width: 100%;
+}
+.two-col .col { flex: 1; }
+
+/* Feature matrix table */
+.matrix {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 22px;
+  margin-top: 20px;
+}
+.matrix th {
+  background: #161B22;
+  color: #C8A84E;
+  padding: 16px 24px;
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid #30363D;
+}
+.matrix td {
+  padding: 14px 24px;
+  border-bottom: 1px solid #21262D;
+  color: #C9D1D9;
+}
+.matrix tr:nth-child(even) td { background: rgba(22,27,34,0.5); }
+.matrix .check { color: #3FB950; font-weight: 700; font-size: 24px; }
+.matrix .dash { color: #484F58; }
+
+/* Title slide special */
+.title-slide {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.title-slide h1 {
+  font-size: 72px;
+  margin-bottom: 30px;
+}
+.title-slide .subtitle {
+  font-size: 28px;
+}
+.title-slide .version-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #2764FF, #21B8CD);
+  color: #fff;
+  font-size: 18px; font-weight: 700;
+  padding: 10px 28px;
+  border-radius: 30px;
+  margin-top: 30px;
+  letter-spacing: 2px;
+}
+
+/* Highlight box */
+.highlight-box {
+  background: rgba(39,100,255,0.08);
+  border-left: 4px solid #2764FF;
+  padding: 24px 32px;
+  border-radius: 0 12px 12px 0;
+  margin-top: 20px;
+  font-size: 24px;
+  color: #8B949E;
+  max-width: 1400px;
+}
+.highlight-box strong { color: #E6EDF3; }
+
+.gold-box {
+  background: rgba(200,168,78,0.08);
+  border-left: 4px solid #C8A84E;
+  padding: 24px 32px;
+  border-radius: 0 12px 12px 0;
+  margin-top: 20px;
+  font-size: 24px;
+  color: #8B949E;
+  max-width: 1400px;
+}
+.gold-box strong { color: #E6EDF3; }
+
+/* Mode cards */
+.mode-cards {
+  display: flex; gap: 40px;
+  margin-top: 24px;
+  width: 100%;
+}
+.mode-card {
+  flex: 1;
+  background: #161B22;
+  border: 1px solid #30363D;
+  border-radius: 16px;
+  padding: 32px;
+}
+.mode-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: #C8A84E;
+  margin-bottom: 12px;
+}
+.mode-card p {
+  font-size: 22px;
+  color: #8B949E;
+  line-height: 1.5;
+}
+.mode-card .mode-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  display: block;
+}
+
+/* Navigation */
+.nav {
+  position: fixed; bottom: 30px; left: 50%;
+  transform: translateX(-50%);
+  display: flex; gap: 12px;
+  z-index: 100;
+}
+.nav button {
+  background: #161B22; border: 1px solid #30363D;
+  color: #C9D1D9; padding: 10px 20px;
+  border-radius: 8px; cursor: pointer;
+  font-size: 14px; font-family: 'DM Sans', sans-serif;
+}
+.nav button:hover { background: #21262D; }
+.slide-counter {
+  position: fixed; bottom: 36px; right: 40px;
+  color: #484F58; font-size: 14px; z-index: 100;
+}
+
+/* Section divider */
+.section-label {
+  font-size: 16px; font-weight: 700;
+  color: #2764FF; letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* Feature cards grid */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 24px;
+  width: 100%;
+}
+.feature-card {
+  background: #161B22;
+  border: 1px solid #30363D;
+  border-radius: 16px;
+  padding: 28px;
+  text-align: center;
+}
+.feature-card .card-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  display: block;
+}
+.feature-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: #C8A84E;
+  margin-bottom: 8px;
+}
+.feature-card p {
+  font-size: 18px;
+  color: #8B949E;
+  line-height: 1.4;
+}
+
+/* Tier pricing cards */
+.tier-cards {
+  display: flex;
+  gap: 40px;
+  margin-top: 24px;
+  width: 100%;
+}
+.tier-card {
+  flex: 1;
+  background: #161B22;
+  border: 1px solid #30363D;
+  border-radius: 16px;
+  padding: 32px;
+  position: relative;
+}
+.tier-card.highlighted {
+  border-color: #C8A84E;
+  box-shadow: 0 0 30px rgba(200,168,78,0.15);
+}
+.tier-card .tier-price {
+  font-family: 'Playfair Display', serif;
+  font-size: 48px;
+  color: #E6EDF3;
+  margin: 12px 0;
+}
+.tier-card .tier-price span {
+  font-size: 20px;
+  color: #8B949E;
+}
+.tier-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  color: #C8A84E;
+  margin-bottom: 4px;
+}
+.tier-card p {
+  font-size: 18px;
+  color: #8B949E;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+.tier-card ul {
+  list-style: none;
+  padding: 0;
+}
+.tier-card ul li {
+  font-size: 18px;
+  padding: 6px 0 6px 28px;
+  color: #C9D1D9;
+}
+.tier-card ul li::before {
+  width: 8px;
+  height: 8px;
+  top: 16px;
+}
+
+/* Step cards */
+.step-cards {
+  display: flex;
+  gap: 30px;
+  margin-top: 24px;
+  width: 100%;
+}
+.step-card {
+  flex: 1;
+  background: #161B22;
+  border: 1px solid #30363D;
+  border-radius: 16px;
+  padding: 28px;
+  text-align: center;
+}
+.step-card .step-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  color: #2764FF;
+  margin-bottom: 8px;
+}
+.step-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  color: #C8A84E;
+  margin-bottom: 8px;
+}
+.step-card p {
+  font-size: 18px;
+  color: #8B949E;
+  line-height: 1.4;
+}
+
+/* FAQ styles */
+.faq-list {
+  width: 100%;
+  margin-top: 16px;
+}
+.faq-item {
+  background: #161B22;
+  border: 1px solid #21262D;
+  border-radius: 12px;
+  padding: 20px 28px;
+  margin-bottom: 12px;
+}
+.faq-item .faq-q {
+  font-size: 22px;
+  font-weight: 600;
+  color: #E6EDF3;
+  margin-bottom: 8px;
+}
+.faq-item .faq-a {
+  font-size: 19px;
+  color: #8B949E;
+  line-height: 1.5;
+}
+
+/* Contact card */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  margin-top: 24px;
+  width: 100%;
+}
+.contact-card {
+  background: #161B22;
+  border: 1px solid #30363D;
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+}
+.contact-card .card-icon {
+  font-size: 40px;
+  margin-bottom: 12px;
+  display: block;
+}
+.contact-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  color: #C8A84E;
+  margin-bottom: 8px;
+}
+.contact-card p {
+  font-size: 20px;
+  color: #8B949E;
+  line-height: 1.5;
+}
+</style>
+</head>
+<body>
+
+<div class="slide-wrapper" id="slideWrapper">
+
+<!-- SLIDE 1: Title -->
+<div class="slide title-slide active">
+  <span class="icon">&#x1F3DB;</span>
+  <h1>The KLO Platform</h1>
+  <p class="subtitle">Complete Guide — Owner, Staff, Moderator &amp; User</p>
+  <div class="version-badge">COMPLETE GUIDE v1.0</div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">01 / 34</div>
+</div>
+
+<!-- SLIDE 2: What Is KLO? -->
+<div class="slide">
+  <div class="section-label">INTRODUCTION</div>
+  <span class="icon">&#x1F310;</span>
+  <h2>What Is KLO?</h2>
+  <p class="subtitle">A strategic technology platform by Keith L. Odom</p>
+  <ul>
+    <li>Keith L. Odom is a <strong>technology innovator</strong>, conference speaker, and pastor</li>
+    <li>The KLO platform delivers <strong>assessments, AI advisory, premium content, and live conference tools</strong></li>
+    <li>Built for <strong>churches, ministries, and organizations</strong> navigating technology transformation</li>
+    <li>Access everything at <strong>keithlodom.io</strong> — sign in with Google or Apple</li>
+    <li>Three subscription tiers: <strong>Explorer</strong> (free), <strong>Pro</strong> ($29/mo), and <strong>Executive</strong> ($99/mo)</li>
+  </ul>
+  <div class="slide-bar"></div>
+  <div class="slide-num">02 / 34</div>
+</div>
+
+<!-- SLIDE 3: Platform at a Glance -->
+<div class="slide">
+  <div class="section-label">INTRODUCTION</div>
+  <span class="icon">&#x26A1;</span>
+  <h2>Platform at a Glance</h2>
+  <p class="subtitle">Six core capabilities</p>
+  <div class="feature-grid">
+    <div class="feature-card">
+      <span class="card-icon">&#x1F4CB;</span>
+      <h4>Assessments</h4>
+      <p>Four strategic assessments with exportable reports</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F916;</span>
+      <h4>AI Advisor</h4>
+      <p>Chat with Keith's AI for personalized guidance</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F512;</span>
+      <h4>Vault</h4>
+      <p>Premium content library with articles, guides &amp; templates</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F3AF;</span>
+      <h4>Strategy Rooms</h4>
+      <p>Executive-only live sessions with limited seats</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F3A4;</span>
+      <h4>Conference</h4>
+      <p>Live polling, Q&amp;A, word cloud &amp; monitor view</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F4F0;</span>
+      <h4>Community Feed</h4>
+      <p>Intelligence feed with curated insights</p>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">03 / 34</div>
+</div>
+
+<!-- SLIDE 4: Getting Started -->
+<div class="slide">
+  <div class="section-label">INTRODUCTION</div>
+  <span class="icon">&#x1F680;</span>
+  <h2>Getting Started</h2>
+  <p class="subtitle">Three steps to get up and running</p>
+  <div class="step-cards">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h4>Sign Up</h4>
+      <p>Create your account with Google or Apple OAuth</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h4>Choose a Tier</h4>
+      <p>Start free with Explorer or unlock Pro / Executive</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h4>Take an Assessment</h4>
+      <p>Begin with Church Readiness or AI Readiness</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <h4>Explore</h4>
+      <p>Chat with the AI Advisor, browse the Vault, join events</p>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">04 / 34</div>
+</div>
+
+<!-- SLIDE 5: Choose Your Tier -->
+<div class="slide">
+  <div class="section-label">SUBSCRIPTION TIERS</div>
+  <span class="icon">&#x1F48E;</span>
+  <h2>Choose Your Tier</h2>
+  <div class="tier-cards">
+    <div class="tier-card">
+      <h4>Explorer</h4>
+      <div class="tier-price">$0<span>/mo</span></div>
+      <ul>
+        <li>Church Readiness Assessment</li>
+        <li>AI Readiness Assessment</li>
+        <li>Community feed access</li>
+        <li>Limited Vault previews</li>
+      </ul>
+    </div>
+    <div class="tier-card highlighted">
+      <h4>Pro</h4>
+      <div class="tier-price">$29<span>/mo</span></div>
+      <ul>
+        <li>All assessments with detailed reports</li>
+        <li>Full Vault content library</li>
+        <li>AI Advisor (50 messages/month)</li>
+        <li>Community feed &amp; discussions</li>
+        <li>Monthly strategy newsletter</li>
+      </ul>
+    </div>
+    <div class="tier-card">
+      <h4>Executive</h4>
+      <div class="tier-price">$99<span>/mo</span></div>
+      <ul>
+        <li>Everything in Pro</li>
+        <li>Unlimited AI Advisor access</li>
+        <li>Private Strategy Rooms</li>
+        <li>Priority consulting requests</li>
+        <li>Exclusive executive Vault content</li>
+        <li>Quarterly 1-on-1 strategy call</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">05 / 34</div>
+</div>
+
+<!-- SLIDE 6: Feature Comparison -->
+<div class="slide">
+  <div class="section-label">SUBSCRIPTION TIERS</div>
+  <span class="icon">&#x1F4CA;</span>
+  <h2>Feature Comparison</h2>
+  <table class="matrix">
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Explorer</th>
+        <th>Pro</th>
+        <th>Executive</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Church Readiness Assessment</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>AI Readiness Assessment</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Governance Assessment</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Cyber Risk Assessment</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Community Feed</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>AI Advisor</td><td class="dash">&mdash;</td><td>50 msg/mo</td><td>Unlimited</td></tr>
+      <tr><td>Vault Content Library</td><td>Preview</td><td>Full</td><td>Full + Exclusive</td></tr>
+      <tr><td>Strategy Rooms</td><td class="dash">&mdash;</td><td class="dash">&mdash;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Export Reports (PDF/Word/PPT)</td><td class="dash">&mdash;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Priority Consulting</td><td class="dash">&mdash;</td><td class="dash">&mdash;</td><td class="check">&#10003;</td></tr>
+    </tbody>
+  </table>
+  <div class="slide-bar"></div>
+  <div class="slide-num">06 / 34</div>
+</div>
+
+<!-- SLIDE 7: Four Assessments -->
+<div class="slide">
+  <div class="section-label">ASSESSMENTS</div>
+  <span class="icon">&#x1F4CB;</span>
+  <h2>Four Strategic Assessments</h2>
+  <p class="subtitle">Evaluate your organization across key technology dimensions</p>
+  <div class="mode-cards">
+    <div class="mode-card">
+      <span class="mode-icon">&#x26EA;</span>
+      <h4>Church Readiness</h4>
+      <p>Technology maturity across infrastructure, communication, and digital engagement</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F9E0;</span>
+      <h4>AI Readiness</h4>
+      <p>Preparedness to adopt AI — data foundations, culture, and governance</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F6E1;</span>
+      <h4>Tech Governance</h4>
+      <p>IT governance framework — policies, compliance, and strategic alignment</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F510;</span>
+      <h4>Cyber Risk</h4>
+      <p>Cyber risk posture across people, process, and technology</p>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">07 / 34</div>
+</div>
+
+<!-- SLIDE 8: How Assessments Work -->
+<div class="slide">
+  <div class="section-label">ASSESSMENTS</div>
+  <span class="icon">&#x2699;</span>
+  <h2>How Assessments Work</h2>
+  <div class="step-cards">
+    <div class="step-card">
+      <div class="step-num">01</div>
+      <h4>Select</h4>
+      <p>Choose an assessment from the Assessments page</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">02</div>
+      <h4>Answer</h4>
+      <p>Respond to 10 targeted questions (~5 minutes)</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">03</div>
+      <h4>Score</h4>
+      <p>Receive a color-coded score with detailed breakdown</p>
+    </div>
+    <div class="step-card">
+      <div class="step-num">04</div>
+      <h4>Export</h4>
+      <p>Download results as PDF, Word, or PowerPoint</p>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">08 / 34</div>
+</div>
+
+<!-- SLIDE 9: Understanding Results -->
+<div class="slide">
+  <div class="section-label">ASSESSMENTS</div>
+  <span class="icon">&#x1F4C8;</span>
+  <h2>Understanding Your Results</h2>
+  <ul>
+    <li>Each assessment scores you on a <strong>0–100 scale</strong> across multiple dimensions</li>
+    <li>Scores are <strong>color-coded</strong>: &#x1F7E2; Green (80–100) Strong, &#x1F7E1; Yellow (50–79) Developing, &#x1F534; Red (0–49) Needs Attention</li>
+    <li>Results include <strong>specific recommendations</strong> tailored to your score in each area</li>
+    <li><strong>Retake anytime</strong> — track your progress as you implement changes</li>
+    <li>Pro and Executive tiers get <strong>detailed reports</strong> with actionable next steps</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Tip:</strong> Take the Church Readiness assessment first — it gives you a broad foundation before diving into specialized areas like AI or Cyber Risk.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">09 / 34</div>
+</div>
+
+<!-- SLIDE 10: Export & Share -->
+<div class="slide">
+  <div class="section-label">ASSESSMENTS</div>
+  <span class="icon">&#x1F4E4;</span>
+  <h2>Export &amp; Share Results</h2>
+  <p class="subtitle">Three export formats for any audience</p>
+  <div class="mode-cards">
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F4C4;</span>
+      <h4>PDF Report</h4>
+      <p>Clean, printable document with scores, charts, and recommendations. Perfect for board presentations.</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F4DD;</span>
+      <h4>Word Document</h4>
+      <p>Editable report you can customize and annotate. Great for internal planning.</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F4CA;</span>
+      <h4>PowerPoint</h4>
+      <p>Slide-ready format with visual score breakdowns. Ideal for stakeholder presentations.</p>
+    </div>
+  </div>
+  <div class="gold-box">
+    <strong>Pro &amp; Executive only.</strong> Explorer tier users can view results on-screen but need to upgrade to export.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">10 / 34</div>
+</div>
+
+<!-- SLIDE 11: AI Advisor -->
+<div class="slide">
+  <div class="section-label">AI ADVISOR</div>
+  <span class="icon">&#x1F916;</span>
+  <h2>Chat with Keith's AI Advisor</h2>
+  <p class="subtitle">Personalized strategic guidance powered by AI</p>
+  <ul>
+    <li>The AI Advisor speaks on behalf of <strong>Keith L. Odom</strong> — drawing on 25+ years of expertise</li>
+    <li>Ask about <strong>IT strategy, AI adoption, cybersecurity, church technology</strong>, and more</li>
+    <li>Conversations are <strong>contextual</strong> — the advisor remembers your chat history within a session</li>
+    <li><strong>Pro tier</strong>: 50 messages per month — <strong>Executive tier</strong>: Unlimited access</li>
+    <li>Responses reference industry frameworks like <strong>NIST, COBIT, and TOGAF</strong> where appropriate</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Try asking:</strong> 'What should my church consider before adopting AI tools?' or 'How do I build a cybersecurity policy for a small organization?'
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">11 / 34</div>
+</div>
+
+<!-- SLIDE 12: AI Policy Builder -->
+<div class="slide">
+  <div class="section-label">AI ADVISOR</div>
+  <span class="icon">&#x1F4DC;</span>
+  <h2>AI Policy Builder</h2>
+  <p class="subtitle">Generate custom AI governance policies through guided conversation</p>
+  <ul>
+    <li>A specialized mode within the AI Advisor focused on <strong>AI policy creation</strong></li>
+    <li>Walk through a <strong>guided conversation</strong> covering scope, ethics, data handling, and oversight</li>
+    <li>Generates a <strong>draft policy document</strong> tailored to your organization's needs</li>
+    <li>Covers key areas: <strong>acceptable use, data privacy, bias mitigation, human oversight</strong></li>
+    <li>Export your policy draft and refine it with your leadership team</li>
+  </ul>
+  <div class="gold-box">
+    <strong>Available to Pro &amp; Executive tiers.</strong> The Policy Builder helps organizations create responsible AI governance without starting from scratch.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">12 / 34</div>
+</div>
+
+<!-- SLIDE 13: Vault -->
+<div class="slide">
+  <div class="section-label">VAULT</div>
+  <span class="icon">&#x1F512;</span>
+  <h2>Premium Content Library</h2>
+  <p class="subtitle">Curated resources for technology leaders</p>
+  <ul>
+    <li>The Vault is a <strong>gated content library</strong> with articles, guides, templates, and frameworks</li>
+    <li>Content is organized by <strong>category</strong>: AI, Cybersecurity, Governance, Church Tech, Leadership</li>
+    <li><strong>Explorer tier</strong> sees previews only — <strong>Pro</strong> unlocks the full library</li>
+    <li><strong>Executive tier</strong> gets exclusive content not available to Pro subscribers</li>
+    <li>Use the <strong>search and filter</strong> tools to find exactly what you need</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Updated regularly.</strong> New content is added monthly — check the Community Feed for announcements about new Vault resources.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">13 / 34</div>
+</div>
+
+<!-- SLIDE 14: Strategy Rooms -->
+<div class="slide">
+  <div class="section-label">STRATEGY ROOMS</div>
+  <span class="icon">&#x1F3AF;</span>
+  <h2>Executive Strategy Sessions</h2>
+  <p class="subtitle">Exclusive to Executive tier subscribers</p>
+  <ul>
+    <li>Live, interactive sessions with <strong>limited seats</strong> for focused discussion</li>
+    <li>Topics cover <strong>emerging tech strategy, AI governance, and leadership</strong></li>
+    <li><strong>Register in advance</strong> — seats fill quickly due to capacity limits</li>
+    <li><strong>Past replays</strong> are available in the Strategy Rooms archive</li>
+    <li>Direct interaction with Keith and fellow executive-level participants</li>
+  </ul>
+  <div class="gold-box">
+    <strong>Executive only.</strong> Strategy Rooms are the premium tier's signature benefit — upgrade to Executive to access live sessions and the replay library.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">14 / 34</div>
+</div>
+
+<!-- SLIDE 15: Conference — Live Tools -->
+<div class="slide">
+  <div class="section-label">CONFERENCE</div>
+  <span class="icon">&#x1F3A4;</span>
+  <h2>Live Conference Tools</h2>
+  <p class="subtitle">Interactive engagement for live events</p>
+  <div class="mode-cards">
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F4CA;</span>
+      <h4>Live Polls</h4>
+      <p>Real-time voting with animated results. One vote per device for fair outcomes.</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x2753;</span>
+      <h4>Q&amp;A</h4>
+      <p>Submit questions anonymously. Admins moderate and release. Audience likes surface the best.</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x2601;</span>
+      <h4>Word Cloud</h4>
+      <p>Submit words or phrases that build a live visual cloud. Great for brainstorming.</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F4FA;</span>
+      <h4>Monitor View</h4>
+      <p>Full-screen projection displaying Top 5 questions with auto-cycling for big screens.</p>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">15 / 34</div>
+</div>
+
+<!-- SLIDE 16: Conference — Attendee Quick Start -->
+<div class="slide">
+  <div class="section-label">CONFERENCE</div>
+  <span class="icon">&#x1F4F1;</span>
+  <h2>Attendee Quick Start</h2>
+  <p class="subtitle">Join a live conference session in seconds</p>
+  <ul>
+    <li>Navigate to <em>/conference</em> in the KLO app on your phone or laptop</li>
+    <li>Conference tools appear automatically when <strong>Seminar Mode</strong> is active</li>
+    <li>Submit questions — they enter a <strong>moderation queue</strong> before appearing</li>
+    <li>Vote in polls, submit word cloud entries — <strong>no login required</strong> for basic participation</li>
+    <li><strong>Sign in</strong> to unlock the heart/like feature on questions</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Tip:</strong> Sign in with your KLO account to like questions and help surface the best ones for the speaker.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">16 / 34</div>
+</div>
+
+<!-- SLIDE 17: Conference — Running a Conference -->
+<div class="slide">
+  <div class="section-label">CONFERENCE</div>
+  <span class="icon">&#x2699;</span>
+  <h2>Running a Conference</h2>
+  <p class="subtitle">Admin guide to managing live events</p>
+  <ul>
+    <li><strong>Create sessions</strong> — Name each segment (e.g., "Morning Keynote", "Panel Discussion")</li>
+    <li>Toggle <strong>Seminar Mode</strong> on to activate conference tools for attendees</li>
+    <li>Choose a <strong>release mode</strong>: Show All, Single Release, or Hide All</li>
+    <li><strong>Moderate questions</strong> — mark answered, hide, archive, or restore</li>
+    <li>Open the <strong>Monitor View</strong> on a projector for the audience display</li>
+  </ul>
+  <div class="gold-box">
+    <strong>Pro Tip:</strong> Create all sessions ahead of time. During the event, switch between them with one tap. See the Conference V2 Guide for detailed instructions.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">17 / 34</div>
+</div>
+
+<!-- SLIDE 18: Community Feed -->
+<div class="slide">
+  <div class="section-label">COMMUNITY</div>
+  <span class="icon">&#x1F4F0;</span>
+  <h2>Intelligence Feed</h2>
+  <p class="subtitle">Curated insights for your organization</p>
+  <ul>
+    <li>A continuously updated feed of <strong>articles, insights, and announcements</strong></li>
+    <li>Content organized by <strong>categories</strong>: Technology, AI, Security, Ministry, Leadership</li>
+    <li><strong>All tiers</strong> have access to the community feed</li>
+    <li>Premium content items are <strong>marked with a badge</strong> and require Pro or Executive tier</li>
+    <li>Stay current on <strong>trends, new platform features, and upcoming events</strong></li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Check regularly.</strong> The Intelligence Feed is your go-to source for what's new on the platform and in the industry.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">18 / 34</div>
+</div>
+
+<!-- SLIDE 19: Booking -->
+<div class="slide">
+  <div class="section-label">BOOKING</div>
+  <span class="icon">&#x1F4C5;</span>
+  <h2>Speaking &amp; Consulting</h2>
+  <p class="subtitle">Book Keith for your event or organization</p>
+  <div class="two-col">
+    <div class="col">
+      <h3 style="margin-bottom:16px;">Conference Speaking</h3>
+      <ul>
+        <li><strong>Keynotes &amp; breakout sessions</strong> on technology, AI, and church tech</li>
+        <li>Custom topic development for your audience</li>
+        <li>Dynamic delivery with <strong>real-world case studies</strong></li>
+        <li>Submit a booking request through the platform</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3 style="margin-bottom:16px;">1-on-1 Consulting</h3>
+      <ul>
+        <li><strong>Executive tier</strong> members get priority scheduling</li>
+        <li>Strategic technology advisory sessions</li>
+        <li>IT infrastructure, AI adoption, cybersecurity guidance</li>
+        <li>Quarterly strategy calls included with Executive tier</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">19 / 34</div>
+</div>
+
+<!-- SLIDE 20: Four Platform Roles -->
+<div class="slide">
+  <div class="section-label">ROLES &amp; PERMISSIONS</div>
+  <span class="icon">&#x1F465;</span>
+  <h2>Four Platform Roles</h2>
+  <p class="subtitle">Each role has specific capabilities and access levels</p>
+  <div class="mode-cards">
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F451;</span>
+      <h4>Owner</h4>
+      <p>Full system control. Access to all admin features, billing, role management, and platform configuration.</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F6E0;</span>
+      <h4>Admin</h4>
+      <p>Dashboard access with user management, content control, analytics, and conference administration.</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F6E1;</span>
+      <h4>Moderator</h4>
+      <p>Conference moderation — Q&amp;A management, profanity filter, session control, and monitor view.</p>
+    </div>
+    <div class="mode-card">
+      <span class="mode-icon">&#x1F464;</span>
+      <h4>User</h4>
+      <p>Standard access based on subscription tier. Assessments, AI Advisor, Vault, and conference participation.</p>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">20 / 34</div>
+</div>
+
+<!-- SLIDE 21: Owner Dashboard -->
+<div class="slide">
+  <div class="section-label">OWNER</div>
+  <span class="icon">&#x1F451;</span>
+  <h2>Owner Dashboard</h2>
+  <p class="subtitle">Complete system control and visibility</p>
+  <ul>
+    <li>Access <strong>every feature</strong> available to Admins, Moderators, and Users</li>
+    <li>Manage <strong>billing, subscriptions, and Stripe integration</strong> settings</li>
+    <li>Assign and revoke <strong>Admin and Moderator roles</strong> for staff</li>
+    <li>View <strong>platform-wide analytics</strong>: revenue, users, assessments, engagement</li>
+    <li>Configure <strong>platform settings</strong>: branding, feature flags, and content management</li>
+    <li>Access <strong>all admin dashboard tabs</strong>: Overview, Users, Content, Revenue, Conference, Events, Tools</li>
+  </ul>
+  <div class="gold-box">
+    <strong>Owner credentials</strong> are set during platform setup. Only one Owner account exists — it cannot be reassigned through the dashboard.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">21 / 34</div>
+</div>
+
+<!-- SLIDE 22: Administrator Guide -->
+<div class="slide">
+  <div class="section-label">ADMIN</div>
+  <span class="icon">&#x1F6E0;</span>
+  <h2>Administrator Guide</h2>
+  <p class="subtitle">Day-to-day platform management</p>
+  <ul>
+    <li>Access the admin dashboard from the <strong>Admin</strong> link in the navigation</li>
+    <li>Manage <strong>users</strong>: search, view profiles, update roles, and manage subscriptions</li>
+    <li>Control <strong>content</strong>: Vault items, assessment configurations, and community feed</li>
+    <li>Monitor <strong>revenue</strong>: subscription metrics, Stripe data, and tier breakdowns</li>
+    <li>Run <strong>conferences</strong>: create sessions, manage polls, moderate Q&amp;A</li>
+    <li><strong>Cannot</strong> modify Owner-level settings like billing configuration or role elevation</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Admin accounts</strong> are assigned by the Owner. Contact the Owner if you need admin access or elevated permissions.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">22 / 34</div>
+</div>
+
+<!-- SLIDE 23: Dashboard Deep Dive -->
+<div class="slide">
+  <div class="section-label">ADMIN</div>
+  <span class="icon">&#x1F4CA;</span>
+  <h2>Dashboard Deep Dive</h2>
+  <p class="subtitle">Seven tabs for complete platform management</p>
+  <div class="feature-grid" style="grid-template-columns: repeat(4, 1fr);">
+    <div class="feature-card">
+      <span class="card-icon">&#x1F3E0;</span>
+      <h4>Overview</h4>
+      <p>Key metrics, recent activity, quick stats</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F465;</span>
+      <h4>Users</h4>
+      <p>Search, roles, profiles, subscription status</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F4DA;</span>
+      <h4>Content</h4>
+      <p>Vault management, assessments, feed items</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F4B0;</span>
+      <h4>Revenue</h4>
+      <p>Stripe data, subscriptions, tier breakdowns</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F3A4;</span>
+      <h4>Conference</h4>
+      <p>Sessions, polls, Q&amp;A, seminar mode</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F4C5;</span>
+      <h4>Events</h4>
+      <p>Strategy Rooms, bookings, scheduling</p>
+    </div>
+    <div class="feature-card">
+      <span class="card-icon">&#x1F527;</span>
+      <h4>Tools</h4>
+      <p>Reset tools, diagnostics, system utilities</p>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">23 / 34</div>
+</div>
+
+<!-- SLIDE 24: Users & Revenue -->
+<div class="slide">
+  <div class="section-label">ADMIN</div>
+  <span class="icon">&#x1F4B0;</span>
+  <h2>Users &amp; Revenue</h2>
+  <p class="subtitle">Monitor growth and manage subscriptions</p>
+  <div class="two-col">
+    <div class="col">
+      <h3 style="margin-bottom:16px;">User Management</h3>
+      <ul>
+        <li><strong>Search users</strong> by name, email, or subscription tier</li>
+        <li>View <strong>user profiles</strong> with activity history</li>
+        <li>Update <strong>roles</strong>: promote to Admin or Moderator</li>
+        <li>Manage <strong>subscription status</strong> and tier overrides</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3 style="margin-bottom:16px;">Revenue Dashboard</h3>
+      <ul>
+        <li>View <strong>monthly recurring revenue</strong> (MRR) and trends</li>
+        <li><strong>Tier breakdowns</strong>: Explorer, Pro, Executive counts</li>
+        <li>Track <strong>churn rate</strong> and subscription changes</li>
+        <li>Stripe integration for <strong>real-time payment data</strong></li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">24 / 34</div>
+</div>
+
+<!-- SLIDE 25: Content & Tools -->
+<div class="slide">
+  <div class="section-label">ADMIN</div>
+  <span class="icon">&#x1F4DA;</span>
+  <h2>Content &amp; Tools</h2>
+  <p class="subtitle">Manage platform content and system utilities</p>
+  <div class="two-col">
+    <div class="col">
+      <h3 style="margin-bottom:16px;">Content Management</h3>
+      <ul>
+        <li>View all <strong>assessment results</strong> submitted by users</li>
+        <li>Manage <strong>Vault content</strong>: add, edit, or archive resources</li>
+        <li>Control <strong>Community Feed</strong> items and categories</li>
+        <li>Review <strong>AI Advisor</strong> usage and conversation metrics</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3 style="margin-bottom:16px;">Admin Tools</h3>
+      <ul>
+        <li><strong>Reset tools</strong> for assessments and user data</li>
+        <li><strong>System diagnostics</strong> and health checks</li>
+        <li><strong>Export data</strong> for reporting and compliance</li>
+        <li><strong>Configuration</strong> settings and feature flags</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">25 / 34</div>
+</div>
+
+<!-- SLIDE 26: Moderator Guide -->
+<div class="slide">
+  <div class="section-label">MODERATOR</div>
+  <span class="icon">&#x1F6E1;</span>
+  <h2>Moderator Guide</h2>
+  <p class="subtitle">Conference moderation and content oversight</p>
+  <ul>
+    <li>Moderators focus on <strong>live conference management</strong> during events</li>
+    <li><strong>Q&amp;A moderation</strong>: review, release, hide, archive, and restore questions</li>
+    <li>Manage the <strong>profanity filter</strong>: add/remove terms, review the audit log</li>
+    <li>Control <strong>session switching</strong> and release modes during live events</li>
+    <li>Access the <strong>Monitor View</strong> for projector display management</li>
+    <li>Moderators <strong>cannot</strong> manage users, revenue, or platform settings — those require Admin access</li>
+  </ul>
+  <div class="highlight-box">
+    <strong>Best Practice:</strong> Assign at least one dedicated moderator during live events so the speaker can focus on content while questions are managed in real time.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">26 / 34</div>
+</div>
+
+<!-- SLIDE 27: Free User (Explorer) -->
+<div class="slide">
+  <div class="section-label">USERS</div>
+  <span class="icon">&#x1F50D;</span>
+  <h2>Explorer Tier — Free Access</h2>
+  <p class="subtitle">Get started at no cost</p>
+  <ul>
+    <li>Take the <strong>Church Readiness</strong> and <strong>AI Readiness</strong> assessments for free</li>
+    <li>Access the <strong>Community Feed</strong> for curated insights and announcements</li>
+    <li>Preview <strong>Vault content</strong> — see titles, descriptions, and select previews</li>
+    <li>Participate in <strong>live conference</strong> tools: polls, Q&amp;A, and word cloud</li>
+    <li>View assessment results <strong>on-screen</strong> (export requires Pro or Executive)</li>
+  </ul>
+  <div class="gold-box">
+    <strong>Ready for more?</strong> Upgrade to Pro ($29/mo) to unlock all four assessments, the full Vault, AI Advisor, and exportable reports.
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">27 / 34</div>
+</div>
+
+<!-- SLIDE 28: Pro & Executive -->
+<div class="slide">
+  <div class="section-label">USERS</div>
+  <span class="icon">&#x1F48E;</span>
+  <h2>Pro &amp; Executive Access</h2>
+  <p class="subtitle">Unlock the full platform</p>
+  <div class="two-col">
+    <div class="col">
+      <h3 style="margin-bottom:16px;">Pro — $29/month</h3>
+      <ul>
+        <li><strong>All four assessments</strong> with detailed reports</li>
+        <li><strong>Full Vault</strong> content library</li>
+        <li><strong>AI Advisor</strong> — 50 messages/month</li>
+        <li><strong>Export</strong> results as PDF, Word, or PowerPoint</li>
+        <li><strong>Community feed</strong> with premium content access</li>
+      </ul>
+    </div>
+    <div class="col">
+      <h3 style="margin-bottom:16px;">Executive — $99/month</h3>
+      <ul>
+        <li><strong>Everything in Pro</strong> plus exclusive benefits</li>
+        <li><strong>Unlimited</strong> AI Advisor access</li>
+        <li><strong>Strategy Rooms</strong> — live executive sessions</li>
+        <li><strong>Priority consulting</strong> requests</li>
+        <li><strong>Quarterly 1-on-1</strong> strategy call with Keith</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">28 / 34</div>
+</div>
+
+<!-- SLIDE 29: FAQ — Getting Started -->
+<div class="slide">
+  <div class="section-label">FAQ</div>
+  <span class="icon">&#x2753;</span>
+  <h2>FAQ — Getting Started</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">How do I sign up?</div>
+      <div class="faq-a">Visit keithlodom.io and click "Get Started." Sign in with your Google or Apple account — no separate password needed.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I try the platform for free?</div>
+      <div class="faq-a">Yes! The Explorer tier is completely free. You get two assessments, community feed access, and conference participation.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do I upgrade my subscription?</div>
+      <div class="faq-a">Go to your profile or the pricing page and select Pro or Executive. Payment is processed securely through Stripe.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Which assessments are free?</div>
+      <div class="faq-a">Church Readiness and AI Readiness are free for all tiers. Governance and Cyber Risk require Pro or Executive.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Can I export my assessment results?</div>
+      <div class="faq-a">Yes — Pro and Executive tiers can export to PDF, Word, and PowerPoint. Explorer tier can view results on-screen only.</div>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">29 / 34</div>
+</div>
+
+<!-- SLIDE 30: FAQ — Features -->
+<div class="slide">
+  <div class="section-label">FAQ</div>
+  <span class="icon">&#x1F4AC;</span>
+  <h2>FAQ — Features</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">What is the AI Advisor?</div>
+      <div class="faq-a">A conversational AI that speaks on behalf of Keith L. Odom, providing strategic technology guidance based on 25+ years of expertise.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What are the AI Advisor message limits?</div>
+      <div class="faq-a">Pro tier gets 50 messages per month. Executive tier has unlimited access. Explorer tier does not include AI Advisor access.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What are Strategy Rooms?</div>
+      <div class="faq-a">Live executive sessions with limited seats covering emerging tech strategy, AI governance, and leadership — exclusive to Executive tier.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do conference tools work?</div>
+      <div class="faq-a">Navigate to /conference during a live event. When Seminar Mode is active, you can participate in polls, Q&amp;A, and word clouds.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do I contact Keith for consulting?</div>
+      <div class="faq-a">Use the Booking page on the platform. Executive tier members receive priority scheduling and quarterly strategy calls.</div>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">30 / 34</div>
+</div>
+
+<!-- SLIDE 31: FAQ — Staff & Admin -->
+<div class="slide">
+  <div class="section-label">FAQ</div>
+  <span class="icon">&#x1F6E0;</span>
+  <h2>FAQ — Staff &amp; Admin</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">How do I get admin access?</div>
+      <div class="faq-a">The platform Owner assigns Admin roles. Contact the Owner to request access — it takes effect immediately.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">What's the difference between Admin and Moderator?</div>
+      <div class="faq-a">Admins manage the full dashboard (users, content, revenue). Moderators focus on live conference tools (Q&amp;A, profanity, sessions).</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How do I set up a conference?</div>
+      <div class="faq-a">Open the Conference tab in the admin dashboard, create sessions, then toggle Seminar Mode on when you're ready to go live.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">How does the profanity filter work?</div>
+      <div class="faq-a">A customizable word list screens Q&amp;A and word cloud submissions. Blocked attempts are logged in an audit trail for review.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Where do I view revenue data?</div>
+      <div class="faq-a">The Revenue tab in the admin dashboard shows MRR, tier breakdowns, subscription changes, and Stripe payment data.</div>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">31 / 34</div>
+</div>
+
+<!-- SLIDE 32: Troubleshooting -->
+<div class="slide">
+  <div class="section-label">FAQ</div>
+  <span class="icon">&#x1F6A8;</span>
+  <h2>Troubleshooting</h2>
+  <div class="faq-list">
+    <div class="faq-item">
+      <div class="faq-q">I can't sign in</div>
+      <div class="faq-a">Make sure you're using the same Google or Apple account you signed up with. Clear your browser cache and try again. If the issue persists, contact support.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">My assessment won't load or save</div>
+      <div class="faq-a">Check your internet connection and refresh the page. If answers aren't saving, try a different browser. Your progress is auto-saved as you go.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">AI Advisor says I've reached my limit</div>
+      <div class="faq-a">Pro tier has a 50-message monthly cap. Your count resets on your billing date. Upgrade to Executive for unlimited access.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Conference tools aren't showing</div>
+      <div class="faq-a">Conference tools only appear when Seminar Mode is active. Ask the event admin to confirm it's turned on. Try refreshing the page.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Export isn't working</div>
+      <div class="faq-a">Export requires Pro or Executive tier. If you're subscribed and still having issues, disable browser pop-up blockers and try again.</div>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">32 / 34</div>
+</div>
+
+<!-- SLIDE 33: Get Support -->
+<div class="slide">
+  <div class="section-label">SUPPORT</div>
+  <span class="icon">&#x1F4DE;</span>
+  <h2>Get Support</h2>
+  <p class="subtitle">We're here to help</p>
+  <div class="contact-grid">
+    <div class="contact-card">
+      <span class="card-icon">&#x1F4E7;</span>
+      <h4>Email Support</h4>
+      <p>info@keithlodom.io<br>Responses within 24 hours</p>
+    </div>
+    <div class="contact-card">
+      <span class="card-icon">&#x1F310;</span>
+      <h4>Platform</h4>
+      <p>keithlodom.io<br>Self-service help &amp; guides</p>
+    </div>
+    <div class="contact-card">
+      <span class="card-icon">&#x1F4CB;</span>
+      <h4>Documentation</h4>
+      <p>Platform Guide &amp; Conference Guide<br>Available at /platform-guide</p>
+    </div>
+    <div class="contact-card">
+      <span class="card-icon">&#x1F4AC;</span>
+      <h4>AI Advisor</h4>
+      <p>Ask the AI Advisor for<br>platform help &amp; guidance</p>
+    </div>
+  </div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">33 / 34</div>
+</div>
+
+<!-- SLIDE 34: Closing -->
+<div class="slide title-slide">
+  <span class="icon">&#x1F3DB;</span>
+  <h1>Welcome to KLO</h1>
+  <p class="subtitle">Strategic technology leadership at the intersection of innovation and faith</p>
+  <p class="subtitle" style="margin-top: 20px; color: #C8A84E; font-size: 26px; font-weight: 600;">keithlodom.io</p>
+  <div class="version-badge" style="margin-top: 40px;">COMPLETE GUIDE v1.0</div>
+  <div class="slide-bar"></div>
+  <div class="slide-num">34 / 34</div>
+</div>
+
+</div><!-- end slide-wrapper -->
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prev()">&#9664; Prev</button>
+  <button onclick="next()">Next &#9654;</button>
+</div>
+<div class="slide-counter" id="counter">1 / 34</div>
+
+<script>
+const wrapper = document.getElementById('slideWrapper');
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+
+function scaleToFit() {
+  const scaleX = window.innerWidth / 1920;
+  const scaleY = window.innerHeight / 1080;
+  const scale = Math.min(scaleX, scaleY);
+  wrapper.style.transform = `scale(${scale})`;
+}
+scaleToFit();
+window.addEventListener('resize', scaleToFit);
+
+function show(n) {
+  slides[current].classList.remove('active');
+  slides[current].style.display = 'none';
+  current = (n + slides.length) % slides.length;
+  slides[current].classList.add('active');
+  slides[current].style.display = 'flex';
+  document.getElementById('counter').textContent = `${current + 1} / ${slides.length}`;
+}
+
+function next() { show(current + 1); }
+function prev() { show(current - 1); }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight' || e.key === ' ') next();
+  if (e.key === 'ArrowLeft') prev();
+});
+</script>
+</body>
+</html>
