@@ -14,7 +14,6 @@ const areasOfInterest = [
   "IT Consulting & Infrastructure",
   "CTO / Fractional CTO Services",
   "Project Management",
-  "Conference Speaking & Keynotes",
   "Church & Ministry Technology",
   "Digital Transformation",
   "AI & Leadership Strategy",

@@ -7,7 +7,6 @@ import {
   Monitor,
   Building2,
   FolderKanban,
-  Mic2,
   Church,
   Globe,
   Brain,
@@ -107,21 +106,6 @@ const topics: ConsultTopic[] = [
     accent: "text-[#6ECF55]",
     accentBg: "bg-[#6ECF55]/10",
     dotColor: "bg-[#6ECF55]",
-  },
-  {
-    icon: Mic2,
-    title: "Conference Speaking",
-    description:
-      "Dynamic keynotes and workshops that inspire audiences and deliver actionable insights at the intersection of technology and leadership.",
-    bullets: [
-      "Keynote presentations",
-      "Interactive workshops & breakouts",
-      "Panel moderation & participation",
-      "Custom session development",
-    ],
-    accent: "text-[#C8A84E]",
-    accentBg: "bg-[#C8A84E]/10",
-    dotColor: "bg-[#C8A84E]",
   },
   {
     icon: Church,
