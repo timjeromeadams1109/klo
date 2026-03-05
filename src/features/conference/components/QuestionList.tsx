@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronUp, MessageSquare, CheckCircle2 } from "lucide-react";
+import { ChevronUp, Heart, MessageSquare, CheckCircle2, Trophy } from "lucide-react";
 import Card from "@/components/shared/Card";
 import type { Question } from "../types";
 
@@ -10,6 +10,9 @@ interface QuestionListProps {
   loading: boolean;
   onUpvote: (questionId: string) => Promise<boolean>;
   upvotedQuestions: Set<string>;
+  onLike?: (questionId: string) => Promise<boolean>;
+  likedQuestions?: Set<string>;
+  isAuthenticated?: boolean;
 }
 
 export default function QuestionList({
@@ -17,6 +20,9 @@ export default function QuestionList({
   loading,
   onUpvote,
   upvotedQuestions,
+  onLike,
+  likedQuestions,
+  isAuthenticated,
 }: QuestionListProps) {
   if (loading) {
     return (
@@ -39,11 +45,22 @@ export default function QuestionList({
     );
   }
 
+  // Determine Top-5 by likes for badge display
+  const top5Ids = new Set(
+    [...questions]
+      .filter((q) => (q.likes ?? 0) > 0)
+      .sort((a, b) => (b.likes ?? 0) - (a.likes ?? 0))
+      .slice(0, 5)
+      .map((q) => q.id)
+  );
+
   return (
     <div className="space-y-3" aria-live="polite">
       <AnimatePresence mode="popLayout">
         {questions.map((q) => {
           const hasUpvoted = upvotedQuestions.has(q.id);
+          const hasLiked = likedQuestions?.has(q.id) ?? false;
+          const isTop5 = top5Ids.has(q.id);
           return (
             <motion.div
               key={q.id}
@@ -54,6 +71,7 @@ export default function QuestionList({
               transition={{ duration: 0.3, ease: "easeOut" }}
             >
               <Card className="flex items-start gap-4">
+                {/* Upvote button */}
                 <button
                   onClick={() => onUpvote(q.id)}
                   disabled={hasUpvoted}
@@ -75,6 +93,8 @@ export default function QuestionList({
                     {q.upvotes}
                   </span>
                 </button>
+
+                {/* Question content */}
                 <div className="flex-1 min-w-0">
                   <p className="text-sm text-klo-text leading-relaxed">{q.text}</p>
                   <div className="flex items-center gap-3 mt-2">
@@ -85,8 +105,39 @@ export default function QuestionList({
                         Answered
                       </span>
                     )}
+                    {isTop5 && (
+                      <span className="inline-flex items-center gap-1 text-xs text-[#C8A84E]">
+                        <Trophy size={12} />
+                        Top 5
+                      </span>
+                    )}
                   </div>
                 </div>
+
+                {/* Like button (authenticated users) */}
+                {isAuthenticated && onLike && (
+                  <button
+                    onClick={() => onLike(q.id)}
+                    disabled={hasLiked}
+                    className={`shrink-0 flex flex-col items-center gap-1 px-2 py-1 rounded-lg transition-colors ${
+                      hasLiked
+                        ? "bg-red-500/10 cursor-default"
+                        : "hover:bg-red-500/10 group"
+                    }`}
+                  >
+                    <Heart
+                      size={16}
+                      className={`${
+                        hasLiked
+                          ? "text-red-400 fill-red-400"
+                          : "text-klo-muted group-hover:text-red-400"
+                      } transition-colors`}
+                    />
+                    <span className="text-xs font-semibold text-klo-muted">
+                      {q.likes ?? 0}
+                    </span>
+                  </button>
+                )}
               </Card>
             </motion.div>
           );

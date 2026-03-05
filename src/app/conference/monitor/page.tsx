@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { BarChart3, MessageSquare, Cloud } from "lucide-react";
 import {
   BarChart,
@@ -13,6 +13,7 @@ import {
 import { usePolls } from "@/features/conference/hooks/usePolls";
 import { useQuestions } from "@/features/conference/hooks/useQuestions";
 import { useWordCloud } from "@/features/conference/hooks/useWordCloud";
+import { useSessions } from "@/features/conference/hooks/useSessions";
 import {
   CONFERENCE_COLORS,
   WORD_CLOUD_PALETTE,
@@ -83,7 +84,10 @@ function MonitorWordCloud({ entries }: { entries: WordCloudEntry[] }) {
 export default function MonitorPage() {
   const [view, setView] = useState<MonitorView>("polls");
   const { activePolls } = usePolls();
-  const { questions } = useQuestions();
+  const { activeSession } = useSessions();
+  const { questions } = useQuestions({
+    sessionId: activeSession?.id ?? undefined,
+  });
   const { entries } = useWordCloud();
 
   // Auto-cycle views
@@ -107,8 +111,12 @@ export default function MonitorPage() {
     return () => document.removeEventListener("keydown", handler);
   }, []);
 
+  // Top 5 by likes (with upvotes as tiebreaker)
   const topQuestions = [...questions]
-    .sort((a, b) => b.upvotes - a.upvotes)
+    .sort((a, b) => {
+      const likeDiff = (b.likes ?? 0) - (a.likes ?? 0);
+      return likeDiff !== 0 ? likeDiff : b.upvotes - a.upvotes;
+    })
     .slice(0, 5);
 
   const activePoll = activePolls[0];
@@ -139,6 +147,22 @@ export default function MonitorPage() {
       >
         KLO Conference
       </div>
+
+      {/* Active session title */}
+      {activeSession && (
+        <div
+          style={{
+            position: "absolute",
+            top: 20,
+            right: 30,
+            fontSize: 14,
+            color: CONFERENCE_COLORS.gold,
+            fontWeight: 600,
+          }}
+        >
+          {activeSession.title}
+        </div>
+      )}
 
       {/* View indicator */}
       <div style={{ display: "flex", gap: 12, marginBottom: 30 }}>
@@ -217,7 +241,7 @@ export default function MonitorPage() {
         </div>
       )}
 
-      {/* Top questions */}
+      {/* Top questions by likes */}
       {view === "questions" && (
         <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
           <h2
@@ -229,7 +253,7 @@ export default function MonitorPage() {
               fontFamily: "'Playfair Display', serif",
             }}
           >
-            Top Questions
+            Top 5 Questions
           </h2>
           {topQuestions.length > 0 ? (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -243,25 +267,42 @@ export default function MonitorPage() {
                     padding: "20px 24px",
                     borderRadius: 16,
                     background: "#161B22",
-                    border: "1px solid rgba(255,255,255,0.05)",
+                    border: i === 0
+                      ? `1px solid ${CONFERENCE_COLORS.gold}40`
+                      : "1px solid rgba(255,255,255,0.05)",
                   }}
                 >
                   <div
                     style={{
                       minWidth: 50,
                       textAlign: "center",
-                      fontSize: 24,
+                      fontSize: 14,
                       fontWeight: 700,
-                      color: CONFERENCE_COLORS.gold,
+                      color: "#8B949E",
                     }}
                   >
-                    {q.upvotes}
+                    #{i + 1}
                   </div>
-                  <p style={{ fontSize: 20, color: "#E6EDF3", margin: 0 }}>{q.text}</p>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: 20, color: "#E6EDF3", margin: 0 }}>{q.text}</p>
+                  </div>
+                  <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontSize: 24, fontWeight: 700, color: "#F77A81" }}>
+                        {q.likes ?? 0}
+                      </div>
+                      <div style={{ fontSize: 11, color: "#8B949E" }}>likes</div>
+                    </div>
+                    <div style={{ textAlign: "center" }}>
+                      <div style={{ fontSize: 24, fontWeight: 700, color: CONFERENCE_COLORS.gold }}>
+                        {q.upvotes}
+                      </div>
+                      <div style={{ fontSize: 11, color: "#8B949E" }}>votes</div>
+                    </div>
+                  </div>
                   {q.is_answered && (
                     <span
                       style={{
-                        marginLeft: "auto",
                         fontSize: 14,
                         color: "#6ECF55",
                         fontWeight: 600,

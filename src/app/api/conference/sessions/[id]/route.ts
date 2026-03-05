@@ -6,7 +6,7 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const auth = await verifyConferenceRole(["admin", "moderator"]);
+  const auth = await verifyConferenceRole(["admin"]);
   if (!auth) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
@@ -16,24 +16,23 @@ export async function PUT(
   const supabase = getServiceSupabase();
 
   const updates: Record<string, unknown> = {};
-  if (typeof body.is_answered === "boolean") updates.is_answered = body.is_answered;
-  if (typeof body.is_hidden === "boolean") updates.is_hidden = body.is_hidden;
-  if (typeof body.released === "boolean") updates.released = body.released;
+  if (typeof body.title === "string") updates.title = body.title.trim();
+  if (typeof body.description === "string") updates.description = body.description.trim() || null;
+  if (body.scheduled_at !== undefined) updates.scheduled_at = body.scheduled_at;
+  if (typeof body.is_active === "boolean") updates.is_active = body.is_active;
+  if (typeof body.qa_enabled === "boolean") updates.qa_enabled = body.qa_enabled;
+  if (typeof body.release_mode === "string") updates.release_mode = body.release_mode;
 
-  // Soft-delete (archive)
-  if (body.archive === true) {
-    updates.archived_at = new Date().toISOString();
-    updates.archived_by = auth.userId;
-  }
-
-  // Restore from archive
-  if (body.archive === false) {
-    updates.archived_at = null;
-    updates.archived_by = null;
+  // If activating this session, deactivate all others first
+  if (body.is_active === true) {
+    await supabase
+      .from("conference_sessions")
+      .update({ is_active: false })
+      .neq("id", id);
   }
 
   const { data, error } = await supabase
-    .from("conference_questions")
+    .from("conference_sessions")
     .update(updates)
     .eq("id", id)
     .select()
@@ -50,16 +49,15 @@ export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  // Hard delete is admin-only (moderators can only archive via PUT)
   const auth = await verifyConferenceRole(["admin"]);
   if (!auth) {
-    return NextResponse.json({ error: "Unauthorized — admin only" }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const { id } = await params;
   const supabase = getServiceSupabase();
   const { error } = await supabase
-    .from("conference_questions")
+    .from("conference_sessions")
     .delete()
     .eq("id", id);
 

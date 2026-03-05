@@ -10,6 +10,8 @@ interface RealtimeCallbacks {
   onQuestionsChange?: () => void;
   onUpvotesChange?: () => void;
   onWordCloudChange?: () => void;
+  onSessionsChange?: () => void;
+  onLikesChange?: () => void;
 }
 
 export function useConferenceRealtime(callbacks: RealtimeCallbacks) {
@@ -50,6 +52,16 @@ export function useConferenceRealtime(callbacks: RealtimeCallbacks) {
         "postgres_changes",
         { event: "*", schema: "public", table: "conference_word_cloud" },
         () => callbacksRef.current.onWordCloudChange?.()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "conference_sessions" },
+        () => callbacksRef.current.onSessionsChange?.()
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "conference_question_likes" },
+        () => callbacksRef.current.onLikesChange?.()
       )
       .subscribe();
 

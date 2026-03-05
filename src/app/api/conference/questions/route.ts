@@ -1,18 +1,27 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { createHash } from "crypto";
 import { getServiceSupabase } from "@/lib/supabase";
+import { verifyConferenceRole } from "@/lib/conference-auth";
+
+function getFingerprint(req: Request): string {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
+  const ua = req.headers.get("user-agent") || "unknown";
+  return createHash("sha256").update(`${ip}:${ua}`).digest("hex");
+}
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const isAdminRequest = searchParams.get("admin") === "true";
+  const sessionId = searchParams.get("session_id");
+  const showArchived = searchParams.get("archived") === "true";
 
-  // If admin request, verify the caller is actually admin
-  let showAll = false;
-  if (isAdminRequest) {
-    const session = await getServerSession(authOptions);
-    const role = (session?.user as { role?: string } | undefined)?.role;
-    showAll = role === "admin";
+  // Check if caller is admin/moderator
+  let isPrivileged = false;
+  if (isAdminRequest || showArchived) {
+    const auth = await verifyConferenceRole(["admin", "moderator"]);
+    isPrivileged = !!auth;
   }
 
   const supabase = getServiceSupabase();
@@ -22,8 +31,20 @@ export async function GET(request: Request) {
     .order("upvotes", { ascending: false })
     .order("created_at", { ascending: false });
 
-  if (!showAll) {
-    query = query.eq("is_hidden", false);
+  // Filter by session if specified
+  if (sessionId) {
+    query = query.eq("session_id", sessionId);
+  }
+
+  // Non-privileged users: hide hidden questions, hide archived, only show released
+  if (!isPrivileged) {
+    query = query.eq("is_hidden", false).is("archived_at", null).eq("released", true);
+  } else if (showArchived) {
+    // Admin requesting archived only
+    query = query.not("archived_at", "is", null);
+  } else if (!isAdminRequest) {
+    // Regular request: exclude archived
+    query = query.is("archived_at", null);
   }
 
   const { data, error } = await query;
@@ -37,25 +58,36 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { text, author_name } = body;
+  const { text, author_name, session_id } = body;
 
   if (!text?.trim()) {
     return NextResponse.json({ error: "Question text required" }, { status: 400 });
   }
 
+  const fingerprint = getFingerprint(request);
   const supabase = getServiceSupabase();
-  const { data, error } = await supabase
-    .from("conference_questions")
-    .insert({
-      text: text.trim(),
-      author_name: author_name?.trim() || "Anonymous",
-    })
-    .select()
-    .single();
+
+  // Use profanity-checking RPC
+  const { data, error } = await supabase.rpc("submit_conference_question", {
+    p_text: text.trim(),
+    p_author_name: author_name?.trim() || "Anonymous",
+    p_session_id: session_id || null,
+    p_fingerprint: fingerprint,
+  });
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json(data, { status: 201 });
+  // data is the jsonb result from the function
+  const result = data as { ok: boolean; reason?: string; flagged?: string[] };
+
+  if (!result.ok) {
+    return NextResponse.json(
+      { error: "Content blocked", reason: result.reason, flagged: result.flagged },
+      { status: 422 }
+    );
+  }
+
+  return NextResponse.json({ ok: true }, { status: 201 });
 }

@@ -2,16 +2,27 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useConferenceRealtime } from "./useConferenceRealtime";
-import type { Question } from "../types";
+import type { Question, ProfanityCheckResult } from "../types";
 
-export function useQuestions() {
+interface UseQuestionsOptions {
+  sessionId?: string | null;
+}
+
+export function useQuestions(options?: UseQuestionsOptions) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);
   const [upvotedQuestions, setUpvotedQuestions] = useState<Set<string>>(new Set());
+  const [likedQuestions, setLikedQuestions] = useState<Set<string>>(new Set());
+  const [profanityError, setProfanityError] = useState<string[] | null>(null);
+
+  const sessionId = options?.sessionId;
 
   const fetchQuestions = useCallback(async () => {
     try {
-      const res = await fetch("/api/conference/questions");
+      const params = new URLSearchParams();
+      if (sessionId) params.set("session_id", sessionId);
+      const url = `/api/conference/questions${params.toString() ? `?${params}` : ""}`;
+      const res = await fetch(url);
       if (!res.ok) return;
       const data: Question[] = await res.json();
       setQuestions(data);
@@ -20,7 +31,7 @@ export function useQuestions() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [sessionId]);
 
   useEffect(() => {
     fetchQuestions();
@@ -29,16 +40,30 @@ export function useQuestions() {
   useConferenceRealtime({
     onQuestionsChange: fetchQuestions,
     onUpvotesChange: fetchQuestions,
+    onLikesChange: fetchQuestions,
   });
 
   const submitQuestion = useCallback(
-    async (text: string, authorName?: string) => {
+    async (text: string, authorName?: string): Promise<boolean> => {
+      setProfanityError(null);
       try {
         const res = await fetch("/api/conference/questions", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text, author_name: authorName }),
+          body: JSON.stringify({
+            text,
+            author_name: authorName,
+            session_id: sessionId || undefined,
+          }),
         });
+
+        if (res.status === 422) {
+          const data = await res.json();
+          if (data.reason === "profanity" && data.flagged) {
+            setProfanityError(data.flagged);
+          }
+          return false;
+        }
 
         if (res.ok) {
           fetchQuestions();
@@ -48,7 +73,7 @@ export function useQuestions() {
         return false;
       }
     },
-    [fetchQuestions]
+    [fetchQuestions, sessionId]
   );
 
   const upvote = useCallback(
@@ -73,5 +98,42 @@ export function useQuestions() {
     [upvotedQuestions, fetchQuestions]
   );
 
-  return { questions, loading, submitQuestion, upvote, upvotedQuestions, refetch: fetchQuestions };
+  const likeQuestion = useCallback(
+    async (questionId: string) => {
+      if (likedQuestions.has(questionId)) return false;
+
+      try {
+        const res = await fetch(`/api/conference/questions/${questionId}/upvote`, {
+          method: "POST",
+        });
+
+        if (res.ok || res.status === 409) {
+          setLikedQuestions((prev) => new Set([...prev, questionId]));
+          fetchQuestions();
+        }
+
+        return res.ok;
+      } catch {
+        return false;
+      }
+    },
+    [likedQuestions, fetchQuestions]
+  );
+
+  const clearProfanityError = useCallback(() => {
+    setProfanityError(null);
+  }, []);
+
+  return {
+    questions,
+    loading,
+    submitQuestion,
+    upvote,
+    likeQuestion,
+    upvotedQuestions,
+    likedQuestions,
+    profanityError,
+    clearProfanityError,
+    refetch: fetchQuestions,
+  };
 }

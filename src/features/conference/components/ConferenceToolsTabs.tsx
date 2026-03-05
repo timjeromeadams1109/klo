@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { BarChart3, MessageSquare, Cloud } from "lucide-react";
+import { BarChart3, MessageSquare, Cloud, MessageSquareOff } from "lucide-react";
 import { CONFERENCE_TOOL_TABS, type ConferenceToolTab } from "../constants";
 import LivePolling from "./LivePolling";
 import QuestionList from "./QuestionList";
@@ -14,6 +14,9 @@ import InstructionsSection from "./InstructionsSection";
 import { usePolls } from "../hooks/usePolls";
 import { useQuestions } from "../hooks/useQuestions";
 import { useWordCloud } from "../hooks/useWordCloud";
+import { useSessions } from "../hooks/useSessions";
+import { useConferenceRoles } from "../hooks/useConferenceRoles";
+import Card from "@/components/shared/Card";
 
 const TAB_ICONS: Record<ConferenceToolTab, React.ElementType> = {
   polls: BarChart3,
@@ -23,9 +26,15 @@ const TAB_ICONS: Record<ConferenceToolTab, React.ElementType> = {
 
 export default function ConferenceToolsTabs() {
   const [activeTab, setActiveTab] = useState<ConferenceToolTab>("polls");
+  const { activeSession } = useSessions();
+  const { isAuthenticated } = useConferenceRoles();
   const pollsHook = usePolls();
-  const questionsHook = useQuestions();
+  const questionsHook = useQuestions({
+    sessionId: activeSession?.id ?? undefined,
+  });
   const wordCloudHook = useWordCloud();
+
+  const qaDisabled = activeSession && !activeSession.qa_enabled;
 
   return (
     <div className="space-y-6">
@@ -69,15 +78,35 @@ export default function ConferenceToolsTabs() {
         )}
 
         {activeTab === "qa" && (
-          <div className="space-y-4">
-            <QuestionInput onSubmit={questionsHook.submitQuestion} />
-            <QuestionList
-              questions={questionsHook.questions}
-              loading={questionsHook.loading}
-              onUpvote={questionsHook.upvote}
-              upvotedQuestions={questionsHook.upvotedQuestions}
-            />
-          </div>
+          <>
+            {qaDisabled ? (
+              <Card className="text-center py-12">
+                <div className="w-12 h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center mx-auto mb-3">
+                  <MessageSquareOff size={24} className="text-yellow-400" />
+                </div>
+                <p className="text-klo-muted text-sm">
+                  Q&A is currently disabled for this session.
+                </p>
+              </Card>
+            ) : (
+              <div className="space-y-4">
+                <QuestionInput
+                  onSubmit={questionsHook.submitQuestion}
+                  profanityError={questionsHook.profanityError}
+                  onClearProfanityError={questionsHook.clearProfanityError}
+                />
+                <QuestionList
+                  questions={questionsHook.questions}
+                  loading={questionsHook.loading}
+                  onUpvote={questionsHook.upvote}
+                  upvotedQuestions={questionsHook.upvotedQuestions}
+                  onLike={questionsHook.likeQuestion}
+                  likedQuestions={questionsHook.likedQuestions}
+                  isAuthenticated={isAuthenticated}
+                />
+              </div>
+            )}
+          </>
         )}
 
         {activeTab === "wordcloud" && (
