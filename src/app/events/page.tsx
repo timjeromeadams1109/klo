@@ -15,6 +15,15 @@ import {
 import Badge from "@/components/shared/Badge";
 import Card from "@/components/shared/Card";
 
+interface FeaturedKeynote {
+  id: string;
+  title: string;
+  conference_name: string;
+  conference_location: string;
+  event_date: string;
+  description: string | null;
+}
+
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
   visible: (i: number) => ({
@@ -76,6 +85,7 @@ const fileTypeColors: Record<string, string> = {
 
 export default function EventsPage() {
   const [events, setEvents] = useState<EventItem[]>([]);
+  const [featuredKeynote, setFeaturedKeynote] = useState<FeaturedKeynote | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -88,6 +98,17 @@ export default function EventsPage() {
       })
       .catch(() => {})
       .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
+    fetch("/api/featured-keynote")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.id) {
+          setFeaturedKeynote(data);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const upcomingEvents = events
@@ -133,6 +154,59 @@ export default function EventsPage() {
           </motion.p>
         </motion.div>
       </section>
+
+      {/* Featured Keynote */}
+      {featuredKeynote && (
+        <section className="px-6 pt-0 pb-8">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            variants={fadeUp}
+            custom={0}
+            className="max-w-4xl mx-auto"
+          >
+            <Card className="relative overflow-hidden border-[#2764FF]/40 shadow-lg shadow-[#2764FF]/10 bg-gradient-to-br from-[#2764FF]/5 to-transparent">
+              <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-klo-gold to-[#2764FF] rounded-l-xl" />
+              <div className="pl-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <Badge variant="gold">Featured Keynote</Badge>
+                </div>
+                <h3 className="text-xl md:text-2xl font-bold text-klo-text">
+                  {featuredKeynote.conference_name}
+                </h3>
+                <p className="text-sm md:text-base text-klo-muted leading-relaxed">
+                  {featuredKeynote.title}
+                </p>
+                {featuredKeynote.description && (
+                  <p className="text-sm text-klo-muted/70 leading-relaxed">
+                    {featuredKeynote.description}
+                  </p>
+                )}
+                <div className="flex items-center gap-4 text-xs text-klo-muted pt-1">
+                  <span className="inline-flex items-center gap-1.5">
+                    <Calendar size={14} className="text-[#2764FF]" />
+                    {formatDate(featuredKeynote.event_date)}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5">
+                    <MapPin size={14} className="text-[#2764FF]" />
+                    {featuredKeynote.conference_location}
+                  </span>
+                </div>
+                <div className="pt-2">
+                  <Link
+                    href="/conference"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#2764FF] to-[#21B8CD] text-white font-semibold text-sm rounded-lg hover:brightness-110 transition-colors"
+                  >
+                    View Details
+                    <ArrowRight size={14} />
+                  </Link>
+                </div>
+              </div>
+            </Card>
+          </motion.div>
+        </section>
+      )}
 
       {/* Upcoming Events */}
       <section className="px-6 py-16 md:py-24">
