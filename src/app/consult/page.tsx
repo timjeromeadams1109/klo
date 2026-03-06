@@ -276,13 +276,13 @@ export default function ConsultPage() {
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0D1117] to-transparent z-10 pointer-events-none" />
           <motion.div
             animate={{ x: ["0%", "-50%"] }}
-            transition={{ duration: 30, ease: "linear", repeat: Infinity }}
+            transition={{ duration: 45, ease: "linear", repeat: Infinity }}
             className="flex w-max"
           >
             {[...galleryImages, ...galleryImages].map((img, i) => (
               <div
                 key={`row1-${i}`}
-                className="relative w-72 md:w-80 aspect-[4/3] overflow-hidden shrink-0 group cursor-pointer"
+                className="relative w-48 sm:w-64 md:w-72 lg:w-80 aspect-[4/3] overflow-hidden shrink-0 group cursor-pointer"
               >
                 <Image
                   src={img.src}
@@ -305,13 +305,13 @@ export default function ConsultPage() {
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0D1117] to-transparent z-10 pointer-events-none" />
           <motion.div
             animate={{ x: ["-50%", "0%"] }}
-            transition={{ duration: 35, ease: "linear", repeat: Infinity }}
+            transition={{ duration: 50, ease: "linear", repeat: Infinity }}
             className="flex w-max"
           >
             {[...galleryImages.slice(6), ...galleryImages.slice(0, 6), ...galleryImages.slice(6), ...galleryImages.slice(0, 6)].map((img, i) => (
               <div
                 key={`row2-${i}`}
-                className="relative w-72 md:w-80 aspect-[4/3] overflow-hidden shrink-0 group cursor-pointer"
+                className="relative w-48 sm:w-64 md:w-72 lg:w-80 aspect-[4/3] overflow-hidden shrink-0 group cursor-pointer"
               >
                 <Image
                   src={img.src}
