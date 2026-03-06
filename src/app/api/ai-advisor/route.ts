@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
-import { getServiceSupabase } from "@/lib/supabase";
 import { AI_ADVISOR_SYSTEM_PROMPT } from "@/lib/constants";
 
 // ------------------------------------------------------------
@@ -46,25 +45,6 @@ export async function POST(request: NextRequest) {
         { error: "Authentication required." },
         { status: 401 }
       );
-    }
-
-    // Server-side tier check — free tier users are blocked
-    const userId = (session.user as { id?: string }).id;
-    if (userId) {
-      const supabase = getServiceSupabase();
-      const { data: profile } = await supabase
-        .from("profiles")
-        .select("subscription_tier")
-        .eq("id", userId)
-        .single();
-
-      const tier = profile?.subscription_tier ?? "free";
-      if (tier === "free") {
-        return NextResponse.json(
-          { error: "AI Advisor requires a Pro or Executive subscription." },
-          { status: 403 }
-        );
-      }
     }
 
     const apiKey = process.env.ANTHROPIC_API_KEY;
