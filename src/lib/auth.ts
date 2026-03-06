@@ -59,7 +59,7 @@ export const authOptions: NextAuthOptions = {
 
         // Check hardcoded admin/owner/moderator accounts first
         for (const account of CREDENTIAL_ACCOUNTS) {
-          const password = process.env[account.envVar];
+          const password = process.env[account.envVar]?.trim();
           if (credentials.email === account.email && password) {
             // Support both bcrypt hashes and plain passwords (migration)
             const isHash = password.startsWith("$2");
