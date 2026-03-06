@@ -270,7 +270,7 @@ export async function POST(req: NextRequest) {
 
       // Send notification to Keith + Tim
       await resend.emails.send({
-        from: "KLO Advisory <info@keithlodom.io>",
+        from: "KLO Advisory <onboarding@resend.dev>",
         to: ["kodom@techchurch.io", "timjeromeadams@gmail.com"],
         subject: `New Consultation Request — ${parsed.areaOfInterest}`,
         html: `
@@ -287,7 +287,7 @@ export async function POST(req: NextRequest) {
 
       // Send confirmation to requester
       await resend.emails.send({
-        from: "KLO Advisory <info@keithlodom.io>",
+        from: "KLO Advisory <onboarding@resend.dev>",
         to: parsed.email,
         subject: "We Received Your Consultation Request — KLO Advisory",
         html: `
@@ -360,7 +360,7 @@ export async function POST(req: NextRequest) {
 
     // Send notification to Keith + Tim
     await resend.emails.send({
-      from: "KLO Advisory <info@keithlodom.io>",
+      from: "KLO Advisory <onboarding@resend.dev>",
       to: ["kodom@techchurch.io", "timjeromeadams@gmail.com"],
       subject: `New Booking Inquiry — ${parsed.eventName}`,
       html: `
@@ -376,7 +376,7 @@ export async function POST(req: NextRequest) {
 
     // Send confirmation to inquirer
     await resend.emails.send({
-      from: "KLO Advisory <info@keithlodom.io>",
+      from: "KLO Advisory <onboarding@resend.dev>",
       to: parsed.email,
       subject: "We Received Your Booking Inquiry — KLO Advisory",
       html: `

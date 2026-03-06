@@ -68,7 +68,7 @@ export async function POST(request: Request) {
     // Notify Keith + Tim of new sign-up
     try {
       await resend.emails.send({
-        from: "KLO Advisory <info@keithlodom.io>",
+        from: "KLO Advisory <onboarding@resend.dev>",
         to: ["kodom@techchurch.io", "timjeromeadams@gmail.com"],
         subject: `New User Sign-Up — ${email.toLowerCase()}`,
         html: `
