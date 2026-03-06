@@ -1304,6 +1304,82 @@ const vaultContent: Record<string, VaultItemContent> = {
     conclusion:
       "Smart automation transforms church operations from a source of stress into a foundation for growth. By implementing the workflows in this guide, you will reclaim hours every week for the work that called you to ministry in the first place.",
   },
+  "v-017": {
+    heroSubtitle:
+      "A strategic framework for faith-based leaders in an age of intelligent systems.",
+    overview:
+      "Generative AI is no longer experimental. It is embedded. From sermon drafting and content generation to predictive analytics, workflow automation, and conversational agents, AI systems are rapidly becoming part of the operational fabric of modern organizations. Faith-based institutions are not exempt from this shift — and perhaps feel its weight more profoundly than most.\n\nThis is not merely a conversation about tools. It is a conversation about stewardship, theology, trust, and moral leadership. As ministries adopt generative AI technologies, they must confront a unique ethical landscape. The Church does not have the option of naïve enthusiasm nor reactionary retreat. We are called to lead.\n\nThis premium briefing outlines a governance framework for responsible AI adoption in ministry, focusing on three pillars: Data Stewardship, Bias Mitigation & Theological Integrity, and Congregational Transparency.",
+    takeaways: [
+      {
+        icon: "shield",
+        title: "Data as Sacred Trust",
+        description:
+          "Faith communities manage some of the most sensitive data in society — prayer requests, counseling notes, giving histories, and crisis disclosures. AI productivity should never come at the expense of pastoral confidentiality.",
+      },
+      {
+        icon: "brain",
+        title: "AI Is an Assistant, Not an Authority",
+        description:
+          "AI can accelerate research and draft communications, but it cannot interpret Scripture under divine guidance, replace pastoral discernment, or shepherd a congregation. Leadership must make this distinction clear.",
+      },
+      {
+        icon: "eye",
+        title: "Transparency Builds Trust",
+        description:
+          "If AI drafts communications, chatbots respond to inquiries, or analytics influence outreach — should members be informed? Preemptive clarity prevents reactive damage control. Secrecy erodes confidence; clarity strengthens it.",
+      },
+      {
+        icon: "scale",
+        title: "Theological Review Protocols",
+        description:
+          "Any AI-generated theological material — sermon outlines, discipleship curriculum, position papers — should undergo qualified human review. Confidence is not correctness.",
+      },
+    ],
+    quote: {
+      text: "Innovation without integrity erodes trust. Integrity without innovation forfeits influence. The moral frontier is here.",
+      attribution: "Keith L. Odom",
+    },
+    steps: [
+      {
+        number: 1,
+        title: "Establish Theological Alignment",
+        description:
+          "Before adopting any AI solution, ask: Does this tool align with our doctrinal convictions? Does it support discipleship or subtly replace it? Technology must serve theology — not reshape it.",
+      },
+      {
+        number: 2,
+        title: "Implement Operational Safeguards",
+        description:
+          "Develop role-based access permissions, content review requirements, data handling standards, security audits, and incident response planning. AI governance should sit alongside cybersecurity, not outside of it.",
+      },
+      {
+        number: 3,
+        title: "Build Community Trust",
+        description:
+          "Ask: Are we prepared to explain our AI usage publicly? Are we protecting member data responsibly? Do we have a response plan if misuse occurs? Trust is easier to preserve than to rebuild.",
+      },
+      {
+        number: 4,
+        title: "Formalize an AI Usage Policy",
+        description:
+          "Every ministry should adopt a written AI policy addressing acceptable use cases, prohibited data categories, required human oversight, approval workflows, and security expectations. Policy does not restrict innovation — it protects it.",
+      },
+    ],
+    callouts: [
+      {
+        type: "warning",
+        title: "Ignorance Is Not Neutrality",
+        body: "Executive and pastoral leadership must understand where data is stored, whether it is retained, whether it contributes to model training, and how access controls are enforced. There is a substantial difference between public consumer AI, enterprise-secured AI, and custom-built solutions.",
+      },
+      {
+        type: "tip",
+        title: "Protect the Church's Voice",
+        body: "Overreliance on generative systems can gradually homogenize communication style. When ministries sound like aggregated internet summaries rather than Spirit-formed conviction, identity erodes. AI can help draft — but voice must remain human.",
+      },
+    ],
+    conclusion:
+      "Faith-based organizations stand at a moral frontier. The path forward is not withdrawal, nor is it reckless adoption — it is disciplined engagement. The Church has navigated printing presses, radio, television, and the internet. Generative AI is simply the next frontier. But unlike previous revolutions, this one interacts directly with cognition, language, and decision-making — the very domains that shape belief and behavior. The question is not whether ministries will encounter generative AI. The question is whether we will lead through it — wisely, courageously, and faithfully.",
+  },
 };
 
 export function getVaultContent(

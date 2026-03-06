@@ -322,6 +322,21 @@ export const vaultItems: VaultItem[] = [
     publishedAt: "2026-01-22",
     author: "Keith L. Odom",
   },
+  {
+    id: "v-017",
+    title: "Navigating the Moral Frontier of Generative AI in Ministry",
+    slug: "moral-frontier-gen-ai-ministry",
+    category: "AI & Ethics",
+    level: "Executive",
+    type: "briefing",
+    isPremium: true,
+    thumbnailGradient: gradients[1],
+    description:
+      "A strategic framework for faith-based leaders navigating the ethical landscape of generative AI. Covers data stewardship as sacred trust, bias mitigation with theological integrity, and building congregational transparency in an age of automation.",
+    duration: "20 min read",
+    publishedAt: "2026-03-05",
+    author: "Keith L. Odom",
+  },
 ];
 
 export function getVaultItemBySlug(slug: string): VaultItem | undefined {
