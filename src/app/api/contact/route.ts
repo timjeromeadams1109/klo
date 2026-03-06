@@ -268,10 +268,10 @@ export async function POST(req: NextRequest) {
         ? `<h3 style="color:#C9A84C;margin-top:24px;">Additional Details</h3><p style="color:#ddd;line-height:1.6;">${parsed.additionalDetails}</p>`
         : "";
 
-      // Send notification to Keith
+      // Send notification to Keith + Tim
       await resend.emails.send({
         from: "KLO Advisory <info@keithlodom.io>",
-        to: "kodom@techchurch.io",
+        to: ["kodom@techchurch.io", "timjeromeadams@gmail.com"],
         subject: `New Consultation Request — ${parsed.areaOfInterest}`,
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0B0F1A;padding:32px;border-radius:12px;">
@@ -358,10 +358,10 @@ export async function POST(req: NextRequest) {
       ? `<h3 style="color:#C9A84C;margin-top:24px;">Message</h3><p style="color:#ddd;line-height:1.6;">${parsed.message}</p>`
       : "";
 
-    // Send notification to Keith
+    // Send notification to Keith + Tim
     await resend.emails.send({
       from: "KLO Advisory <info@keithlodom.io>",
-      to: "kodom@techchurch.io",
+      to: ["kodom@techchurch.io", "timjeromeadams@gmail.com"],
       subject: `New Booking Inquiry — ${parsed.eventName}`,
       html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0B0F1A;padding:32px;border-radius:12px;">
@@ -386,7 +386,7 @@ export async function POST(req: NextRequest) {
             We have received your booking inquiry for <strong>${parsed.eventName}</strong> and our team is reviewing it now.
           </p>
           <p style="color:#ddd;line-height:1.6;">
-            You can expect a response within <strong>2 business days</strong> with availability, pricing, and next steps.
+            You can expect a response within <strong>2 business days</strong> with availability and next steps.
           </p>
           <p style="color:#999;font-size:13px;margin-top:24px;">
             If you have any urgent questions, reply directly to this email.

@@ -273,8 +273,8 @@ ul li em { color: #C8A84E; font-style: normal; font-weight: 600; }
   <p class="subtitle">A complete upgrade to the Conference Companion experience</p>
   <ul>
     <li><strong>Session Management</strong> — Organize content into named sessions with independent controls</li>
-    <li><strong>Role-Based Access</strong> — Admin, Moderator, Presenter, and Attendee roles</li>
-    <li><strong>Question Likes &amp; Top 5</strong> — Authenticated users can heart questions; top 5 get highlighted</li>
+    <li><strong>Role-Based Access</strong> — Owner, Admin, Moderator, Registered, and Guest roles</li>
+    <li><strong>Question Likes &amp; Top 5</strong> — Registered users can heart questions; top 5 get highlighted</li>
     <li><strong>Profanity Filter</strong> — Customizable word list with audit logging of blocked submissions</li>
     <li><strong>Soft-Delete Archive</strong> — Questions are archived, not destroyed — restorable anytime</li>
     <li><strong>Release Modes</strong> — Control exactly which questions the audience sees: all, one-at-a-time, or none</li>
@@ -292,8 +292,8 @@ ul li em { color: #C8A84E; font-style: normal; font-weight: 600; }
     <li>Navigate to <em>/conference</em> in the KLO app</li>
     <li>Conference tools activate automatically when <strong>Seminar Mode</strong> is turned on by an admin</li>
     <li>You'll see the active session name and available interaction panels</li>
-    <li>No special login required — anonymous participation is supported for Q&amp;A and Word Cloud</li>
-    <li><strong>Authenticated users</strong> unlock additional features like question likes</li>
+    <li>No special login required — <strong>Guest</strong> participation is supported for Q&amp;A and Word Cloud</li>
+    <li><strong>Registered users</strong> unlock additional features like question likes</li>
   </ul>
   <div class="highlight-box">
     <strong>Tip:</strong> Sign in to your KLO account to access the "heart" feature and see your submitted questions.
@@ -346,7 +346,7 @@ ul li em { color: #C8A84E; font-style: normal; font-weight: 600; }
   <span class="icon">&#x2764;</span>
   <h2>Likes &amp; Top 5</h2>
   <ul>
-    <li>Authenticated users can tap the <strong>heart icon</strong> on any visible question to like it</li>
+    <li>Registered users can tap the <strong>heart icon</strong> on any visible question to like it</li>
     <li>Like counts are displayed in real time next to each question</li>
     <li>The <strong>Top 5 most-liked questions</strong> receive a special gold badge</li>
     <li>Top 5 questions are featured prominently on the Monitor View projection</li>
@@ -385,7 +385,7 @@ ul li em { color: #C8A84E; font-style: normal; font-weight: 600; }
   <h2>Getting Started — Admin Panel</h2>
   <ul>
     <li>Access the admin panel from the <strong>Admin tab</strong> in the conference interface</li>
-    <li>Only users with <em>Admin</em> or <em>Moderator</em> roles can see this tab</li>
+    <li>Only users with <em>Owner</em>, <em>Admin</em>, or <em>Moderator</em> roles can see this tab</li>
     <li>The panel provides controls for: Sessions, Questions, Polls, Word Cloud, Roles, and Settings</li>
     <li>Toggle <strong>Seminar Mode</strong> on/off to control when attendees can interact</li>
   </ul>
@@ -409,7 +409,7 @@ ul li em { color: #C8A84E; font-style: normal; font-weight: 600; }
     <li>Each session maintains its own questions, polls, and word cloud data independently</li>
   </ul>
   <div class="gold-box">
-    <strong>Pro Tip:</strong> Create all your sessions ahead of time. During the event, just switch between them with one tap.
+    <strong>Tip:</strong> Create all your sessions ahead of time. During the event, just switch between them with one tap.
   </div>
   <div class="slide-bar"></div>
   <div class="slide-num">09 / 15</div>
@@ -488,10 +488,11 @@ ul li em { color: #C8A84E; font-style: normal; font-weight: 600; }
   <div class="two-col">
     <div class="col">
       <ul>
-        <li><strong>Admin</strong> — Full access: sessions, moderation, roles, settings, profanity filter</li>
-        <li><strong>Moderator</strong> — Can moderate questions, manage sessions, view audit logs</li>
-        <li><strong>Presenter</strong> — Can view the monitor/projection view and see Top 5 questions</li>
-        <li><strong>Attendee</strong> — Default role: vote, ask questions, submit words, like questions</li>
+        <li><strong>Owner</strong> — Full platform access: all admin capabilities plus system-level controls</li>
+        <li><strong>Admin</strong> — Full conference access: sessions, moderation, roles, settings, profanity filter</li>
+        <li><strong>Moderator</strong> — Can moderate questions, manage sessions, view audit logs, monitor view</li>
+        <li><strong>Registered</strong> — Can vote, ask questions, submit words, like questions, view monitor</li>
+        <li><strong>Guest</strong> — Can vote in polls, ask questions, and submit word cloud entries</li>
       </ul>
     </div>
     <div class="col">
@@ -535,8 +536,8 @@ ul li em { color: #C8A84E; font-style: normal; font-weight: 600; }
     <thead>
       <tr>
         <th>Feature</th>
-        <th>Attendee</th>
-        <th>Presenter</th>
+        <th>Guest</th>
+        <th>Registered</th>
         <th>Moderator</th>
         <th>Admin</th>
         <th>Owner</th>
@@ -545,7 +546,7 @@ ul li em { color: #C8A84E; font-style: normal; font-weight: 600; }
     <tbody>
       <tr><td>Submit Questions</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
       <tr><td>Vote in Polls</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
-      <tr><td>Like Questions</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
+      <tr><td>Like Questions</td><td class="dash">—</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
       <tr><td>Word Cloud</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
       <tr><td>Monitor View</td><td class="dash">—</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
       <tr><td>Moderate Questions</td><td class="dash">—</td><td class="dash">—</td><td class="check">&#10003;</td><td class="check">&#10003;</td><td class="check">&#10003;</td></tr>
