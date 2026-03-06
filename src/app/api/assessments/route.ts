@@ -44,7 +44,7 @@ export async function POST(request: Request) {
     const userName = session.user?.name ?? session.user?.email ?? "Unknown";
     const userEmail = session.user?.email ?? "N/A";
     await resend.emails.send({
-      from: "KLO Advisory <onboarding@resend.dev>",
+      from: "KLO Advisory <notifications@keithlodom.ai>",
       to: (process.env.ADMIN_NOTIFICATION_EMAILS ?? "").split(",").filter(Boolean),
       subject: `New Assessment Completed — ${assessment_type}`,
       html: `

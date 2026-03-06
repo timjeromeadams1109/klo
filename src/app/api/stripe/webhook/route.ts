@@ -143,7 +143,7 @@ export async function POST(request: NextRequest) {
               const { Resend } = await import("resend");
               const resend = new Resend(process.env.RESEND_API_KEY);
               await resend.emails.send({
-                from: "KLO <onboarding@resend.dev>",
+                from: "KLO Advisory <notifications@keithlodom.ai>",
                 to: customerEmail,
                 subject: "Action Required: Payment Failed",
                 html: `<p>Hi there,</p><p>We were unable to process your subscription payment after multiple attempts. Please update your payment method to continue accessing your KLO subscription.</p><p>— The KLO Team</p>`,
