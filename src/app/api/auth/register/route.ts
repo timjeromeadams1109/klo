@@ -47,18 +47,17 @@ export async function POST(request: Request) {
     // Hash password
     const password_hash = await hash(password, 12);
 
-    // Insert profile
+    // Insert profile (subscription_tier defaults to 'free' in DB)
     const { error: insertError } = await supabase.from("profiles").insert({
       id: crypto.randomUUID(),
       email: email.toLowerCase(),
       password_hash,
       full_name: full_name?.trim() || null,
       role: "user",
-      subscription_tier: "free",
     });
 
     if (insertError) {
-      console.error("Registration insert error:", insertError);
+      console.error("Registration insert error:", JSON.stringify(insertError));
       return NextResponse.json(
         { error: "Failed to create account" },
         { status: 500 }
