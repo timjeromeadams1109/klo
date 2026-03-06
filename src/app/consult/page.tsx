@@ -45,6 +45,14 @@ const galleryImages = [
   { src: "/images/keith/IMG_02.jpg", alt: "Keith speaking at an event" },
   { src: "/images/keith/IMG_03.jpg", alt: "Keith leading a workshop" },
   { src: "/images/keith/IMG_04.jpg", alt: "Keith in a strategy session" },
+  { src: "/images/keith/IMG_05.jpg", alt: "Keith at a conference" },
+  { src: "/images/keith/a.jpg", alt: "Keith presenting" },
+  { src: "/images/keith/a1.jpg", alt: "Keith in action" },
+  { src: "/images/keith/a2.jpg", alt: "Keith with team" },
+  { src: "/images/keith/a3.jpg", alt: "Keith keynote" },
+  { src: "/images/keith/a4.jpg", alt: "Keith workshop session" },
+  { src: "/images/keith/b.jpg", alt: "Keith leadership moment" },
+  { src: "/images/keith/c.jpg", alt: "Keith on stage" },
 ];
 
 /* ------------------------------------------------------------------ */
@@ -260,37 +268,70 @@ export default function ConsultPage() {
         </motion.div>
       </section>
 
-      {/* ====== Photo Gallery ====== */}
-      <FadeInOnScroll>
-        <section className="px-6 pb-16 md:pb-20 -mt-4">
+      {/* ====== Photo Marquee ====== */}
+      <section className="pb-16 md:pb-20 -mt-4 overflow-hidden">
+        {/* Row 1 — scrolls left */}
+        <div className="relative mb-4">
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0D1117] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0D1117] to-transparent z-10 pointer-events-none" />
           <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-40px" }}
-            variants={staggerContainer}
-            className="max-w-5xl mx-auto"
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ duration: 30, ease: "linear", repeat: Infinity }}
+            className="flex gap-4 w-max"
           >
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              {galleryImages.map((img, i) => (
-                <motion.div
-                  key={img.src}
-                  variants={fadeUp}
-                  custom={i}
-                  className="relative aspect-[4/3] rounded-xl overflow-hidden group"
-                >
-                  <Image
-                    src={img.src}
-                    alt={img.alt}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0D1117]/60 via-transparent to-transparent" />
-                </motion.div>
-              ))}
-            </div>
+            {[...galleryImages, ...galleryImages].map((img, i) => (
+              <motion.div
+                key={`row1-${i}`}
+                whileHover={{ scale: 1.05, y: -4 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative w-72 md:w-80 aspect-[4/3] rounded-xl overflow-hidden shrink-0 group cursor-pointer"
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover transition-all duration-500 group-hover:brightness-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D1117]/60 via-transparent to-transparent group-hover:from-[#0D1117]/30 transition-all duration-500" />
+                <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <span className="text-xs text-white/90 font-medium">{img.alt}</span>
+                </div>
+              </motion.div>
+            ))}
           </motion.div>
-        </section>
-      </FadeInOnScroll>
+        </div>
+
+        {/* Row 2 — scrolls right */}
+        <div className="relative">
+          <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0D1117] to-transparent z-10 pointer-events-none" />
+          <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0D1117] to-transparent z-10 pointer-events-none" />
+          <motion.div
+            animate={{ x: ["-50%", "0%"] }}
+            transition={{ duration: 35, ease: "linear", repeat: Infinity }}
+            className="flex gap-4 w-max"
+          >
+            {[...galleryImages.slice(6), ...galleryImages.slice(0, 6), ...galleryImages.slice(6), ...galleryImages.slice(0, 6)].map((img, i) => (
+              <motion.div
+                key={`row2-${i}`}
+                whileHover={{ scale: 1.05, y: -4 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                className="relative w-72 md:w-80 aspect-[4/3] rounded-xl overflow-hidden shrink-0 group cursor-pointer"
+              >
+                <Image
+                  src={img.src}
+                  alt={img.alt}
+                  fill
+                  className="object-cover transition-all duration-500 group-hover:brightness-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D1117]/60 via-transparent to-transparent group-hover:from-[#0D1117]/30 transition-all duration-500" />
+                <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+                  <span className="text-xs text-white/90 font-medium">{img.alt}</span>
+                </div>
+              </motion.div>
+            ))}
+          </motion.div>
+        </div>
+      </section>
 
       {/* ====== Consultation Topics Accordion ====== */}
       <FadeInOnScroll delay={0.05}>
