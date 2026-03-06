@@ -12,6 +12,7 @@ import {
   Calendar,
   FileText,
   RefreshCw,
+  Star,
 } from "lucide-react";
 
 interface EventFile {
@@ -32,6 +33,7 @@ interface Event {
   description: string | null;
   event_date: string;
   is_published: boolean;
+  is_featured: boolean;
   event_files: EventFile[];
 }
 
@@ -133,6 +135,15 @@ export default function EventsAdminTab() {
     fetchEvents();
   };
 
+  const handleToggleFeature = async (eventId: string, currentlyFeatured: boolean) => {
+    if (currentlyFeatured) {
+      await fetch(`/api/admin/events/${eventId}/feature`, { method: "DELETE" });
+    } else {
+      await fetch(`/api/admin/events/${eventId}/feature`, { method: "POST" });
+    }
+    fetchEvents();
+  };
+
   const currentEvents = events.filter((e) => e.event_category === "Current Events");
   const previousEvents = events.filter((e) => e.event_category === "Previous Events");
 
@@ -175,6 +186,20 @@ export default function EventsAdminTab() {
                       </span>
                     </div>
                   </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleToggleFeature(event.id, event.is_featured);
+                    }}
+                    className={`p-2 rounded-lg transition-colors ${
+                      event.is_featured
+                        ? "text-klo-gold bg-klo-gold/10"
+                        : "text-klo-muted hover:text-klo-gold hover:bg-klo-gold/10"
+                    }`}
+                    title={event.is_featured ? "Remove from homepage" : "Feature on homepage"}
+                  >
+                    <Star size={16} fill={event.is_featured ? "currentColor" : "none"} />
+                  </button>
                   <button
                     onClick={(e) => {
                       e.stopPropagation();

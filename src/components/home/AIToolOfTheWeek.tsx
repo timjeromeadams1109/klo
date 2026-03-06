@@ -12,7 +12,7 @@ const mockTool = {
     "Google's AI-powered research assistant transforms your documents into interactive study guides, podcasts, and Q&A sessions. Upload PDFs, articles, or notes and let AI synthesize the key insights for you.",
   whyItMatters:
     "For pastors preparing sermons, executives digesting reports, or board members reviewing governance docs, NotebookLM cuts research time by up to 70% while preserving source fidelity.",
-  link: "/feed",
+  link: "https://notebooklm.google.com",
 };
 
 export default function AIToolOfTheWeek() {
@@ -88,6 +88,8 @@ export default function AIToolOfTheWeek() {
             {/* CTA */}
             <Link
               href={mockTool.link}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-sm font-medium text-[#2764FF] hover:underline hover:gap-2.5 transition-all duration-200"
             >
               Learn More

@@ -1,16 +1,54 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Calendar, MapPin, ArrowRight } from "lucide-react";
 
-const mockEvent = {
-  date: "April 18, 2026",
-  name: "Future of Faith & Technology Summit",
-  location: "Atlanta, GA",
+interface FeaturedEvent {
+  id: string;
+  title: string;
+  conference_name: string;
+  conference_location: string;
+  event_date: string;
+  description: string | null;
+}
+
+const fallbackEvent: FeaturedEvent = {
+  id: "fallback",
+  title: "New Life Leadership Conference — AI and the Future of Ministry",
+  conference_name: "New Life Leadership Conference",
+  conference_location: "Atlanta, GA",
+  event_date: "2026-03-07",
+  description: null,
 };
 
+function formatDate(dateStr: string): string {
+  const d = new Date(dateStr + "T12:00:00");
+  return d.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export default function UpcomingKeynote() {
+  const [event, setEvent] = useState<FeaturedEvent | null>(fallbackEvent);
+
+  useEffect(() => {
+    fetch("/api/featured-keynote")
+      .then((res) => res.json())
+      .then((data) => {
+        // Use fetched event if available, otherwise keep fallback
+        setEvent(data ?? fallbackEvent);
+      })
+      .catch(() => {
+        // Keep fallback on error
+      });
+  }, []);
+
+  if (!event) return null;
+
   return (
     <section>
       {/* Section heading */}
@@ -48,23 +86,23 @@ export default function UpcomingKeynote() {
               <div className="space-y-3">
                 <div className="flex items-center gap-2 text-sm text-[#21B8CD] font-medium">
                   <Calendar className="w-4 h-4" />
-                  <span className="font-mono tracking-wide">{mockEvent.date}</span>
+                  <span className="font-mono tracking-wide">{formatDate(event.event_date)}</span>
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold text-[#E6EDF3]">
-                  {mockEvent.name}
+                  {event.title}
                 </h3>
                 <div className="flex items-center gap-2 text-sm text-[#8B949E]">
                   <MapPin className="w-4 h-4" />
-                  <span>{mockEvent.location}</span>
+                  <span>{event.conference_location}</span>
                 </div>
               </div>
 
               {/* CTA */}
               <Link
-                href="/booking"
+                href="/conference"
                 className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gradient-to-r from-[#2764FF] to-[#21B8CD] text-white font-bold text-sm uppercase tracking-wider rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-[#2764FF]/25 hover:scale-105 active:scale-[0.98] shrink-0 w-full sm:w-auto"
               >
-                Request Keith to Speak
+                Join the Conference
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
