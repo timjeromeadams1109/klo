@@ -271,32 +271,30 @@ export default function ConsultPage() {
       {/* ====== Photo Marquee ====== */}
       <section className="pb-16 md:pb-20 -mt-4 overflow-hidden">
         {/* Row 1 — scrolls left */}
-        <div className="relative mb-4">
+        <div className="relative">
           <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#0D1117] to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#0D1117] to-transparent z-10 pointer-events-none" />
           <motion.div
             animate={{ x: ["0%", "-50%"] }}
             transition={{ duration: 30, ease: "linear", repeat: Infinity }}
-            className="flex gap-4 w-max"
+            className="flex w-max"
           >
             {[...galleryImages, ...galleryImages].map((img, i) => (
-              <motion.div
+              <div
                 key={`row1-${i}`}
-                whileHover={{ scale: 1.05, y: -4 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative w-72 md:w-80 aspect-[4/3] rounded-xl overflow-hidden shrink-0 group cursor-pointer"
+                className="relative w-72 md:w-80 aspect-[4/3] overflow-hidden shrink-0 group cursor-pointer"
               >
                 <Image
                   src={img.src}
                   alt={img.alt}
                   fill
-                  className="object-cover transition-all duration-500 group-hover:brightness-110"
+                  className="object-cover transition-all duration-500 group-hover:brightness-110 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0D1117]/60 via-transparent to-transparent group-hover:from-[#0D1117]/30 transition-all duration-500" />
                 <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                   <span className="text-xs text-white/90 font-medium">{img.alt}</span>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </motion.div>
         </div>
@@ -308,26 +306,24 @@ export default function ConsultPage() {
           <motion.div
             animate={{ x: ["-50%", "0%"] }}
             transition={{ duration: 35, ease: "linear", repeat: Infinity }}
-            className="flex gap-4 w-max"
+            className="flex w-max"
           >
             {[...galleryImages.slice(6), ...galleryImages.slice(0, 6), ...galleryImages.slice(6), ...galleryImages.slice(0, 6)].map((img, i) => (
-              <motion.div
+              <div
                 key={`row2-${i}`}
-                whileHover={{ scale: 1.05, y: -4 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                className="relative w-72 md:w-80 aspect-[4/3] rounded-xl overflow-hidden shrink-0 group cursor-pointer"
+                className="relative w-72 md:w-80 aspect-[4/3] overflow-hidden shrink-0 group cursor-pointer"
               >
                 <Image
                   src={img.src}
                   alt={img.alt}
                   fill
-                  className="object-cover transition-all duration-500 group-hover:brightness-110"
+                  className="object-cover transition-all duration-500 group-hover:brightness-110 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0D1117]/60 via-transparent to-transparent group-hover:from-[#0D1117]/30 transition-all duration-500" />
                 <div className="absolute bottom-0 left-0 right-0 p-3 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
                   <span className="text-xs text-white/90 font-medium">{img.alt}</span>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </motion.div>
         </div>
