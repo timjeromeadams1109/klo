@@ -11,8 +11,7 @@ import {
   Upload,
   Rocket,
   FileText,
-  ChevronDown,
-  ChevronUp,
+  BarChart3,
 } from "lucide-react";
 import PollResults from "../components/PollResults";
 import type { PollWithVotes } from "../types";
@@ -405,14 +404,15 @@ export default function PollManager() {
                     </button>
                     <button
                       onClick={() => toggleResults(poll.id)}
-                      className="p-2 rounded-lg text-klo-muted hover:text-klo-text hover:bg-white/5 transition-colors"
+                      className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        expandedResults.has(poll.id)
+                          ? "bg-[#2764FF]/10 text-[#2764FF]"
+                          : "text-klo-muted hover:text-klo-text hover:bg-white/5"
+                      }`}
                       title={expandedResults.has(poll.id) ? "Hide results" : "View results"}
                     >
-                      {expandedResults.has(poll.id) ? (
-                        <ChevronUp size={16} />
-                      ) : (
-                        <ChevronDown size={16} />
-                      )}
+                      <BarChart3 size={14} />
+                      {expandedResults.has(poll.id) ? "Hide" : "Results"}
                     </button>
                     <button
                       onClick={() => deletePoll(poll.id)}
@@ -425,7 +425,7 @@ export default function PollManager() {
                 </div>
                 {expandedResults.has(poll.id) && (
                   <div className="mt-4 pt-4 border-t border-white/5">
-                    <PollResults poll={poll} />
+                    <PollResults poll={poll} live={poll.is_active} />
                   </div>
                 )}
               </div>
