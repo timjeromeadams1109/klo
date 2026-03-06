@@ -136,6 +136,7 @@ export default function PollManager() {
     if (!file) return;
 
     setUploading(true);
+    setError(null);
     try {
       const formData = new FormData();
       formData.append("file", file);
@@ -144,8 +145,16 @@ export default function PollManager() {
         body: formData,
       });
       if (res.ok) {
+        const data = await res.json();
         fetchPolls();
+        showSuccess(`${Array.isArray(data) ? data.length : 0} poll${Array.isArray(data) && data.length !== 1 ? "s" : ""} imported from file!`);
+      } else {
+        const data = await res.json().catch(() => null);
+        setError(data?.error || `File upload failed (${res.status})`);
       }
+    } catch (err) {
+      setError("Network error — check your connection and try again.");
+      console.error("File upload error:", err);
     } finally {
       setUploading(false);
       e.target.value = "";
