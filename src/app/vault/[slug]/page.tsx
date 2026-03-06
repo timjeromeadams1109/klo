@@ -7,7 +7,6 @@ import { ArrowLeft, BookOpen } from "lucide-react";
 import Badge from "@/components/shared/Badge";
 import Button from "@/components/shared/Button";
 import ContentCard from "@/components/vault/ContentCard";
-import PremiumLock from "@/components/vault/PremiumLock";
 import DetailHero from "@/components/vault/detail/DetailHero";
 import OverviewSection from "@/components/vault/detail/OverviewSection";
 import TakeawayCards from "@/components/vault/detail/TakeawayCards";
@@ -121,8 +120,6 @@ export default function VaultDetailPage({
             <div className="flex-1 min-w-0">
               {item.type === "event" ? (
                 <EventPresentation item={item} />
-              ) : item.isPremium ? (
-                <PremiumLock />
               ) : content ? (
                 <div className="space-y-10">
                   <OverviewSection overview={content.overview} />

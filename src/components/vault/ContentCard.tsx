@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Clock, Lock, Play, FileText, Layout, Shield, Layers, Video, Presentation } from "lucide-react";
+import { Clock, Play, FileText, Layout, Shield, Layers, Video, Presentation } from "lucide-react";
 import Badge from "@/components/shared/Badge";
 import type { VaultItem, VaultType } from "@/lib/vault-data";
 import { getTypeLabel } from "@/lib/vault-data";
@@ -57,14 +57,6 @@ export default function ContentCard({ item, index = 0 }: ContentCardProps) {
               </span>
             </div>
 
-            {/* Premium lock overlay */}
-            {item.isPremium && (
-              <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                <div className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                  <Lock size={18} className="text-white/80" />
-                </div>
-              </div>
-            )}
           </div>
 
           {/* Content */}
@@ -73,11 +65,7 @@ export default function ContentCard({ item, index = 0 }: ContentCardProps) {
             <div className="flex items-center gap-2 mb-3 flex-wrap">
               <Badge variant="muted">{item.category}</Badge>
               <Badge variant="blue">{item.level}</Badge>
-              {item.isPremium ? (
-                <Badge variant="gold">Premium</Badge>
-              ) : (
-                <Badge variant="green">Free</Badge>
-              )}
+              <Badge variant="green">Free</Badge>
             </div>
 
             {/* Title */}
