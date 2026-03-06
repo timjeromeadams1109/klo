@@ -36,7 +36,7 @@ export default function AIToolOfTheWeek() {
         <div className="group relative bg-[#161B22] border border-[#21262D] rounded-xl p-6 sm:p-8 lg:p-10 overflow-hidden transition-all duration-300 hover:border-[#2764FF]/30 hover:shadow-[0_0_30px_rgba(39,100,255,0.1)]">
           {/* Subtle background watermark image */}
           <div className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-500">
-            <Image src="/images/keith/d.jpg" alt="" fill className="object-cover" />
+            <Image src="/images/keith/d.jpg" alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
           {/* Left accent bar */}
           <div className="absolute left-0 top-8 bottom-8 w-0.5 bg-gradient-to-b from-[#2764FF] to-[#21B8CD] rounded-full opacity-50 group-hover:opacity-100 transition-opacity" />

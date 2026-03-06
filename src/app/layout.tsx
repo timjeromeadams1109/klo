@@ -28,10 +28,13 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://keithlodom.io"),
-  title: "KLO",
+  metadataBase: new URL("https://klo-app.vercel.app"),
+  alternates: {
+    canonical: "https://klo-app.vercel.app",
+  },
+  title: "Keith L. Odom | AI Strategist, Leadership Speaker & Executive Advisor",
   description:
-    "The official platform of Keith L. Odom. Access AI-powered advisory, leadership assessments, exclusive content vault, and personal booking — all in one premium experience.",
+    "Access AI-powered advisory, leadership assessments, exclusive content vault, and personal booking from Keith L. Odom — all in one premium experience.",
   manifest: "/manifest.json",
   openGraph: {
     title: "KLO | Keith L. Odom — Technology Innovator, Speaker & Pastor",

@@ -53,7 +53,7 @@ export default function Footer() {
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-klo-muted text-sm hover:text-[#2764FF] transition-colors duration-200"
+                    className="text-klo-muted text-sm hover:text-[#2764FF] transition-colors duration-200 inline-block py-1 min-h-[44px] leading-[44px]"
                   >
                     {link.label}
                   </Link>
@@ -74,7 +74,7 @@ export default function Footer() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-klo-muted text-sm hover:text-[#2764FF] transition-colors duration-200"
+                    className="text-klo-muted text-sm hover:text-[#2764FF] transition-colors duration-200 inline-block py-1 min-h-[44px] leading-[44px]"
                   >
                     {link.label}
                   </a>
@@ -90,10 +90,9 @@ export default function Footer() {
             </h4>
             <div className="flex flex-col gap-3">
               {/* Apple App Store Badge */}
-              <a
-                href="#"
-                aria-label="Download on the App Store"
-                className="inline-block opacity-80 hover:opacity-100 transition-opacity duration-200"
+              <div
+                aria-label="Download on the App Store — Coming soon"
+                className="inline-block opacity-50 cursor-default"
               >
                 <svg width="135" height="40" viewBox="0 0 135 40" xmlns="http://www.w3.org/2000/svg">
                   <rect width="135" height="40" rx="5" fill="#000" />
@@ -104,12 +103,11 @@ export default function Footer() {
                     <path d="M18.9 20.2c-.5 1.1-1.1 2.1-1.9 3-.7.8-1.3 1.3-1.8 1.6-.7.4-1.5.7-2.3.7-.6 0-1.3-.2-2.1-.5-.8-.3-1.5-.5-2.1-.5-.7 0-1.4.2-2.2.5-.8.3-1.4.5-1.9.5-.8 0-1.6-.3-2.4-.8-.8-.6-1.4-1.3-2-2.4-1.3-2.1-2-4.7-2-7.6 0-2.5.5-4.5 1.6-6.1.8-1.3 1.9-2.3 3.3-3C4.4 4.5 5.9 4 7.5 4c.7 0 1.5.2 2.6.6 1 .4 1.7.6 2 .6.2 0 1-.2 2.2-.7 1.1-.4 2.1-.6 2.8-.5 2.1.2 3.7 1 4.7 2.6-1.9 1.1-2.8 2.7-2.7 4.8 0 1.6.6 2.9 1.7 4 .5.5 1.1.9 1.7 1.2-.1.4-.3.8-.5 1.2zM15.4 1c0 1.3-.5 2.4-1.3 3.5-1.1 1.3-2.4 2-3.8 1.9 0-.1 0-.3 0-.5 0-1.2.5-2.5 1.4-3.5.5-.5 1-.9 1.7-1.3.7-.3 1.3-.5 1.9-.5 0 .1 0 .3.1.4z" />
                   </g>
                 </svg>
-              </a>
+              </div>
               {/* Google Play Badge */}
-              <a
-                href="#"
-                aria-label="Get it on Google Play"
-                className="inline-block opacity-80 hover:opacity-100 transition-opacity duration-200"
+              <div
+                aria-label="Get it on Google Play — Coming soon"
+                className="inline-block opacity-50 cursor-default"
               >
                 <svg width="135" height="40" viewBox="0 0 135 40" xmlns="http://www.w3.org/2000/svg">
                   <rect width="135" height="40" rx="5" fill="#000" />
@@ -133,7 +131,7 @@ export default function Footer() {
                     </defs>
                   </g>
                 </svg>
-              </a>
+              </div>
             </div>
             <p className="text-klo-muted/60 text-xs">
               Coming soon to iOS and Android

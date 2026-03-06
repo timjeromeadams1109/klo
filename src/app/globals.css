@@ -262,6 +262,8 @@ body {
 
 .animate-kenburns {
   animation: kenburns 20s ease-in-out infinite alternate;
+  will-change: transform;
+  overflow: hidden;
 }
 
 .parallax-slow {

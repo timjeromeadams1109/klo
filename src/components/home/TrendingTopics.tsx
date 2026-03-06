@@ -34,7 +34,7 @@ export default function TrendingTopics() {
         <div className="group relative bg-[#161B22] border border-[#21262D] rounded-xl p-6 sm:p-8 overflow-hidden transition-all duration-300 hover:border-[#2764FF]/30 hover:shadow-[0_0_30px_rgba(39,100,255,0.1)]">
           {/* Subtle background watermark image */}
           <div className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-500">
-            <Image src="/images/keith/a.jpg" alt="" fill className="object-cover" />
+            <Image src="/images/keith/a.jpg" alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
           </div>
           {/* Left accent bar */}
           <div className="absolute left-0 top-8 bottom-8 w-0.5 bg-gradient-to-b from-[#2764FF] to-[#21B8CD] rounded-full opacity-50 group-hover:opacity-100 transition-opacity" />
@@ -51,7 +51,7 @@ export default function TrendingTopics() {
               <Link
                 key={topic.category}
                 href={`/feed?category=${topic.category}`}
-                className={`shrink-0 inline-flex items-center px-5 py-2.5 text-sm font-medium rounded-full border transition-all duration-200 active:scale-[0.97] ${topic.color}`}
+                className={`shrink-0 inline-flex items-center px-5 py-3 text-sm font-medium rounded-full border transition-all duration-200 active:scale-[0.97] min-h-[44px] ${topic.color}`}
               >
                 {topic.label}
               </Link>

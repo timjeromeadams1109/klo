@@ -119,7 +119,7 @@ export default function TopNav() {
               <Link
                 href={link.href}
                 aria-current={isActive(link.href) ? "page" : undefined}
-                className={`relative text-sm font-medium transition-colors duration-200 pb-1 ${
+                className={`relative text-sm font-medium transition-colors duration-200 pb-1 min-h-[44px] inline-flex items-center ${
                   isActive(link.href)
                     ? "text-[#2764FF]"
                     : "text-[#8B949E] hover:text-[#2764FF]"
@@ -181,7 +181,7 @@ export default function TopNav() {
                     href={link.href}
                     onClick={closeMenu}
                     aria-current={isActive(link.href) ? "page" : undefined}
-                    className={`block text-xl font-medium py-2 border-b border-[#21262D]/30 transition-colors duration-200 ${
+                    className={`block text-xl font-medium py-3 border-b border-[#21262D]/30 transition-colors duration-200 min-h-[44px] ${
                       isActive(link.href)
                         ? "text-[#2764FF] border-[#2764FF]/50"
                         : "text-[#E6EDF3] hover:text-[#2764FF]"

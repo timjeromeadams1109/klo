@@ -25,9 +25,9 @@ const fadeUp = {
 
 export default function HeroBanner() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden bg-[#0D1117]">
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-[#0D1117]" style={{ clipPath: "inset(0)" }}>
       {/* Background image with Ken Burns animation */}
-      <div className="absolute inset-0 animate-kenburns">
+      <div className="absolute inset-0 animate-kenburns overflow-hidden">
         <Image
           src="/images/keith/KO.jpg"
           alt="Keith L. Odom"
