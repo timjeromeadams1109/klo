@@ -21,7 +21,7 @@ const navLinks: NavLink[] = [
   { label: "Vault", href: "/vault" },
   { label: "Book A Consultation", href: "/consult" },
   { label: "Events", href: "/events" },
-  { label: "Conference Engagement", href: "/conference" },
+  { label: "Engagement", href: "/conference" },
   { label: "Invite Keith To Speak", href: "/booking" },
 ];
 
@@ -113,7 +113,7 @@ export default function TopNav() {
         </Link>
 
         {/* Desktop nav links */}
-        <ul className="hidden lg:flex items-center gap-8">
+        <ul className="hidden lg:flex items-center gap-5 xl:gap-7">
           {activeNavLinks.map((link) => (
             <li key={link.href}>
               <Link
