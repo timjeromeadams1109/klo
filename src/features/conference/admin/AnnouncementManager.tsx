@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Send, Trash2, Megaphone } from "lucide-react";
+import { useConferenceRealtime } from "../hooks/useConferenceRealtime";
 
 interface Announcement {
   id: string;
@@ -25,6 +26,8 @@ export default function AnnouncementManager() {
       // keep current state
     }
   }, []);
+
+  useConferenceRealtime({ onAnnouncementsChange: fetchAnnouncements });
 
   useEffect(() => {
     fetchAnnouncements();

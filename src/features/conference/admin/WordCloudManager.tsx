@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Trash2 } from "lucide-react";
+import { useConferenceRealtime } from "../hooks/useConferenceRealtime";
 import type { WordCloudEntry } from "../types";
 
 export default function WordCloudManager() {
@@ -17,6 +18,8 @@ export default function WordCloudManager() {
       setLoading(false);
     }
   }, []);
+
+  useConferenceRealtime({ onWordCloudChange: fetchEntries });
 
   useEffect(() => {
     fetchEntries();

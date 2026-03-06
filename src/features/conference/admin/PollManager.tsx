@@ -14,6 +14,7 @@ import {
   BarChart3,
 } from "lucide-react";
 import PollResults from "../components/PollResults";
+import { useConferenceRealtime } from "../hooks/useConferenceRealtime";
 import type { PollWithVotes } from "../types";
 
 type InputMode = "single" | "batch";
@@ -39,6 +40,8 @@ export default function PollManager() {
       setLoading(false);
     }
   }, []);
+
+  useConferenceRealtime({ onPollsChange: fetchPolls, onVotesChange: fetchPolls });
 
   useEffect(() => {
     fetchPolls();

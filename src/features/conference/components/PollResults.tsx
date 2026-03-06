@@ -25,7 +25,7 @@ const LEADING_COLOR = CONFERENCE_COLORS.gold;
 
 interface PollResultsProps {
   poll: PollWithVotes;
-  /** If true, auto-refreshes results every 30s */
+  /** If true, shows "last updated" indicator */
   live?: boolean;
 }
 
@@ -57,13 +57,6 @@ export default function PollResults({ poll: initialPoll, live }: PollResultsProp
       setFetchError(true);
     }
   }, [poll.id]);
-
-  // Auto-refresh every 30s for live polls
-  useEffect(() => {
-    if (!live) return;
-    const interval = setInterval(refreshResults, 30000);
-    return () => clearInterval(interval);
-  }, [live, refreshResults]);
 
   // Tick "X seconds ago" every 10s
   useEffect(() => {

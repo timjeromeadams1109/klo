@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { CheckCircle2, EyeOff, Trash2, Archive, RotateCcw, Eye } from "lucide-react";
+import { useConferenceRealtime } from "../hooks/useConferenceRealtime";
 import type { Question } from "../types";
 
 export default function QuestionModerator() {
@@ -27,6 +28,12 @@ export default function QuestionModerator() {
       // ignore
     }
   }, []);
+
+  useConferenceRealtime({
+    onQuestionsChange: fetchQuestions,
+    onUpvotesChange: fetchQuestions,
+    onLikesChange: fetchQuestions,
+  });
 
   useEffect(() => {
     fetchQuestions();
