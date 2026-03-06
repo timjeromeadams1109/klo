@@ -73,7 +73,7 @@ export function usePolls() {
     [fetchPolls]
   );
 
-  const activePolls = polls.filter((p) => p.is_active);
+  const activePolls = polls.filter((p) => p.is_deployed && p.is_active);
 
   return { polls, activePolls, loading, vote, refetch: fetchPolls };
 }

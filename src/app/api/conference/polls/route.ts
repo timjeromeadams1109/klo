@@ -48,8 +48,44 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { question, options } = body;
+  const supabase = getServiceSupabase();
 
+  // Batch creation: accept { questions: [{ question, options }] }
+  if (Array.isArray(body.questions)) {
+    const { questions } = body;
+    if (questions.length < 1 || questions.length > 20) {
+      return NextResponse.json(
+        { error: "Batch must contain 1-20 questions" },
+        { status: 400 }
+      );
+    }
+    const rows = [];
+    for (const q of questions) {
+      if (!q.question || !Array.isArray(q.options) || q.options.length < 2) {
+        return NextResponse.json(
+          { error: `Each question needs text and at least 2 options` },
+          { status: 400 }
+        );
+      }
+      rows.push({
+        question: q.question.trim(),
+        options: q.options.map((o: string) => o.trim()).filter(Boolean),
+        is_active: false,
+        is_deployed: false,
+      });
+    }
+    const { data, error } = await supabase
+      .from("conference_polls")
+      .insert(rows)
+      .select();
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(data, { status: 201 });
+  }
+
+  // Single poll creation (original behavior)
+  const { question, options } = body;
   if (!question || !Array.isArray(options) || options.length < 2) {
     return NextResponse.json(
       { error: "Question and at least 2 options required" },
@@ -57,10 +93,9 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = getServiceSupabase();
   const { data, error } = await supabase
     .from("conference_polls")
-    .insert({ question, options })
+    .insert({ question, options, is_active: false, is_deployed: false })
     .select()
     .single();
 

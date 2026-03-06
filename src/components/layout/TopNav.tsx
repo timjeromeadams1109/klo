@@ -21,7 +21,7 @@ const navLinks: NavLink[] = [
   { label: "Vault", href: "/vault" },
   { label: "Book A Consultation", href: "/consult" },
   { label: "Events", href: "/events" },
-  { label: "Conference", href: "/conference" },
+  { label: "Conference Engagement", href: "/conference" },
   { label: "Invite Keith To Speak", href: "/booking" },
 ];
 

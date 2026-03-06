@@ -19,6 +19,8 @@ import {
   RefreshCw,
   Trash2,
   AlertTriangle,
+  BarChart3,
+  Vote,
 } from "lucide-react";
 import Modal from "@/components/shared/Modal";
 import {
@@ -171,6 +173,7 @@ export default function AdminPage() {
   const [assessmentsTotalPages, setAssessmentsTotalPages] = useState(1);
   const [assessmentSearch, setAssessmentSearch] = useState("");
   const [assessmentTypeFilter, setAssessmentTypeFilter] = useState("all");
+  const [pollStats, setPollStats] = useState<{ total: number; totalVotes: number; active: number }>({ total: 0, totalVotes: 0, active: 0 });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -197,15 +200,24 @@ export default function AdminPage() {
     setLoading(true);
     setError(null);
     try {
-      const [statsRes, activityRes] = await Promise.all([
+      const [statsRes, activityRes, pollsRes] = await Promise.all([
         fetch("/api/admin/stats"),
         fetch("/api/admin/activity"),
+        fetch("/api/conference/polls"),
       ]);
       if (!statsRes.ok || !activityRes.ok) {
         throw new Error("Failed to load dashboard data");
       }
       setStats(await statsRes.json());
       setActivity(await activityRes.json());
+      if (pollsRes.ok) {
+        const pollsData = await pollsRes.json();
+        setPollStats({
+          total: pollsData.length,
+          totalVotes: pollsData.reduce((sum: number, p: { totalVotes: number }) => sum + p.totalVotes, 0),
+          active: pollsData.filter((p: { is_active: boolean; is_deployed: boolean }) => p.is_active && p.is_deployed).length,
+        });
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
@@ -419,6 +431,30 @@ export default function AdminPage() {
                 value={stats.advisor.totalMessages}
                 icon={BotMessageSquare}
                 sub={`${stats.advisor.totalTokens.toLocaleString()} tokens used`}
+              />
+            </motion.div>
+
+            {/* Poll stat cards */}
+            <motion.div
+              variants={fadeUp}
+              custom={2.5}
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4"
+            >
+              <StatCard
+                label="Total Polls"
+                value={pollStats.total}
+                icon={BarChart3}
+              />
+              <StatCard
+                label="Total Votes"
+                value={pollStats.totalVotes}
+                icon={Vote}
+              />
+              <StatCard
+                label="Active Polls"
+                value={pollStats.active}
+                icon={BarChart3}
+                sub="Currently live"
               />
             </motion.div>
 

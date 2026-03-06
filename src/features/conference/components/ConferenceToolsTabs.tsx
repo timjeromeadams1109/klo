@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { BarChart3, MessageSquare, Cloud, MessageSquareOff } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { BarChart3, MessageSquare, Cloud, MessageSquareOff, Megaphone, X } from "lucide-react";
 import { CONFERENCE_TOOL_TABS, type ConferenceToolTab } from "../constants";
 import LivePolling from "./LivePolling";
 import QuestionList from "./QuestionList";
@@ -17,6 +17,14 @@ import { useWordCloud } from "../hooks/useWordCloud";
 import { useSessions } from "../hooks/useSessions";
 import { useConferenceRoles } from "../hooks/useConferenceRoles";
 import Card from "@/components/shared/Card";
+import { useConferenceRealtime } from "../hooks/useConferenceRealtime";
+
+interface Announcement {
+  id: string;
+  title: string;
+  message: string;
+  created_at: string;
+}
 
 const TAB_ICONS: Record<ConferenceToolTab, React.ElementType> = {
   polls: BarChart3,
@@ -34,10 +42,55 @@ export default function ConferenceToolsTabs() {
   });
   const wordCloudHook = useWordCloud();
 
+  const [announcements, setAnnouncements] = useState<Announcement[]>([]);
+  const [dismissedIds, setDismissedIds] = useState<Set<string>>(new Set());
+
+  const fetchAnnouncements = useCallback(async () => {
+    try {
+      const res = await fetch("/api/conference/announcements");
+      if (res.ok) setAnnouncements(await res.json());
+    } catch {
+      // keep current
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchAnnouncements();
+  }, [fetchAnnouncements]);
+
+  useConferenceRealtime({ onAnnouncementsChange: fetchAnnouncements });
+
+  const visibleAnnouncements = announcements.filter((a) => !dismissedIds.has(a.id));
+
   const qaDisabled = activeSession && !activeSession.qa_enabled;
 
   return (
     <div className="space-y-6">
+      {/* Announcements banner */}
+      <AnimatePresence>
+        {visibleAnnouncements.map((a) => (
+          <motion.div
+            key={a.id}
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            className="rounded-xl bg-gradient-to-r from-[#2764FF]/10 to-[#21B8CD]/10 border border-[#2764FF]/20 p-4 flex items-start gap-3"
+          >
+            <Megaphone size={18} className="text-[#2764FF] mt-0.5 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-semibold text-klo-text">{a.title}</p>
+              <p className="text-xs text-klo-muted mt-1">{a.message}</p>
+            </div>
+            <button
+              onClick={() => setDismissedIds((prev) => new Set([...prev, a.id]))}
+              className="p-1 rounded-lg text-klo-muted hover:text-klo-text transition-colors shrink-0"
+            >
+              <X size={16} />
+            </button>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
       {/* Tab bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex gap-1 p-1 rounded-xl bg-klo-dark/50 border border-white/5 w-full sm:w-fit overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: "none" }}>

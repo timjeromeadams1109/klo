@@ -3,6 +3,7 @@ export interface Poll {
   question: string;
   options: string[];
   is_active: boolean;
+  is_deployed: boolean;
   show_results: boolean;
   created_at: string;
   closed_at: string | null;

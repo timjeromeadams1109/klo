@@ -7,6 +7,7 @@ import WordCloudManager from "./WordCloudManager";
 import SessionManager from "./SessionManager";
 import RoleManager from "./RoleManager";
 import ProfanityManager from "./ProfanityManager";
+import AnnouncementManager from "./AnnouncementManager";
 
 export default function ConferenceAdminTab() {
   return (
@@ -20,6 +21,12 @@ export default function ConferenceAdminTab() {
       <section>
         <h2 className="text-lg font-semibold text-klo-text mb-4">Session Management</h2>
         <SessionManager />
+      </section>
+
+      {/* Announcements */}
+      <section>
+        <h2 className="text-lg font-semibold text-klo-text mb-4">Push Instructions / Announcements</h2>
+        <AnnouncementManager />
       </section>
 
       {/* Poll Management */}

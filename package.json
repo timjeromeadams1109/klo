@@ -31,9 +31,11 @@
     "docx": "^9.6.0",
     "framer-motion": "^12.34.3",
     "lucide-react": "^0.575.0",
+    "mammoth": "^1.11.0",
     "next": "16.1.6",
     "next-auth": "^4.24.13",
     "pdf-lib": "^1.17.1",
+    "pdf-parse": "^2.4.5",
     "pptxgenjs": "^4.0.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -41,7 +43,8 @@
     "recharts": "^3.7.0",
     "remark-gfm": "^4.0.1",
     "resend": "^6.9.3",
-    "stripe": "^20.4.0"
+    "stripe": "^20.4.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.11.1",
