@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>KLO App — Admin Training: Polling & Q&A</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',sans-serif;background:#0B0F1A;color:#E8E6E3;overflow:hidden}
+  .slide{width:1920px;height:1080px;display:none;flex-direction:column;position:relative;overflow:hidden}
+  .slide.active{display:flex}
+
+  /* Backgrounds */
+  .bg-dark{background:linear-gradient(135deg,#0B0F1A 0%,#141927 50%,#0B0F1A 100%)}
+  .bg-gold{background:linear-gradient(135deg,#1a1608 0%,#0B0F1A 100%)}
+  .bg-blue{background:linear-gradient(135deg,#0a1628 0%,#0B0F1A 100%)}
+
+  /* Accent line */
+  .gold-line{width:80px;height:4px;background:linear-gradient(90deg,#C9A84C,#E8D48B);border-radius:2px;margin:16px 0 24px}
+  .gold-line-sm{width:48px;height:3px;background:linear-gradient(90deg,#C9A84C,#E8D48B);border-radius:2px;margin:12px 0 16px}
+
+  /* Typography */
+  h1{font-family:'Playfair Display',serif;font-size:72px;font-weight:800;line-height:1.1;letter-spacing:-1px}
+  h2{font-family:'Playfair Display',serif;font-size:56px;font-weight:700;line-height:1.15;letter-spacing:-0.5px}
+  h3{font-size:32px;font-weight:700;line-height:1.3}
+  .subtitle{font-size:28px;color:#9CA3AF;font-weight:400;line-height:1.5}
+  .body{font-size:24px;color:#D1D5DB;line-height:1.6}
+  .small{font-size:20px;color:#9CA3AF;line-height:1.5}
+  .gold{color:#C9A84C}
+  .cyan{color:#21B8CD}
+  .green{color:#6ECF55}
+  .red{color:#F77A81}
+  .purple{color:#8840FF}
+  .blue{color:#2764FF}
+
+  /* Layout helpers */
+  .pad{padding:80px 100px}
+  .pad-narrow{padding:80px 120px}
+  .flex{display:flex}
+  .gap-40{gap:40px}
+  .gap-60{gap:60px}
+  .gap-80{gap:80px}
+  .col{flex-direction:column}
+  .grow{flex:1}
+  .center{align-items:center;justify-content:center}
+  .vcenter{align-items:center}
+
+  /* Cards */
+  .card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:36px}
+  .card-gold{border-color:rgba(201,168,76,0.3);background:rgba(201,168,76,0.05)}
+  .card-blue{border-color:rgba(33,184,205,0.3);background:rgba(33,184,205,0.05)}
+  .card-green{border-color:rgba(110,207,85,0.3);background:rgba(110,207,85,0.05)}
+  .card-red{border-color:rgba(247,122,129,0.3);background:rgba(247,122,129,0.05)}
+  .card-purple{border-color:rgba(136,64,255,0.3);background:rgba(136,64,255,0.05)}
+
+  /* Step circles */
+  .step{display:flex;align-items:flex-start;gap:20px;margin-bottom:28px}
+  .step-num{width:44px;height:44px;min-width:44px;border-radius:50%;background:linear-gradient(135deg,#C9A84C,#E8D48B);color:#0B0F1A;font-weight:800;font-size:20px;display:flex;align-items:center;justify-content:center}
+  .step-text{font-size:24px;color:#D1D5DB;line-height:1.5;padding-top:6px}
+  .step-text strong{color:#E8E6E3;font-weight:600}
+
+  /* Badges */
+  .badge{display:inline-block;padding:6px 16px;border-radius:8px;font-size:16px;font-weight:600;margin-right:8px}
+  .badge-gold{background:rgba(201,168,76,0.2);color:#C9A84C;border:1px solid rgba(201,168,76,0.3)}
+  .badge-blue{background:rgba(33,184,205,0.2);color:#21B8CD;border:1px solid rgba(33,184,205,0.3)}
+  .badge-green{background:rgba(110,207,85,0.2);color:#6ECF55;border:1px solid rgba(110,207,85,0.3)}
+  .badge-red{background:rgba(247,122,129,0.2);color:#F77A81;border:1px solid rgba(247,122,129,0.3)}
+  .badge-purple{background:rgba(136,64,255,0.2);color:#8840FF;border:1px solid rgba(136,64,255,0.3)}
+
+  /* Icon mock */
+  .icon-box{width:56px;height:56px;min-width:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px}
+  .icon-gold{background:rgba(201,168,76,0.15);color:#C9A84C}
+  .icon-blue{background:rgba(33,184,205,0.15);color:#21B8CD}
+  .icon-green{background:rgba(110,207,85,0.15);color:#6ECF55}
+
+  /* Bullet list */
+  ul.bullets{list-style:none;padding:0}
+  ul.bullets li{font-size:24px;color:#D1D5DB;line-height:1.6;padding:8px 0;padding-left:28px;position:relative}
+  ul.bullets li::before{content:"";position:absolute;left:0;top:18px;width:10px;height:10px;border-radius:50%;background:#C9A84C}
+
+  /* Table */
+  .tbl{width:100%;border-collapse:collapse}
+  .tbl th{text-align:left;padding:16px 20px;font-size:18px;font-weight:600;color:#C9A84C;border-bottom:2px solid rgba(201,168,76,0.3)}
+  .tbl td{padding:16px 20px;font-size:20px;color:#D1D5DB;border-bottom:1px solid rgba(255,255,255,0.06)}
+  .tbl tr:last-child td{border-bottom:none}
+
+  /* Decorative elements */
+  .corner-glow{position:absolute;width:400px;height:400px;border-radius:50%;filter:blur(120px);opacity:0.08;pointer-events:none}
+  .glow-gold{background:#C9A84C}
+  .glow-blue{background:#2764FF}
+
+  /* Navigation */
+  .nav{position:fixed;bottom:30px;right:40px;display:flex;gap:12px;z-index:100}
+  .nav button{width:50px;height:50px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.05);color:#E8E6E3;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+  .nav button:hover{background:rgba(201,168,76,0.15);border-color:rgba(201,168,76,0.4)}
+  .slide-counter{position:fixed;bottom:38px;left:40px;font-size:16px;color:#6B7280;z-index:100}
+
+  /* Diagram flow */
+  .flow{display:flex;align-items:center;gap:0}
+  .flow-step{text-align:center;flex:1}
+  .flow-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:16px;padding:24px 16px;margin-bottom:12px}
+  .flow-arrow{font-size:32px;color:#C9A84C;min-width:40px;text-align:center;margin-bottom:12px}
+  .flow-label{font-size:16px;color:#9CA3AF}
+</style>
+</head>
+<body>
+
+<!-- ============ SLIDE 1: TITLE ============ -->
+<div class="slide active bg-dark pad" style="justify-content:center">
+  <div class="corner-glow glow-gold" style="top:-100px;right:-100px"></div>
+  <div class="corner-glow glow-blue" style="bottom:-100px;left:-100px"></div>
+  <div style="max-width:1200px">
+    <div class="badge badge-gold" style="margin-bottom:24px;font-size:18px">ADMIN TRAINING GUIDE</div>
+    <h1 style="font-size:80px;margin-bottom:16px">Live Polling & Q&A</h1>
+    <div class="gold-line" style="width:120px"></div>
+    <p class="subtitle" style="font-size:32px;max-width:800px">A step-by-step guide to managing audience engagement during conferences and seminars</p>
+    <div style="margin-top:60px;display:flex;gap:16px">
+      <div class="badge badge-blue">Polling</div>
+      <div class="badge badge-green">Q&A</div>
+      <div class="badge badge-purple">Announcements</div>
+      <div class="badge badge-gold">Word Cloud</div>
+    </div>
+    <p class="small" style="margin-top:60px;color:#6B7280">KLO Advisory Platform &bull; Prepared for Keith L. Odom</p>
+  </div>
+</div>
+
+<!-- ============ SLIDE 2: TABLE OF CONTENTS ============ -->
+<div class="slide bg-dark pad">
+  <div class="corner-glow glow-gold" style="top:-200px;right:200px"></div>
+  <h2 style="margin-bottom:8px">What We'll Cover</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-60" style="margin-top:20px;flex:1">
+    <div style="flex:1">
+      <h3 class="gold" style="margin-bottom:24px">Admin Side</h3>
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Getting to the Admin Panel</strong><br>Navigating to Conference tab</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>Creating Polls</strong><br>Single, batch, and file upload</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Deploying & Managing Polls</strong><br>Deploy, open/close, show results</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Moderating Q&A</strong><br>Release, answer, hide, archive</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Announcements</strong><br>Push live messages to all guests</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-text"><strong>Word Cloud</strong><br>View and clear submissions</div></div>
+    </div>
+    <div style="flex:1">
+      <h3 class="cyan" style="margin-bottom:24px">Guest Side</h3>
+      <div class="step"><div class="step-num">7</div><div class="step-text"><strong>Joining the Conference</strong><br>How guests access the live page</div></div>
+      <div class="step"><div class="step-num">8</div><div class="step-text"><strong>Voting on Polls</strong><br>What the guest sees and how they vote</div></div>
+      <div class="step"><div class="step-num">9</div><div class="step-text"><strong>Submitting Questions</strong><br>Asking questions and upvoting</div></div>
+      <div class="step"><div class="step-num">10</div><div class="step-text"><strong>Viewing Results & Announcements</strong><br>Live results, announcements, word cloud</div></div>
+      <div style="margin-top:32px;padding:24px;border-radius:16px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.15)">
+        <p class="body" style="color:#C9A84C"><strong>Tip:</strong> Share the join link with your audience before the event starts.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 3: ACCESSING ADMIN ============ -->
+<div class="slide bg-dark pad">
+  <div class="corner-glow glow-blue" style="top:-100px;left:-100px"></div>
+  <div class="badge badge-gold" style="margin-bottom:16px">ADMIN SIDE</div>
+  <h2 style="margin-bottom:8px">Accessing the Conference Admin</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-60" style="flex:1;margin-top:10px">
+    <div style="flex:1">
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Sign in</strong> at <span class="gold">klo-app.vercel.app/auth/signin</span> using your admin credentials</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Navigate to the <strong>Admin Dashboard</strong> (lock icon in navigation or go to <span class="gold">/admin</span>)</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Click the <strong>"Conference"</strong> tab in the tab bar at the top</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">You'll see all management sections stacked vertically:
+        <ul class="bullets" style="margin-top:8px">
+          <li>Seminar Mode Toggle</li>
+          <li>Session Management</li>
+          <li>Announcements</li>
+          <li>Poll Management</li>
+          <li>Question Moderation</li>
+          <li>Word Cloud</li>
+          <li>Profanity Filter</li>
+          <li>Role Management</li>
+        </ul>
+      </div></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:20px">
+      <div class="card card-gold">
+        <h3 style="font-size:24px;margin-bottom:12px" class="gold">Admin Roles</h3>
+        <table class="tbl">
+          <tr><td><strong>Owner</strong> (Keith)</td><td>Full access to everything</td></tr>
+          <tr><td><strong>Admin</strong></td><td>Full conference management</td></tr>
+          <tr><td><strong>Moderator</strong></td><td>Q&A moderation only</td></tr>
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="font-size:24px;margin-bottom:12px">Seminar Mode</h3>
+        <p class="body">Toggle this <strong class="green">ON</strong> before your event. It enables the live conference experience for guests. Toggle <strong class="red">OFF</strong> when the event is over.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 4: CREATING POLLS ============ -->
+<div class="slide bg-gold pad">
+  <div class="corner-glow glow-gold" style="bottom:-100px;right:-100px"></div>
+  <div class="badge badge-gold" style="margin-bottom:16px">POLLING</div>
+  <h2 style="margin-bottom:8px">Creating Polls</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-60" style="flex:1;margin-top:10px">
+    <div style="flex:1">
+      <h3 style="margin-bottom:20px">Method 1: Single Poll</h3>
+      <div class="step"><div class="step-num">1</div><div class="step-text">In Poll Management, make sure <strong>"Single"</strong> mode is selected (toggle at top)</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Type your <strong>poll question</strong> in the text field</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Enter at least <strong>2 answer options</strong> (click "+" to add more)</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">Click <strong>"Create Poll"</strong> &mdash; it goes to the <strong>Queued</strong> list</div></div>
+
+      <div style="margin-top:32px;padding:20px;border-radius:14px;background:rgba(33,184,205,0.06);border:1px solid rgba(33,184,205,0.15)">
+        <p class="body"><strong class="cyan">Key Point:</strong> Newly created polls are <strong>queued</strong>, not visible to guests yet. You must deploy them separately.</p>
+      </div>
+    </div>
+    <div style="flex:1">
+      <h3 style="margin-bottom:20px">Method 2: Batch Input</h3>
+      <div class="card" style="margin-bottom:24px">
+        <p class="body" style="margin-bottom:12px">Toggle to <strong>"Batch"</strong> mode and enter multiple polls using this format:</p>
+        <div style="background:#0B0F1A;border-radius:12px;padding:20px;font-family:monospace;font-size:18px;color:#21B8CD;line-height:1.8">
+          What is your role? | Executive | Manager | Staff<br>
+          Rate the keynote | Excellent | Good | Fair | Poor<br>
+          Best session today? | Session A | Session B | Session C
+        </div>
+        <p class="small" style="margin-top:12px">Each line = one poll. Separate question and options with <strong>|</strong> pipes.</p>
+      </div>
+
+      <h3 style="margin-bottom:20px">Method 3: File Upload</h3>
+      <div class="card">
+        <p class="body">Click the <strong>upload button</strong> and select a file:</p>
+        <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+          <div class="badge badge-blue">.txt</div>
+          <div class="badge badge-green">.pdf</div>
+          <div class="badge badge-purple">.docx</div>
+          <div class="badge badge-gold">.xlsx</div>
+        </div>
+        <p class="small" style="margin-top:12px">Same pipe-separated format. Up to 20 questions per upload.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 5: POLL LIFECYCLE ============ -->
+<div class="slide bg-dark pad">
+  <div class="corner-glow glow-gold" style="top:-200px;left:400px"></div>
+  <div class="badge badge-gold" style="margin-bottom:16px">POLLING</div>
+  <h2 style="margin-bottom:8px">The Poll Lifecycle</h2>
+  <div class="gold-line"></div>
+  <p class="subtitle" style="margin-bottom:40px">Every poll moves through these stages. You control each transition.</p>
+
+  <!-- Flow diagram -->
+  <div class="flow" style="margin:0 40px 40px">
+    <div class="flow-step">
+      <div class="flow-box" style="border-color:rgba(155,155,155,0.3)">
+        <div style="font-size:36px;margin-bottom:8px">📝</div>
+        <h3 style="font-size:24px">Queued</h3>
+      </div>
+      <div class="flow-label">Created, not visible</div>
+    </div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">
+      <div class="flow-box" style="border-color:rgba(33,184,205,0.4);background:rgba(33,184,205,0.05)">
+        <div style="font-size:36px;margin-bottom:8px">🚀</div>
+        <h3 style="font-size:24px" class="cyan">Deployed</h3>
+      </div>
+      <div class="flow-label">Visible + accepting votes</div>
+    </div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">
+      <div class="flow-box" style="border-color:rgba(247,122,129,0.4);background:rgba(247,122,129,0.05)">
+        <div style="font-size:36px;margin-bottom:8px">🔒</div>
+        <h3 style="font-size:24px" class="red">Closed</h3>
+      </div>
+      <div class="flow-label">Visible, voting stopped</div>
+    </div>
+    <div class="flow-arrow">&#8594;</div>
+    <div class="flow-step">
+      <div class="flow-box" style="border-color:rgba(110,207,85,0.4);background:rgba(110,207,85,0.05)">
+        <div style="font-size:36px;margin-bottom:8px">📊</div>
+        <h3 style="font-size:24px" class="green">Results Shown</h3>
+      </div>
+      <div class="flow-label">Guests see the results</div>
+    </div>
+  </div>
+
+  <div class="flex gap-40" style="margin-top:20px">
+    <div class="card" style="flex:1">
+      <h3 style="font-size:22px;margin-bottom:16px">Admin Controls (Deployed Polls)</h3>
+      <table class="tbl">
+        <tr><th>Button</th><th>Icon</th><th>What It Does</th></tr>
+        <tr><td><strong class="cyan">Deploy</strong></td><td>Rocket icon</td><td>Moves poll from Queued to live &mdash; guests can now see it and vote</td></tr>
+        <tr><td><strong class="green">Power On/Off</strong></td><td>Power icon</td><td>Opens or closes voting. When off, no new votes accepted</td></tr>
+        <tr><td><strong class="gold">Show/Hide Results</strong></td><td>Eye icon</td><td>Toggles whether guests can see vote tallies</td></tr>
+        <tr><td><strong style="color:#D1D5DB">Expand Results</strong></td><td>Chevron icon</td><td>Shows you (admin) the vote breakdown inline</td></tr>
+        <tr><td><strong class="red">Delete</strong></td><td>Trash icon</td><td>Permanently removes the poll</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 6: DEPLOYING POLLS STEP-BY-STEP ============ -->
+<div class="slide bg-blue pad">
+  <div class="corner-glow glow-blue" style="bottom:-100px;left:-100px"></div>
+  <div class="badge badge-gold" style="margin-bottom:16px">POLLING</div>
+  <h2 style="margin-bottom:8px">Deploying & Managing Polls</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-60" style="flex:1;margin-top:10px">
+    <div style="flex:1">
+      <h3 style="margin-bottom:20px">During Your Event</h3>
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Pre-load your polls</strong> before the event (create them in Queued)</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">When ready, click <strong>"Deploy"</strong> on the poll you want to launch &mdash; it goes live instantly</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Watch votes come in by clicking the <strong>expand chevron</strong> to see results in real-time</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">When done collecting votes, click the <strong>Power icon</strong> to close voting</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text">Click the <strong>Eye icon</strong> to reveal results to the audience</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-text">Move on &mdash; deploy the next poll when ready</div></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:24px">
+      <div class="card card-gold">
+        <h3 style="font-size:22px;margin-bottom:12px" class="gold">Pro Tips</h3>
+        <ul class="bullets">
+          <li>Deploy one poll at a time to keep the audience focused</li>
+          <li>Give 60-90 seconds for voting before closing</li>
+          <li>Show results AFTER closing for maximum reveal impact</li>
+          <li>You can re-open a closed poll if needed (toggle power back on)</li>
+        </ul>
+      </div>
+      <div class="card card-red">
+        <h3 style="font-size:22px;margin-bottom:12px" class="red">Important</h3>
+        <p class="body">Each guest can only vote <strong>once per poll</strong>. Votes are tracked by a unique device fingerprint &mdash; no account required. This prevents ballot stuffing while keeping participation frictionless.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 7: Q&A ADMIN ============ -->
+<div class="slide bg-dark pad">
+  <div class="corner-glow glow-gold" style="top:-100px;right:-100px"></div>
+  <div class="badge badge-green" style="margin-bottom:16px">Q&A</div>
+  <h2 style="margin-bottom:8px">Moderating Q&A (Admin)</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-60" style="flex:1;margin-top:10px">
+    <div style="flex:1">
+      <h3 style="margin-bottom:20px">How It Works</h3>
+      <p class="body" style="margin-bottom:24px">When guests submit questions, they appear in the <strong>Question Moderation</strong> section of the Conference admin. Questions are <strong>unreleased by default</strong> &mdash; you decide which ones go live.</p>
+
+      <h3 style="margin-bottom:20px">Question Controls</h3>
+      <table class="tbl">
+        <tr><th>Action</th><th>Icon</th><th>Effect</th></tr>
+        <tr><td><strong class="cyan">Release</strong></td><td>Eye</td><td>Makes the question visible to all guests</td></tr>
+        <tr><td><strong class="green">Mark Answered</strong></td><td>Check Circle</td><td>Adds a green "Answered" badge</td></tr>
+        <tr><td><strong class="gold">Hide</strong></td><td>Eye Off</td><td>Temporarily hides from guest view</td></tr>
+        <tr><td><strong style="color:#9CA3AF">Archive</strong></td><td>Archive</td><td>Moves to the archived section (soft delete)</td></tr>
+        <tr><td><strong class="red">Delete</strong></td><td>Trash</td><td>Permanently removes (admin/owner only)</td></tr>
+      </table>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:24px">
+      <div class="card card-green">
+        <h3 style="font-size:22px;margin-bottom:12px" class="green">Question Sorting</h3>
+        <p class="body">Questions are automatically sorted by:</p>
+        <ul class="bullets">
+          <li><strong>Likes</strong> (from authenticated users) &mdash; highest first</li>
+          <li><strong>Upvotes</strong> (from anonymous guests) &mdash; then by these</li>
+          <li><strong>Time submitted</strong> &mdash; newest last</li>
+        </ul>
+        <p class="body" style="margin-top:12px">This means the most popular questions naturally rise to the top.</p>
+      </div>
+      <div class="card">
+        <h3 style="font-size:22px;margin-bottom:12px">Archived Questions</h3>
+        <p class="body">Archived questions move to a separate collapsible section at the bottom. You can <strong>restore</strong> them back to active at any time.</p>
+      </div>
+      <div class="card card-blue">
+        <h3 style="font-size:22px;margin-bottom:12px" class="cyan">Profanity Filter</h3>
+        <p class="body">Questions are automatically checked for inappropriate language before being submitted. Blocked questions never reach you. Manage the word list in the <strong>Profanity Filter</strong> section.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 8: Q&A WORKFLOW ============ -->
+<div class="slide bg-gold pad">
+  <div class="corner-glow glow-gold" style="bottom:-200px;right:200px"></div>
+  <div class="badge badge-green" style="margin-bottom:16px">Q&A</div>
+  <h2 style="margin-bottom:8px">Recommended Q&A Workflow</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-60" style="flex:1;margin-top:20px">
+    <div style="flex:1.2">
+      <div class="step"><div class="step-num">1</div><div class="step-text"><strong>Before the event:</strong> Make sure Seminar Mode is ON and the session has <strong>Q&A enabled</strong> in Session Management</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text"><strong>As questions come in:</strong> Review them in the Question Moderation panel. They appear in real-time.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text"><strong>Release good questions</strong> by clicking the Eye icon &mdash; they become visible to all attendees</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text"><strong>Let the audience upvote</strong> their favorite questions &mdash; the most popular rise to the top</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text"><strong>Address the top questions</strong> during your Q&A segment, then mark them as <strong>Answered</strong> (check icon)</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-text"><strong>Archive or hide</strong> off-topic or duplicate questions to keep things clean</div></div>
+    </div>
+    <div style="flex:0.8;display:flex;flex-direction:column;gap:24px">
+      <div class="card card-gold" style="flex:1">
+        <h3 style="font-size:24px;margin-bottom:16px" class="gold">Live Q&A Strategy</h3>
+        <ul class="bullets">
+          <li>Release questions in batches during designated Q&A breaks</li>
+          <li>Use upvote counts to prioritize which to answer first</li>
+          <li>The "Top 5" badge (gold star) highlights the most popular questions for guests</li>
+          <li>Marking as "Answered" shows a green badge so guests know it was addressed</li>
+        </ul>
+      </div>
+      <div class="card" style="padding:24px">
+        <p class="body"><strong class="gold">Tip:</strong> Assign a <strong>moderator</strong> to manage Q&A while you focus on presenting. Add moderators in the <strong>Role Management</strong> section.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 9: ANNOUNCEMENTS & WORD CLOUD ============ -->
+<div class="slide bg-dark pad">
+  <div class="corner-glow glow-blue" style="top:-100px;right:200px"></div>
+  <div class="badge badge-purple" style="margin-bottom:16px">ANNOUNCEMENTS & WORD CLOUD</div>
+  <h2 style="margin-bottom:8px">Announcements & Word Cloud</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-60" style="flex:1;margin-top:10px">
+    <div style="flex:1">
+      <h3 class="purple" style="margin-bottom:20px">Push Announcements</h3>
+      <p class="body" style="margin-bottom:24px">Send real-time messages to every connected guest instantly.</p>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Scroll to <strong>"Push Instructions / Announcements"</strong> in the Conference tab</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Enter a <strong>Title</strong> (e.g., "Break Time") and a <strong>Message</strong></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Click <strong>"Push to Attendees"</strong></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">A blue/cyan banner appears on every guest's screen instantly</div></div>
+      <div style="margin-top:20px" class="card card-purple">
+        <p class="body">Use announcements for: break times, room changes, WiFi info, schedule updates, or any real-time instructions.</p>
+      </div>
+    </div>
+    <div style="flex:1">
+      <h3 class="gold" style="margin-bottom:20px">Word Cloud</h3>
+      <p class="body" style="margin-bottom:24px">A fun, visual engagement tool. Guests submit words and they appear in a live word cloud.</p>
+      <div class="card" style="margin-bottom:24px">
+        <h3 style="font-size:22px;margin-bottom:16px">Admin Controls</h3>
+        <ul class="bullets">
+          <li>View all submitted words with frequency counts</li>
+          <li>See total unique words and total submissions</li>
+          <li>Top 50 most frequent words displayed</li>
+          <li><strong class="red">Clear All</strong> button resets the entire word cloud (with confirmation prompt)</li>
+        </ul>
+      </div>
+      <div class="card card-blue">
+        <h3 style="font-size:22px;margin-bottom:12px" class="cyan">Guest Experience</h3>
+        <p class="body">Guests type a word (max 30 characters) and submit. The word cloud updates live with:</p>
+        <ul class="bullets">
+          <li>Size based on frequency (more popular = bigger)</li>
+          <li>7-color rotating palette</li>
+          <li>Random rotation for visual interest</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 10: GUEST JOINING ============ -->
+<div class="slide bg-blue pad">
+  <div class="corner-glow glow-blue" style="top:-100px;left:-100px"></div>
+  <div class="badge badge-blue" style="margin-bottom:16px">GUEST SIDE</div>
+  <h2 style="margin-bottom:8px">How Guests Join</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-60" style="flex:1;margin-top:20px">
+    <div style="flex:1.2">
+      <div class="step"><div class="step-num">1</div><div class="step-text">Share the link <strong class="gold">klo-app.vercel.app/conference/join</strong> with your audience (on screen, in email, or via QR code)</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Guests open the link on their phone, tablet, or laptop &mdash; <strong>no account or download required</strong></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">They see the live conference page with tabbed sections:
+        <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+          <div class="badge badge-blue">Polls</div>
+          <div class="badge badge-green">Q&A</div>
+          <div class="badge badge-gold">Word Cloud</div>
+        </div>
+      </div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">Everything updates <strong>in real-time</strong> &mdash; when you deploy a poll or release a question, it appears instantly on their screen</div></div>
+    </div>
+    <div style="flex:0.8;display:flex;flex-direction:column;gap:24px">
+      <div class="card card-blue" style="flex:1">
+        <h3 style="font-size:24px;margin-bottom:16px" class="cyan">Guest Requirements</h3>
+        <ul class="bullets">
+          <li>Any modern web browser</li>
+          <li>Phone, tablet, or laptop</li>
+          <li>WiFi or cellular connection</li>
+          <li>No app download needed</li>
+          <li>No account or sign-up needed</li>
+        </ul>
+      </div>
+      <div class="card card-gold">
+        <h3 style="font-size:24px;margin-bottom:12px" class="gold">Make Sure</h3>
+        <p class="body"><strong>Seminar Mode is ON</strong> before guests arrive. If it's off, the live conference features won't be active.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 11: GUEST POLL VOTING ============ -->
+<div class="slide bg-dark pad">
+  <div class="corner-glow glow-gold" style="bottom:-100px;right:-100px"></div>
+  <div class="badge badge-blue" style="margin-bottom:16px">GUEST SIDE</div>
+  <h2 style="margin-bottom:8px">Guest Experience: Voting on Polls</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-60" style="flex:1;margin-top:10px">
+    <div style="flex:1">
+      <h3 style="margin-bottom:20px">What the Guest Sees</h3>
+      <div class="step"><div class="step-num">1</div><div class="step-text">When you <strong>deploy</strong> a poll, it appears under the <strong>"Polls"</strong> tab on every guest's screen</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">The poll question is shown with <strong>radio button options</strong> (one choice)</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Guest selects their answer and taps <strong>"Submit Vote"</strong></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">After voting, they see a confirmation. If you've enabled results, they see:
+        <ul class="bullets" style="margin-top:8px">
+          <li>Horizontal progress bars per option</li>
+          <li>Percentage breakdown</li>
+          <li>Total vote count</li>
+          <li>Bar chart visualization</li>
+        </ul>
+      </div></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:24px">
+      <div class="card" style="flex:1">
+        <h3 style="font-size:22px;margin-bottom:16px">Guest Poll Rules</h3>
+        <table class="tbl">
+          <tr><td style="width:200px"><strong>One vote per poll</strong></td><td>Tracked by device fingerprint &mdash; cannot vote twice</td></tr>
+          <tr><td><strong>No account needed</strong></td><td>Voting is completely anonymous</td></tr>
+          <tr><td><strong>Real-time</strong></td><td>New polls appear instantly when deployed</td></tr>
+          <tr><td><strong>Results</strong></td><td>Only visible when admin enables "Show Results"</td></tr>
+          <tr><td><strong>Closed polls</strong></td><td>Still visible but "Submit" button is disabled</td></tr>
+        </table>
+      </div>
+      <div class="card card-gold">
+        <p class="body"><strong class="gold">Audience Tip:</strong> Tell your audience "Take out your phones &mdash; there's a quick poll for you!" then deploy the poll. The immediate interaction gets people engaged.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 12: GUEST Q&A ============ -->
+<div class="slide bg-gold pad">
+  <div class="corner-glow glow-gold" style="top:-200px;left:200px"></div>
+  <div class="badge badge-green" style="margin-bottom:16px">GUEST SIDE</div>
+  <h2 style="margin-bottom:8px">Guest Experience: Q&A</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-60" style="flex:1;margin-top:10px">
+    <div style="flex:1">
+      <h3 style="margin-bottom:20px">Submitting a Question</h3>
+      <div class="step"><div class="step-num">1</div><div class="step-text">Guest taps the <strong>"Q&A"</strong> tab on the conference page</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">Types their question in the text input field</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">Optionally enters their <strong>name</strong> (or submits anonymously)</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">Taps <strong>"Submit"</strong> &mdash; the question goes to your moderation queue</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text">If the profanity filter catches something, the guest sees an error with the flagged term(s)</div></div>
+
+      <div style="margin-top:24px" class="card card-green">
+        <h3 style="font-size:22px;margin-bottom:12px" class="green">What Happens Next</h3>
+        <p class="body">The question <strong>does not appear publicly</strong> until you (the admin) <strong>release</strong> it. This gives you full control over what's shown to the audience.</p>
+      </div>
+    </div>
+    <div style="flex:1">
+      <h3 style="margin-bottom:20px">Browsing & Upvoting Questions</h3>
+      <div class="card" style="margin-bottom:24px">
+        <p class="body" style="margin-bottom:16px">Once you release questions, all guests can see them and interact:</p>
+        <table class="tbl">
+          <tr><th>Feature</th><th>Details</th></tr>
+          <tr><td><strong>Upvote</strong> (chevron up)</td><td>Anonymous, one per guest per question. Helps popular questions rise.</td></tr>
+          <tr><td><strong>Like</strong> (heart icon)</td><td>Only for signed-in users. Shows separately from upvotes.</td></tr>
+          <tr><td><strong>"Answered" badge</strong></td><td>Green badge appears when you mark a question answered</td></tr>
+          <tr><td><strong>"Top 5" badge</strong></td><td>Gold badge on the 5 most-liked questions</td></tr>
+        </table>
+      </div>
+      <div class="card card-blue">
+        <h3 style="font-size:22px;margin-bottom:12px" class="cyan">Real-Time Updates</h3>
+        <p class="body">All changes sync instantly via real-time subscriptions. When you release, answer, or hide a question, every guest sees the update within seconds.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 13: QUICK REFERENCE ============ -->
+<div class="slide bg-dark pad">
+  <div class="corner-glow glow-gold" style="top:-100px;left:-100px"></div>
+  <div class="corner-glow glow-blue" style="bottom:-100px;right:-100px"></div>
+  <div class="badge badge-gold" style="margin-bottom:16px">REFERENCE</div>
+  <h2 style="margin-bottom:8px">Quick Reference Card</h2>
+  <div class="gold-line"></div>
+  <div class="flex gap-40" style="flex:1;margin-top:10px">
+    <div style="flex:1">
+      <div class="card card-gold" style="margin-bottom:20px">
+        <h3 style="font-size:22px;margin-bottom:16px" class="gold">Before the Event</h3>
+        <ul class="bullets">
+          <li>Sign in and go to Admin &rarr; Conference tab</li>
+          <li>Turn <strong>Seminar Mode ON</strong></li>
+          <li>Create and queue your polls (single, batch, or file upload)</li>
+          <li>Set up sessions if using session-specific Q&A</li>
+          <li>Review profanity filter word list</li>
+          <li>Assign moderators if needed</li>
+          <li>Test with the join link on your phone</li>
+        </ul>
+      </div>
+      <div class="card card-blue">
+        <h3 style="font-size:22px;margin-bottom:16px" class="cyan">During the Event</h3>
+        <ul class="bullets">
+          <li>Deploy polls one at a time as needed</li>
+          <li>Close polls &rarr; reveal results for discussion</li>
+          <li>Monitor &amp; release incoming questions</li>
+          <li>Mark questions as answered after addressing</li>
+          <li>Push announcements for logistics</li>
+          <li>Run word cloud for icebreakers</li>
+        </ul>
+      </div>
+    </div>
+    <div style="flex:1">
+      <div class="card card-green" style="margin-bottom:20px">
+        <h3 style="font-size:22px;margin-bottom:16px" class="green">After the Event</h3>
+        <ul class="bullets">
+          <li>Turn <strong>Seminar Mode OFF</strong></li>
+          <li>Review any unanswered questions</li>
+          <li>Clear the word cloud if desired</li>
+          <li>Delete test polls if any remain</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3 style="font-size:22px;margin-bottom:16px">Key URLs</h3>
+        <table class="tbl">
+          <tr><td><strong>Admin Dashboard</strong></td><td class="gold">klo-app.vercel.app/admin</td></tr>
+          <tr><td><strong>Guest Join Link</strong></td><td class="cyan">klo-app.vercel.app/conference/join</td></tr>
+          <tr><td><strong>Conference Page</strong></td><td style="color:#D1D5DB">klo-app.vercel.app/conference</td></tr>
+          <tr><td><strong>Sign In</strong></td><td style="color:#D1D5DB">klo-app.vercel.app/auth/signin</td></tr>
+        </table>
+      </div>
+      <div class="card card-red" style="padding:24px">
+        <p class="body"><strong class="red">Remember:</strong> Seminar Mode must be <strong>ON</strong> for any live features to work. This is the master switch.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SLIDE 14: CLOSING ============ -->
+<div class="slide bg-dark pad" style="justify-content:center;align-items:center;text-align:center">
+  <div class="corner-glow glow-gold" style="top:-100px;right:-100px"></div>
+  <div class="corner-glow glow-blue" style="bottom:-100px;left:-100px"></div>
+  <div style="max-width:900px">
+    <h1 style="font-size:72px;margin-bottom:16px">You're All Set!</h1>
+    <div class="gold-line" style="width:120px;margin:16px auto 24px"></div>
+    <p class="subtitle" style="font-size:30px;margin-bottom:48px">With polls, Q&A, announcements, and word cloud, you have everything you need to create an engaging, interactive experience.</p>
+    <div style="display:flex;gap:24px;justify-content:center;margin-bottom:60px">
+      <div class="card" style="padding:28px 36px;text-align:center">
+        <div style="font-size:40px;margin-bottom:8px">📊</div>
+        <p class="body"><strong>Polls</strong></p>
+        <p class="small">Create &rarr; Deploy &rarr; Reveal</p>
+      </div>
+      <div class="card" style="padding:28px 36px;text-align:center">
+        <div style="font-size:40px;margin-bottom:8px">💬</div>
+        <p class="body"><strong>Q&A</strong></p>
+        <p class="small">Moderate &rarr; Release &rarr; Answer</p>
+      </div>
+      <div class="card" style="padding:28px 36px;text-align:center">
+        <div style="font-size:40px;margin-bottom:8px">📢</div>
+        <p class="body"><strong>Announcements</strong></p>
+        <p class="small">Type &rarr; Push &rarr; Done</p>
+      </div>
+      <div class="card" style="padding:28px 36px;text-align:center">
+        <div style="font-size:40px;margin-bottom:8px">☁️</div>
+        <p class="body"><strong>Word Cloud</strong></p>
+        <p class="small">Guests submit &rarr; Live visual</p>
+      </div>
+    </div>
+    <p class="small" style="color:#6B7280">KLO Advisory Platform &bull; Admin Training Guide &bull; Prepared for Keith L. Odom</p>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prevSlide()">&#8592;</button>
+  <button onclick="nextSlide()">&#8594;</button>
+</div>
+<div class="slide-counter"><span id="current">1</span> / <span id="total">14</span></div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+let cur=0;
+function show(n){slides[cur].classList.remove('active');cur=n;slides[cur].classList.add('active');document.getElementById('current').textContent=cur+1}
+function nextSlide(){if(cur<slides.length-1)show(cur+1)}
+function prevSlide(){if(cur>0)show(cur-1)}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')nextSlide();if(e.key==='ArrowLeft')prevSlide()});
+document.getElementById('total').textContent=slides.length;
+</script>
+</body>
+</html>
