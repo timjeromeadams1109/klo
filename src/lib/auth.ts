@@ -1,7 +1,6 @@
 import type { NextAuthOptions } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import AppleProvider from "next-auth/providers/apple";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { compare } from "bcryptjs";
 import { getServiceSupabase } from "@/lib/supabase";
 
 // Credential accounts
@@ -58,6 +57,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
+        // Check hardcoded admin/owner/moderator accounts first
         for (const account of CREDENTIAL_ACCOUNTS) {
           const password = process.env[account.envVar];
           if (
@@ -72,18 +72,35 @@ export const authOptions: NextAuthOptions = {
             };
           }
         }
+
+        // Check database for email/password users
+        try {
+          const supabase = getServiceSupabase();
+          const { data: profile } = await supabase
+            .from("profiles")
+            .select("id, email, full_name, password_hash")
+            .eq("email", credentials.email.toLowerCase())
+            .single();
+
+          if (profile?.password_hash) {
+            const valid = await compare(
+              credentials.password,
+              profile.password_hash
+            );
+            if (valid) {
+              return {
+                id: profile.id,
+                name: profile.full_name ?? profile.email,
+                email: profile.email,
+              };
+            }
+          }
+        } catch {
+          // DB lookup failed — fall through to return null
+        }
+
         return null;
       },
-    }),
-
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-    }),
-
-    AppleProvider({
-      clientId: process.env.APPLE_CLIENT_ID ?? "",
-      clientSecret: process.env.APPLE_CLIENT_SECRET ?? "",
     }),
   ],
 
