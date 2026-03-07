@@ -154,6 +154,7 @@ const fallbackEvent: FeaturedEvent = {
   conference_name: "New Life Leadership Conference",
   conference_location: "Montgomery, AL",
   event_date: "2026-03-07",
+  event_time: null,
   description: null,
 };
 
