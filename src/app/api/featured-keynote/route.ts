@@ -6,8 +6,11 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   const supabase = getServiceSupabase();
 
+  // Use Central Time (America/Chicago) since events are in that timezone
   const now = new Date();
-  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+  const central = new Date(now.toLocaleString("en-US", { timeZone: "America/Chicago" }));
+  const today = `${central.getFullYear()}-${String(central.getMonth() + 1).padStart(2, "0")}-${String(central.getDate()).padStart(2, "0")}`;
+  const nowMinutes = central.getHours() * 60 + central.getMinutes();
 
   // Fetch all upcoming published events (today and future)
   const { data: events, error } = await supabase
@@ -26,35 +29,37 @@ export async function GET() {
     return NextResponse.json(null);
   }
 
-  // Get today's events that have times set
+  // Get today's events that have times set, sorted by time ascending
   const todayEvents = events.filter(
     (e) => e.event_date === today && e.event_time
   );
 
   if (todayEvents.length > 0) {
-    // Parse current time in minutes since midnight
-    const nowMinutes = now.getHours() * 60 + now.getMinutes();
-
-    // Parse event time (HH:MM 24h format) to minutes
     const parseTime = (t: string): number => {
       const [h, m] = t.split(":").map(Number);
       return h * 60 + (m || 0);
     };
 
-    // Find the current or most recent event:
-    // An event "takes over" as featured 60 minutes after the previous one started
-    // So we pick the latest event whose start time is <= now
-    // If no event has started yet, pick the earliest one (next up)
-    const started = todayEvents.filter(
-      (e) => parseTime(e.event_time!) <= nowMinutes
-    );
-
-    if (started.length > 0) {
-      // Return the most recently started event
-      return NextResponse.json(started[started.length - 1]);
+    // Rotation logic:
+    // - Start with the earliest event as featured
+    // - 60 minutes after an event starts, the NEXT event takes over
+    // - This means event N is featured from its start time until (start + 60min),
+    //   then event N+1 takes over
+    for (let i = todayEvents.length - 1; i >= 0; i--) {
+      const eventStart = parseTime(todayEvents[i].event_time!);
+      if (i === 0) {
+        // First event: featured until 60 min after it starts (then #2 takes over)
+        // But if we haven't reached its start time yet, still show it (it's next up)
+        return NextResponse.json(todayEvents[0]);
+      }
+      // For event i (not the first): it takes over 60 min after event i-1 started
+      const prevStart = parseTime(todayEvents[i - 1].event_time!);
+      if (nowMinutes >= prevStart + 60) {
+        return NextResponse.json(todayEvents[i]);
+      }
     }
 
-    // No event started yet today — show the first upcoming one
+    // Fallback: show earliest
     return NextResponse.json(todayEvents[0]);
   }
 
