@@ -132,7 +132,7 @@ export default function ConferenceToolsTabs({ eventId, sessionId }: ConferenceTo
       >
         {activeTab === "polls" && (
           <LivePolling
-            polls={pollsHook.activePolls}
+            polls={pollsHook.visiblePolls}
             loading={pollsHook.loading}
             onVote={pollsHook.vote}
           />

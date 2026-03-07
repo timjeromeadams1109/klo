@@ -34,9 +34,12 @@ export default function LivePolling({ polls, loading, onVote }: LivePollingProps
     );
   }
 
+  const active = polls.filter((p) => p.is_active);
+  const closed = polls.filter((p) => !p.is_active);
+
   return (
     <div className="space-y-4">
-      {polls.map((poll) => (
+      {active.map((poll) => (
         <Card key={poll.id}>
           <h3 className="text-lg font-semibold text-klo-text mb-4">{poll.question}</h3>
           {poll.hasVoted || poll.show_results ? (
@@ -46,6 +49,19 @@ export default function LivePolling({ polls, loading, onVote }: LivePollingProps
           )}
         </Card>
       ))}
+      {closed.length > 0 && (
+        <>
+          {active.length > 0 && (
+            <p className="text-xs text-klo-muted font-medium pt-2">Previous Results</p>
+          )}
+          {closed.map((poll) => (
+            <Card key={poll.id} className="opacity-80">
+              <h3 className="text-lg font-semibold text-klo-text mb-4">{poll.question}</h3>
+              <PollResults poll={poll} />
+            </Card>
+          ))}
+        </>
+      )}
     </div>
   );
 }

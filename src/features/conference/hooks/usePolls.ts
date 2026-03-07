@@ -91,6 +91,8 @@ export function usePolls({ sessionId, eventId }: { sessionId?: string; eventId?:
   );
 
   const activePolls = polls.filter((p) => p.is_deployed && p.is_active);
+  const closedPolls = polls.filter((p) => p.is_deployed && !p.is_active && p.show_results);
+  const visiblePolls = [...activePolls, ...closedPolls];
 
-  return { polls, activePolls, loading, vote, refetch: fetchPolls };
+  return { polls, activePolls, visiblePolls, loading, vote, refetch: fetchPolls };
 }
