@@ -35,7 +35,7 @@ export default function PollManager({ eventId }: PollManagerProps = {}) {
   const [inputMode, setInputMode] = useState<InputMode>("single");
   const [creating, setCreating] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [expandedResults, setExpandedResults] = useState<Set<string>>(new Set());
+  const [expandedResults, setExpandedResults] = useState<Set<string> | "all">("all");
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [filterSessionId, setFilterSessionId] = useState<string>("all");
@@ -243,8 +243,16 @@ export default function PollManager({ eventId }: PollManagerProps = {}) {
     fetchPolls();
   };
 
+  const isExpanded = (id: string) => expandedResults === "all" || expandedResults.has(id);
+
   const toggleResults = (id: string) => {
     setExpandedResults((prev) => {
+      if (prev === "all") {
+        // Switching from all-open: close just this one
+        const next = new Set(deployedPolls.map((p) => p.id));
+        next.delete(id);
+        return next;
+      }
       const next = new Set(prev);
       if (next.has(id)) next.delete(id);
       else next.add(id);
@@ -564,14 +572,14 @@ export default function PollManager({ eventId }: PollManagerProps = {}) {
                     <button
                       onClick={() => toggleResults(poll.id)}
                       className={`inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium transition-colors ${
-                        expandedResults.has(poll.id)
+                        isExpanded(poll.id)
                           ? "bg-[#2764FF]/10 text-[#2764FF]"
                           : "text-klo-muted hover:text-klo-text hover:bg-white/5"
                       }`}
-                      title={expandedResults.has(poll.id) ? "Hide results" : "View results"}
+                      title={isExpanded(poll.id) ? "Hide results" : "View results"}
                     >
                       <BarChart3 size={14} />
-                      {expandedResults.has(poll.id) ? "Hide" : "Results"}
+                      {isExpanded(poll.id) ? "Hide" : "Results"}
                     </button>
                     <button
                       onClick={() => deletePoll(poll.id)}
@@ -582,7 +590,7 @@ export default function PollManager({ eventId }: PollManagerProps = {}) {
                     </button>
                   </div>
                 </div>
-                {expandedResults.has(poll.id) && (
+                {isExpanded(poll.id) && (
                   <div className="mt-4 pt-4 border-t border-white/5">
                     <PollResults poll={poll} live={poll.is_active} />
                   </div>
