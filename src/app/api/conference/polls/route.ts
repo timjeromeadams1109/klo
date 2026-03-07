@@ -20,7 +20,7 @@ export async function GET(request: Request) {
   // (avoids fetching every individual vote row)
   let pollsQuery = supabase.from("conference_polls").select("*").order("created_at", { ascending: false });
   if (sessionId) {
-    pollsQuery = pollsQuery.eq("session_id", sessionId);
+    pollsQuery = pollsQuery.or(`session_id.eq.${sessionId},session_id.is.null`);
   }
 
   const [pollsRes, voteCountsRes] = await Promise.all([
