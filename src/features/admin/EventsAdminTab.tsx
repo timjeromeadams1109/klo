@@ -314,7 +314,7 @@ export default function EventsAdminTab() {
                     <div className="flex items-center gap-4 mt-1 text-xs text-klo-muted">
                       <span className="flex items-center gap-1">
                         <Calendar size={12} />
-                        {new Date(event.event_date).toLocaleDateString()}
+                        {event.event_date === "SAVE THE DATE" ? "SAVE THE DATE" : new Date(event.event_date).toLocaleDateString()}
                       </span>
                       <span className="flex items-center gap-1">
                         <MapPin size={12} />
@@ -424,12 +424,26 @@ export default function EventsAdminTab() {
                         onChange={(e) => setEditFields({ ...editFields, conference_location: e.target.value })}
                         className={inputClass}
                       />
-                      <input
-                        type="date"
-                        value={(editFields.event_date ?? "").slice(0, 10)}
-                        onChange={(e) => setEditFields({ ...editFields, event_date: e.target.value })}
-                        className={inputClass}
-                      />
+                      <div className="flex gap-2">
+                        <input
+                          type={editFields.event_date === "SAVE THE DATE" ? "text" : "date"}
+                          value={editFields.event_date === "SAVE THE DATE" ? "SAVE THE DATE" : (editFields.event_date ?? "").slice(0, 10)}
+                          onChange={(e) => setEditFields({ ...editFields, event_date: e.target.value })}
+                          className={`${inputClass} flex-1`}
+                          readOnly={editFields.event_date === "SAVE THE DATE"}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setEditFields({ ...editFields, event_date: editFields.event_date === "SAVE THE DATE" ? "" : "SAVE THE DATE" })}
+                          className={`px-2.5 rounded-xl text-[10px] font-medium whitespace-nowrap border transition-colors ${
+                            editFields.event_date === "SAVE THE DATE"
+                              ? "bg-klo-gold/10 border-klo-gold/30 text-klo-gold"
+                              : "border-white/10 text-klo-muted hover:text-klo-gold hover:border-klo-gold/30"
+                          }`}
+                        >
+                          TBD
+                        </button>
+                      </div>
                       <select
                         value={editFields.event_category ?? "Current Events"}
                         onChange={(e) => setEditFields({ ...editFields, event_category: e.target.value })}
@@ -646,12 +660,26 @@ export default function EventsAdminTab() {
                       onChange={(e) => updateParsedEvent(idx, "conference_location", e.target.value)}
                       className={inputClass}
                     />
-                    <input
-                      type="date"
-                      value={ev.event_date}
-                      onChange={(e) => updateParsedEvent(idx, "event_date", e.target.value)}
-                      className={inputClass}
-                    />
+                    <div className="flex gap-2">
+                      <input
+                        type={ev.event_date === "SAVE THE DATE" ? "text" : "date"}
+                        value={ev.event_date}
+                        onChange={(e) => updateParsedEvent(idx, "event_date", e.target.value)}
+                        className={`${inputClass} flex-1`}
+                        readOnly={ev.event_date === "SAVE THE DATE"}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => updateParsedEvent(idx, "event_date", ev.event_date === "SAVE THE DATE" ? "" : "SAVE THE DATE")}
+                        className={`px-2.5 rounded-xl text-[10px] font-medium whitespace-nowrap border transition-colors ${
+                          ev.event_date === "SAVE THE DATE"
+                            ? "bg-klo-gold/10 border-klo-gold/30 text-klo-gold"
+                            : "border-white/10 text-klo-muted hover:text-klo-gold hover:border-klo-gold/30"
+                        }`}
+                      >
+                        TBD
+                      </button>
+                    </div>
                     <select
                       value={ev.event_category}
                       onChange={(e) => updateParsedEvent(idx, "event_category", e.target.value)}
@@ -718,13 +746,27 @@ export default function EventsAdminTab() {
                 required
                 className={inputClass}
               />
-              <input
-                type="date"
-                value={formDate}
-                onChange={(e) => setFormDate(e.target.value)}
-                required
-                className={inputClass}
-              />
+              <div className="flex gap-2">
+                <input
+                  type={formDate === "SAVE THE DATE" ? "text" : "date"}
+                  value={formDate}
+                  onChange={(e) => setFormDate(e.target.value)}
+                  required
+                  className={`${inputClass} flex-1`}
+                  readOnly={formDate === "SAVE THE DATE"}
+                />
+                <button
+                  type="button"
+                  onClick={() => setFormDate(formDate === "SAVE THE DATE" ? "" : "SAVE THE DATE")}
+                  className={`px-2.5 rounded-xl text-[10px] font-medium whitespace-nowrap border transition-colors ${
+                    formDate === "SAVE THE DATE"
+                      ? "bg-klo-gold/10 border-klo-gold/30 text-klo-gold"
+                      : "border-white/10 text-klo-muted hover:text-klo-gold hover:border-klo-gold/30"
+                  }`}
+                >
+                  TBD
+                </button>
+              </div>
               <select
                 value={formCategory}
                 onChange={(e) =>

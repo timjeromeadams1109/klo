@@ -58,6 +58,7 @@ interface EventItem {
 }
 
 function formatDate(dateStr: string): string {
+  if (dateStr === "SAVE THE DATE") return "SAVE THE DATE";
   const d = new Date(dateStr + "T12:00:00");
   return d.toLocaleDateString("en-US", {
     weekday: "long",
@@ -68,6 +69,7 @@ function formatDate(dateStr: string): string {
 }
 
 function isUpcoming(dateStr: string): boolean {
+  if (dateStr === "SAVE THE DATE") return true;
   const eventDate = new Date(dateStr + "T23:59:59");
   return eventDate >= new Date();
 }
@@ -111,12 +113,13 @@ export default function EventsPage() {
       .catch(() => {});
   }, []);
 
+  const sortDate = (d: string) => d === "SAVE THE DATE" ? Infinity : new Date(d).getTime();
   const upcomingEvents = events
     .filter((e) => isUpcoming(e.event_date))
-    .sort((a, b) => new Date(a.event_date).getTime() - new Date(b.event_date).getTime());
+    .sort((a, b) => sortDate(a.event_date) - sortDate(b.event_date));
   const pastEvents = events
     .filter((e) => !isUpcoming(e.event_date))
-    .sort((a, b) => new Date(b.event_date).getTime() - new Date(a.event_date).getTime());
+    .sort((a, b) => sortDate(b.event_date) - sortDate(a.event_date));
 
   return (
     <div className="min-h-screen">
