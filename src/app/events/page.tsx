@@ -113,11 +113,9 @@ export default function EventsPage() {
       .catch(() => {});
   }, []);
 
-  const now = new Date();
-  const today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
   const sortDate = (d: string) => d === "SAVE THE DATE" ? Infinity : new Date(d).getTime();
   const upcomingEvents = events
-    .filter((e) => isUpcoming(e.event_date) && e.event_date !== today)
+    .filter((e) => isUpcoming(e.event_date) && e.id !== featuredKeynote?.id)
     .sort((a, b) => sortDate(a.event_date) - sortDate(b.event_date));
   const pastEvents = events
     .filter((e) => !isUpcoming(e.event_date))
