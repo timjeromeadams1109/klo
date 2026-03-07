@@ -123,7 +123,7 @@ export default function EventsAdminTab() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          title: formTitle,
+          title: formConference,
           conference_name: formConference,
           conference_location: formLocation,
           event_date: formDate,
@@ -148,7 +148,7 @@ export default function EventsAdminTab() {
       const res = await fetch("/api/admin/events", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(ev),
+        body: JSON.stringify({ ...ev, title: ev.title || ev.conference_name }),
       });
       if (res.ok) {
         setParsedEvents((prev) => prev.filter((_, i) => i !== index));
@@ -628,13 +628,6 @@ export default function EventsAdminTab() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <input
                       type="text"
-                      placeholder="Event Title"
-                      value={ev.title}
-                      onChange={(e) => updateParsedEvent(idx, "title", e.target.value)}
-                      className={inputClass}
-                    />
-                    <input
-                      type="text"
                       placeholder="Conference Name"
                       value={ev.conference_name}
                       onChange={(e) => updateParsedEvent(idx, "conference_name", e.target.value)}
@@ -671,7 +664,7 @@ export default function EventsAdminTab() {
                   />
                   <button
                     onClick={() => handleCreateParsedEvent(idx)}
-                    disabled={creatingIndex === idx || !ev.title}
+                    disabled={creatingIndex === idx || !ev.conference_name}
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-[#2764FF] to-[#21B8CD] text-white text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
                   >
                     {creatingIndex === idx ? (
@@ -703,14 +696,6 @@ export default function EventsAdminTab() {
           {/* Manual form */}
           <form onSubmit={handleCreateEvent} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Event Title"
-                value={formTitle}
-                onChange={(e) => setFormTitle(e.target.value)}
-                required
-                className={inputClass}
-              />
               <input
                 type="text"
                 placeholder="Conference Name"
