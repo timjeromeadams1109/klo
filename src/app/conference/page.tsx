@@ -144,6 +144,7 @@ interface FeaturedEvent {
   conference_name: string;
   conference_location: string;
   event_date: string;
+  event_time: string | null;
   description: string | null;
 }
 

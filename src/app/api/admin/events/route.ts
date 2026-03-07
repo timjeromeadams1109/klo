@@ -49,6 +49,7 @@ export async function POST(req: NextRequest) {
     event_category,
     description,
     event_date,
+    event_time,
   } = body;
 
   if (!title || !conference_name || !conference_location || !event_category || !event_date) {
@@ -71,6 +72,7 @@ export async function POST(req: NextRequest) {
       event_category,
       description: description || null,
       event_date,
+      event_time: event_time || null,
       is_published: true,
     })
     .select()

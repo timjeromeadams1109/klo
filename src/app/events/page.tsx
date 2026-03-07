@@ -21,6 +21,7 @@ interface FeaturedKeynote {
   conference_name: string;
   conference_location: string;
   event_date: string;
+  event_time: string | null;
   description: string | null;
 }
 
@@ -52,6 +53,7 @@ interface EventItem {
   conference_name: string;
   conference_location: string;
   event_date: string;
+  event_time: string | null;
   description: string | null;
   is_featured: boolean;
   event_files: EventFile[];
@@ -66,6 +68,13 @@ function formatDate(dateStr: string): string {
     day: "numeric",
     year: "numeric",
   });
+}
+
+function formatTime(time: string): string {
+  const [h, m] = time.split(":").map(Number);
+  const suffix = h >= 12 ? "PM" : "AM";
+  const hour = h % 12 || 12;
+  return `${hour}:${String(m).padStart(2, "0")} ${suffix}`;
 }
 
 function isUpcoming(dateStr: string): boolean {
@@ -190,6 +199,7 @@ export default function EventsPage() {
                   <span className="inline-flex items-center gap-1.5">
                     <Calendar size={14} className="text-[#2764FF]" />
                     {formatDate(featuredKeynote.event_date)}
+                    {featuredKeynote.event_time && ` at ${formatTime(featuredKeynote.event_time)}`}
                   </span>
                   <span className="inline-flex items-center gap-1.5">
                     <MapPin size={14} className="text-[#2764FF]" />
@@ -373,6 +383,7 @@ function EventCard({ event, isPast }: { event: EventItem; isPast?: boolean }) {
               <span className="inline-flex items-center gap-1.5">
                 <Calendar size={12} className="text-[#2764FF]/70" />
                 {formatDate(event.event_date)}
+                {event.event_time && ` at ${formatTime(event.event_time)}`}
               </span>
               <span className="inline-flex items-center gap-1.5">
                 <MapPin size={12} className="text-[#2764FF]/70" />

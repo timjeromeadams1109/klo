@@ -40,6 +40,7 @@ interface Event {
   event_category: string;
   description: string | null;
   event_date: string;
+  event_time: string | null;
   is_published: boolean;
   is_featured: boolean;
   event_files: EventFile[];
@@ -50,6 +51,7 @@ interface ParsedEvent {
   conference_name: string;
   conference_location: string;
   event_date: string;
+  event_time: string;
   event_category: "Current Events" | "Previous Events";
   description: string;
 }
@@ -79,6 +81,7 @@ export default function EventsAdminTab() {
   const [formLocation, setFormLocation] = useState("");
   const [formDate, setFormDate] = useState("");
   const [formCategory, setFormCategory] = useState<"Current Events" | "Previous Events">("Current Events");
+  const [formTime, setFormTime] = useState("");
   const [formDescription, setFormDescription] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -109,6 +112,7 @@ export default function EventsAdminTab() {
     setFormLocation("");
     setFormDate("");
     setFormCategory("Current Events");
+    setFormTime("");
     setFormDescription("");
     setParseStatus("idle");
     setParseError(null);
@@ -127,6 +131,7 @@ export default function EventsAdminTab() {
           conference_name: formConference,
           conference_location: formLocation,
           event_date: formDate,
+          event_time: formTime || undefined,
           event_category: formCategory,
           description: formDescription,
         }),
@@ -212,6 +217,7 @@ export default function EventsAdminTab() {
       conference_name: event.conference_name,
       conference_location: event.conference_location,
       event_date: event.event_date,
+      event_time: event.event_time || "",
       event_category: event.event_category,
       description: event.description || "",
     });
@@ -315,6 +321,7 @@ export default function EventsAdminTab() {
                       <span className="flex items-center gap-1">
                         <Calendar size={12} />
                         {event.event_date === "SAVE THE DATE" ? "SAVE THE DATE" : new Date(event.event_date).toLocaleDateString()}
+                        {event.event_time && ` at ${event.event_time}`}
                       </span>
                       <span className="flex items-center gap-1">
                         <MapPin size={12} />
@@ -444,6 +451,13 @@ export default function EventsAdminTab() {
                           TBD
                         </button>
                       </div>
+                      <input
+                        type="time"
+                        placeholder="Time (optional)"
+                        value={(editFields as Record<string, unknown>).event_time as string ?? ""}
+                        onChange={(e) => setEditFields({ ...editFields, event_time: e.target.value })}
+                        className={inputClass}
+                      />
                       <select
                         value={editFields.event_category ?? "Current Events"}
                         onChange={(e) => setEditFields({ ...editFields, event_category: e.target.value })}
@@ -680,6 +694,13 @@ export default function EventsAdminTab() {
                         TBD
                       </button>
                     </div>
+                    <input
+                      type="time"
+                      placeholder="Time (optional)"
+                      value={ev.event_time || ""}
+                      onChange={(e) => updateParsedEvent(idx, "event_time", e.target.value)}
+                      className={inputClass}
+                    />
                     <select
                       value={ev.event_category}
                       onChange={(e) => updateParsedEvent(idx, "event_category", e.target.value)}
@@ -767,6 +788,13 @@ export default function EventsAdminTab() {
                   TBD
                 </button>
               </div>
+              <input
+                type="time"
+                placeholder="Time (optional)"
+                value={formTime}
+                onChange={(e) => setFormTime(e.target.value)}
+                className={inputClass}
+              />
               <select
                 value={formCategory}
                 onChange={(e) =>
