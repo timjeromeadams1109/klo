@@ -436,7 +436,7 @@ export default function SessionManager() {
                         {s.room}
                       </span>
                     )}
-                    <span className="flex items-center gap-1">
+                    <span className={`flex items-center gap-1 ${s.qa_enabled ? "text-emerald-400" : "text-red-400"}`}>
                       <MessageSquare size={12} />
                       Q&A: {s.qa_enabled ? "On" : "Off"}
                     </span>

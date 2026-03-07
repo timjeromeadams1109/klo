@@ -78,58 +78,51 @@ function MessageBubble({ message }: { message: AdvisorMessage }) {
     minute: "2-digit",
   });
 
+  if (isUser) {
+    return (
+      <motion.div
+        variants={messageVariants}
+        initial="initial"
+        animate="animate"
+        exit="exit"
+        className="flex gap-3 flex-row-reverse"
+      >
+        <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-[#2764FF]/20">
+          <User size={16} className="text-[#2764FF]" />
+        </div>
+        <div className="max-w-[80%] md:max-w-[70%]">
+          <div className="rounded-2xl px-4 py-3 bg-[#2764FF]/10 border border-[#2764FF]/20 text-klo-text">
+            <p className="text-sm leading-relaxed whitespace-pre-wrap">
+              {message.content}
+            </p>
+          </div>
+          <span className="text-[10px] text-klo-muted mt-1 block text-right px-1">
+            {time}
+          </span>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Assistant message — ChatGPT-style: no bubble, full-width, icon + prose
   return (
     <motion.div
       variants={messageVariants}
       initial="initial"
       animate="animate"
       exit="exit"
-      layout
-      className={`flex gap-3 ${isUser ? "flex-row-reverse" : "flex-row"}`}
+      className="flex gap-3"
     >
-      {/* Avatar */}
-      <div
-        className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 ${
-          isUser ? "bg-[#2764FF]/20" : "bg-[#2764FF]/10"
-        }`}
-      >
-        {isUser ? (
-          <User size={16} className="text-[#2764FF]" />
-        ) : (
-          <Bot size={16} className="text-[#2764FF]" />
-        )}
+      <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-[#2764FF]/10 mt-0.5">
+        <Bot size={16} className="text-[#2764FF]" />
       </div>
-
-      {/* Content */}
-      <div
-        className={`max-w-[80%] md:max-w-[70%] ${
-          isUser ? "items-end" : "items-start"
-        }`}
-      >
-        <div
-          className={`rounded-2xl px-4 py-3 ${
-            isUser
-              ? "bg-[#2764FF]/10 border border-[#2764FF]/20 text-klo-text"
-              : "bg-[#161B22] text-klo-text"
-          }`}
-        >
-          {isUser ? (
-            <p className="text-sm leading-relaxed whitespace-pre-wrap">
-              {message.content}
-            </p>
-          ) : (
-            <div className="prose prose-invert prose-sm max-w-none text-klo-text prose-headings:text-klo-text prose-headings:font-display prose-strong:text-klo-text prose-a:text-[#2764FF] prose-code:text-[#2764FF]/80 prose-code:bg-[#161B22] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-[#161B22] prose-pre:border prose-pre:border-[#21262D] prose-li:marker:text-[#2764FF]/60">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {message.content || "\u00A0"}
-              </ReactMarkdown>
-            </div>
-          )}
+      <div className="flex-1 min-w-0">
+        <div className="prose prose-invert prose-sm max-w-none text-klo-text prose-headings:text-klo-text prose-headings:font-display prose-headings:mt-4 prose-headings:mb-2 prose-p:my-2 prose-p:leading-relaxed prose-strong:text-klo-text prose-a:text-[#2764FF] prose-ul:my-2 prose-ol:my-2 prose-li:my-0.5 prose-li:marker:text-[#2764FF]/60 prose-code:text-[#2764FF]/80 prose-code:bg-[#161B22] prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-pre:bg-[#161B22] prose-pre:border prose-pre:border-[#21262D] prose-pre:rounded-lg prose-pre:my-3">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {message.content || "\u00A0"}
+          </ReactMarkdown>
         </div>
-        <span
-          className={`text-[10px] text-klo-muted mt-1 block ${
-            isUser ? "text-right" : "text-left"
-          } px-1`}
-        >
+        <span className="text-[10px] text-klo-muted mt-1 block px-1">
           {time}
         </span>
       </div>
@@ -152,15 +145,21 @@ export default function ChatInterface({
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Smooth auto-scroll using an anchor element at the bottom of the list.
-  // Deriving a lightweight dependency from the last message's content length
-  // so we re-scroll on every streaming chunk without deep-comparing the array.
-  const lastMsg = messages[messages.length - 1];
-  const scrollKey = lastMsg ? `${lastMsg.id}-${lastMsg.content.length}` : "";
+  // Auto-scroll: use scrollTop instead of scrollIntoView to avoid page-level jitter.
+  // Throttle during streaming to prevent layout thrashing.
+  const scrollRafRef = useRef<number | null>(null);
 
   const scrollToBottom = useCallback(() => {
-    scrollAnchorRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (scrollRafRef.current) return; // already scheduled
+    scrollRafRef.current = requestAnimationFrame(() => {
+      scrollRafRef.current = null;
+      const el = scrollRef.current;
+      if (el) el.scrollTop = el.scrollHeight;
+    });
   }, []);
+
+  const lastMsg = messages[messages.length - 1];
+  const scrollKey = lastMsg ? `${lastMsg.id}-${lastMsg.content.length}` : "";
 
   useEffect(() => {
     scrollToBottom();
@@ -207,7 +206,7 @@ export default function ChatInterface({
         ref={scrollRef}
         className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-thin"
       >
-        <AnimatePresence mode="popLayout">
+        <AnimatePresence initial={false}>
           {messages
             .filter((m) => m.role !== "system")
             .map((message) => (

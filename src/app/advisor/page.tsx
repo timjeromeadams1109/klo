@@ -58,7 +58,7 @@ export default function AdvisorPage() {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] md:h-[calc(100vh-4rem)]">
+    <div className="flex flex-col h-[calc(100vh-4rem)] md:h-[calc(100vh-4rem)] overflow-hidden">
       {/* Header */}
       <motion.header
         initial="hidden"
