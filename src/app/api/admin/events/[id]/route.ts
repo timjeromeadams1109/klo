@@ -24,12 +24,20 @@ export async function PUT(
   const body = await req.json();
   const supabase = getServiceSupabase();
 
+  // Explicit allowlist — never spread raw body into DB
+  const ALLOWED_FIELDS = [
+    "title", "description", "date", "time", "location", "type",
+    "status", "image_url", "slug", "is_featured", "event_source",
+    "speaker", "capacity", "registration_url", "tags",
+  ] as const;
+  const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  for (const key of ALLOWED_FIELDS) {
+    if (key in body) updates[key] = body[key];
+  }
+
   const { data, error } = await supabase
     .from("event_presentations")
-    .update({
-      ...body,
-      updated_at: new Date().toISOString(),
-    })
+    .update(updates)
     .eq("id", id)
     .select()
     .single();

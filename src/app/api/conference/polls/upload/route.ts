@@ -87,7 +87,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No file provided" }, { status: 400 });
   }
 
-  const name = file.name.toLowerCase();
+  // File size limit: 50MB
+  const MAX_FILE_SIZE = 50 * 1024 * 1024;
+  if (file.size > MAX_FILE_SIZE) {
+    return NextResponse.json(
+      { error: "File too large. Maximum size is 50MB." },
+      { status: 400 }
+    );
+  }
+
+  // Sanitize filename: strip path traversal, keep only safe chars
+  const sanitized = file.name.replace(/[^a-zA-Z0-9._-]/g, "_").replace(/\.{2,}/g, ".");
+  const name = sanitized.toLowerCase();
   let extractedText = "";
   let questions: { question: string; options: string[] }[] = [];
 

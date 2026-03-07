@@ -39,16 +39,23 @@ const nextConfig: NextConfig = {
             value: "camera=(), microphone=(), geolocation=(self), interest-cohort=()",
           },
           {
+            key: "Strict-Transport-Security",
+            value: "max-age=63072000; includeSubDomains; preload",
+          },
+          {
             key: "Content-Security-Policy",
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-inline' https://js.stripe.com https://vercel.live", // TODO: replace 'unsafe-inline' with nonce-based CSP
+              "script-src 'self' 'unsafe-inline' https://js.stripe.com https://vercel.live",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: blob: https:",
               "font-src 'self' https://fonts.gstatic.com",
               "connect-src 'self' https://api.stripe.com https://*.supabase.co wss://*.supabase.co https://vercel.live",
               "frame-src 'self' https://js.stripe.com https://vercel.live",
               "frame-ancestors 'self' capacitor: https://localhost",
+              "base-uri 'self'",
+              "form-action 'self'",
+              "object-src 'none'",
             ].join("; "),
           },
         ],

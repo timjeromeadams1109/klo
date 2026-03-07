@@ -70,7 +70,7 @@ export const authOptions: NextAuthOptions = {
               // Auto-upgrade plaintext passwords to bcrypt on successful login
               if (!isHash) {
                 console.warn(
-                  `[Auth] Password for ${account.envVar} is plaintext. Set it to a bcrypt hash in your environment.`
+                  "[Auth] A credential account is using a plaintext password. Set it to a bcrypt hash in your environment."
                 );
               }
               return {
