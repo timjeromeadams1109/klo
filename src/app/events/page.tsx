@@ -239,7 +239,7 @@ export default function EventsPage() {
               <div className="w-8 h-8 border-2 border-[#2764FF]/30 border-t-[#2764FF] rounded-full animate-spin" />
             </div>
           ) : upcomingEvents.length === 0 ? (
-            <motion.div variants={fadeUp} custom={1}>
+            <motion.div initial="hidden" animate="visible" variants={fadeUp} custom={1}>
               <Card>
                 <p className="text-klo-muted text-sm text-center py-6">
                   No upcoming events at this time. Check back soon!
@@ -247,13 +247,18 @@ export default function EventsPage() {
               </Card>
             </motion.div>
           ) : (
-            <div className="space-y-4">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+              className="space-y-4"
+            >
               {upcomingEvents.map((event, i) => (
                 <motion.div key={event.id} variants={fadeUp} custom={i + 1}>
                   <EventCard event={event} />
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           )}
         </motion.div>
       </section>
@@ -282,13 +287,18 @@ export default function EventsPage() {
               </p>
             </motion.div>
 
-            <div className="space-y-4">
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={staggerContainer}
+              className="space-y-4"
+            >
               {pastEvents.map((event, i) => (
                 <motion.div key={event.id} variants={fadeUp} custom={i + 1}>
                   <EventCard event={event} isPast />
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </motion.div>
         </section>
       )}
