@@ -37,7 +37,7 @@ The practical takeaway: audit every AI tool your organization uses today. Know w
 This is a moment for proactive governance, not reactive compliance. I'm urging every leader in my network to treat this as a strategic priority, not a legal footnote.`,
     publishedAt: "2026-02-27",
     readTime: "6 min read",
-    isPremium: true,
+    isPremium: false,
   },
   {
     id: "post-02",
@@ -88,7 +88,7 @@ Every ministry leader deploying these tools needs to ask: if my congregants knew
 The good news: every one of these is fixable. But they must be fixed *before* you sign an AI contract, not after.`,
     publishedAt: "2026-02-20",
     readTime: "5 min read",
-    isPremium: true,
+    isPremium: false,
   },
   {
     id: "post-05",
@@ -133,7 +133,7 @@ The biblical model of generosity is rooted in cheerful, voluntary giving — not
 My recommendation: use AI to remove friction from giving (better platforms, easier processes, clearer communication). Don't use AI to manufacture urgency, exploit emotional moments, or personalize pressure. The line matters, and the organizations that respect it will build deeper trust over the long term.`,
     publishedAt: "2026-02-13",
     readTime: "5 min read",
-    isPremium: true,
+    isPremium: false,
   },
   {
     id: "post-08",
@@ -165,7 +165,7 @@ The organizations that thrive in the AI era will be those that approach AI gover
 My advice: don't wait for legislation to force your hand. Adopt transparency and accountability practices now. Organizations that build good governance proactively will find compliance straightforward. Those that wait will find it expensive and disruptive.`,
     publishedAt: "2026-02-08",
     readTime: "6 min read",
-    isPremium: true,
+    isPremium: false,
   },
   {
     id: "post-10",
@@ -214,7 +214,7 @@ Each case shares a common failure: the absence of pastoral wisdom in system desi
 Notice what's absent from this roadmap: vendor selection, budget allocation, and technical implementation. Those come later. The 90-day roadmap is about organizational readiness — the prerequisite that most organizations skip, to their lasting regret.`,
     publishedAt: "2026-01-30",
     readTime: "5 min read",
-    isPremium: true,
+    isPremium: false,
   },
   {
     id: "post-13",

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Rss, Lock, ChevronDown, ChevronUp, Clock, Calendar } from "lucide-react";
+import { Rss, ChevronDown, ChevronUp, Clock, Calendar } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import Badge from "@/components/shared/Badge";
 import Button from "@/components/shared/Button";
@@ -84,12 +84,6 @@ function FeedCard({ post, index }: { post: FeedPost; index: number }) {
           <Badge variant={getCategoryBadgeVariant(post.category)}>
             {post.category}
           </Badge>
-          {post.isPremium && (
-            <Badge variant="gold">
-              <Lock size={10} className="mr-1" />
-              Premium
-            </Badge>
-          )}
         </div>
 
         <h2 className="font-display text-xl font-bold text-klo-text mb-3 leading-tight">
@@ -107,68 +101,37 @@ function FeedCard({ post, index }: { post: FeedPost; index: number }) {
           </span>
         </div>
 
-        {post.isPremium ? (
-          <div className="relative">
-            <div aria-hidden="true" className="text-klo-muted leading-relaxed select-none blur-[6px] pointer-events-none">
-              <ReactMarkdown
-                components={{
-                  p: ({ children }) => <p className="mb-4">{children}</p>,
-                  strong: ({ children }) => (
-                    <strong className="text-klo-text font-semibold">
-                      {children}
-                    </strong>
-                  ),
-                }}
-              >
-                {firstParagraph}
-              </ReactMarkdown>
-            </div>
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-klo-dark/60 rounded-lg">
-              <Lock size={28} className="text-[#C8A84E] mb-3" />
-              <p className="text-klo-text font-semibold text-sm mb-1">
-                Premium Content
-              </p>
-              <p className="text-klo-muted text-xs mb-4">
-                Upgrade for full access
-              </p>
-              <Button variant="primary" size="sm" href="/pricing">
-                Upgrade to Pro
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div className="text-klo-muted leading-relaxed prose-invert">
-            <ReactMarkdown
-              components={{
-                p: ({ children }) => <p className="mb-4 last:mb-0">{children}</p>,
-                strong: ({ children }) => (
-                  <strong className="text-klo-text font-semibold">
-                    {children}
-                  </strong>
-                ),
-              }}
-            >
-              {expanded ? post.content : firstParagraph}
-            </ReactMarkdown>
+        <div className="text-klo-muted leading-relaxed prose-invert">
+          <ReactMarkdown
+            components={{
+              p: ({ children }) => <p className="mb-4 last:mb-0">{children}</p>,
+              strong: ({ children }) => (
+                <strong className="text-klo-text font-semibold">
+                  {children}
+                </strong>
+              ),
+            }}
+          >
+            {expanded ? post.content : firstParagraph}
+          </ReactMarkdown>
 
-            {hasMoreContent && (
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="mt-3 inline-flex items-center gap-1.5 text-[#2764FF] text-sm font-medium hover:brightness-110 transition-all cursor-pointer"
-              >
-                {expanded ? (
-                  <>
-                    Show Less <ChevronUp size={16} />
-                  </>
-                ) : (
-                  <>
-                    Read More <ChevronDown size={16} />
-                  </>
-                )}
-              </button>
-            )}
-          </div>
-        )}
+          {hasMoreContent && (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="mt-3 inline-flex items-center gap-1.5 text-[#2764FF] text-sm font-medium hover:brightness-110 transition-all cursor-pointer"
+            >
+              {expanded ? (
+                <>
+                  Show Less <ChevronUp size={16} />
+                </>
+              ) : (
+                <>
+                  Read More <ChevronDown size={16} />
+                </>
+              )}
+            </button>
+          )}
+        </div>
       </Card>
     </motion.div>
   );
@@ -262,22 +225,6 @@ export default function FeedPage() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Footer CTA */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.5, ease: "easeOut" as const }}
-          className="mt-12 text-center"
-        >
-          <Card className="border-klo-gold/20 inline-block">
-            <p className="text-klo-muted text-sm mb-3">
-              Want Keith&apos;s full analysis on every post?
-            </p>
-            <Button variant="primary" size="sm" href="/pricing">
-              Upgrade to Pro
-            </Button>
-          </Card>
-        </motion.div>
       </div>
     </div>
   );
