@@ -35,18 +35,6 @@ const industries = [
 
 const orgSizes = ["1-10", "11-50", "51-200", "201-500", "500+"];
 
-const timelines = [
-  "Urgent (1-2 weeks)",
-  "Short-term (1-3 months)",
-  "Long-term (3-6 months)",
-  "Exploring options",
-];
-
-const consultantExperience = [
-  "Yes",
-  "No",
-  "Currently working with one",
-];
 
 /* ------------------------------------------------------------------ */
 /*  Animations                                                          */
@@ -90,8 +78,6 @@ export default function ConsultIntakeForm() {
     organizationName: "",
     organizationSize: "",
     currentChallenge: "",
-    timeline: "",
-    previousConsultant: "",
     additionalDetails: "",
   });
 
@@ -133,21 +119,6 @@ export default function ConsultIntakeForm() {
       newErrors.organizationName = "Please enter your organization name.";
     }
 
-    if (!formData.organizationSize) {
-      newErrors.organizationSize = "Please select your organization size.";
-    }
-
-    if (!formData.currentChallenge.trim()) {
-      newErrors.currentChallenge = "Please describe your current challenge.";
-    }
-
-    if (!formData.timeline) {
-      newErrors.timeline = "Please select a timeline.";
-    }
-
-    if (!formData.previousConsultant) {
-      newErrors.previousConsultant = "Please select an option.";
-    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -445,7 +416,7 @@ export default function ConsultIntakeForm() {
           </div>
           <div>
             <label htmlFor="organizationSize" className="block text-sm font-medium text-white mb-1.5">
-              Organization Size <span className="text-[#C8A84E]">*</span>
+              Organization Size
             </label>
             <select
               id="organizationSize"
@@ -472,7 +443,7 @@ export default function ConsultIntakeForm() {
         {/* Current Challenge */}
         <div>
           <label htmlFor="currentChallenge" className="block text-sm font-medium text-white mb-1.5">
-            Current Challenge <span className="text-[#C8A84E]">*</span>
+            Current Challenge
           </label>
           <textarea
             id="currentChallenge"
@@ -486,58 +457,6 @@ export default function ConsultIntakeForm() {
           {errors.currentChallenge && (
             <p className="text-red-400 text-xs mt-1">{errors.currentChallenge}</p>
           )}
-        </div>
-
-        {/* Row 6 — Timeline & Previous Consultant */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-          <div>
-            <label htmlFor="timeline" className="block text-sm font-medium text-white mb-1.5">
-              Timeline <span className="text-[#C8A84E]">*</span>
-            </label>
-            <select
-              id="timeline"
-              name="timeline"
-              value={formData.timeline}
-              onChange={handleChange}
-              className={fieldClass("timeline")}
-            >
-              <option value="" disabled>
-                Select timeline
-              </option>
-              {timelines.map((t) => (
-                <option key={t} value={t}>
-                  {t}
-                </option>
-              ))}
-            </select>
-            {errors.timeline && (
-              <p className="text-red-400 text-xs mt-1">{errors.timeline}</p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="previousConsultant" className="block text-sm font-medium text-white mb-1.5">
-              Worked with a consultant before? <span className="text-[#C8A84E]">*</span>
-            </label>
-            <select
-              id="previousConsultant"
-              name="previousConsultant"
-              value={formData.previousConsultant}
-              onChange={handleChange}
-              className={fieldClass("previousConsultant")}
-            >
-              <option value="" disabled>
-                Select an option
-              </option>
-              {consultantExperience.map((opt) => (
-                <option key={opt} value={opt}>
-                  {opt}
-                </option>
-              ))}
-            </select>
-            {errors.previousConsultant && (
-              <p className="text-red-400 text-xs mt-1">{errors.previousConsultant}</p>
-            )}
-          </div>
         </div>
 
         {/* Additional Details */}
