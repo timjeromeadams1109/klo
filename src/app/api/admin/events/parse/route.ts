@@ -73,24 +73,30 @@ export async function POST(request: Request) {
   }
 
   try {
-    const prompt = `You are extracting event/conference information from a document. Extract the following fields and return ONLY valid JSON, no markdown fences:
+    const prompt = `You are extracting event/conference information from a document. The document may contain ONE or MULTIPLE events. Extract ALL events found.
+
+Return ONLY valid JSON, no markdown fences, in this exact format:
 {
-  "title": "The event or presentation title",
-  "conference_name": "Name of the conference or organization",
-  "conference_location": "City, State or full location",
-  "event_date": "YYYY-MM-DD format (best guess from context, or empty string if not found)",
-  "event_category": "Current Events" or "Previous Events" (use "Previous Events" if the date is in the past),
-  "description": "A brief description or summary of the event (2-3 sentences max)"
+  "events": [
+    {
+      "title": "The event or presentation title",
+      "conference_name": "Name of the conference or organization",
+      "conference_location": "City, State or full location",
+      "event_date": "YYYY-MM-DD format (best guess from context, or empty string if not found)",
+      "event_category": "Current Events" or "Previous Events" (use "Previous Events" if the date is in the past relative to today ${new Date().toISOString().slice(0, 10)}),
+      "description": "A brief description or summary of the event (2-3 sentences max)"
+    }
+  ]
 }
 
-If a field cannot be determined from the document, use an empty string.
+Important: If the document describes multiple separate events, conferences, or presentations, return each as a separate object in the events array. If a field cannot be determined, use an empty string.
 
 Document text:
 ${extractedText.slice(0, 10000)}`;
 
     const response = await sendAdvisorMessage(
       [{ role: "user", content: prompt }],
-      "You extract event information from documents. Return ONLY valid JSON, no markdown fences."
+      "You extract event information from documents. A document may contain multiple events — return ALL of them as separate entries. Return ONLY valid JSON, no markdown fences."
     );
 
     let jsonStr = response.content.trim();
@@ -101,14 +107,19 @@ ${extractedText.slice(0, 10000)}`;
 
     const parsed = JSON.parse(jsonStr);
 
-    return NextResponse.json({
-      title: parsed.title || "",
-      conference_name: parsed.conference_name || "",
-      conference_location: parsed.conference_location || "",
-      event_date: parsed.event_date || "",
-      event_category: parsed.event_category === "Previous Events" ? "Previous Events" : "Current Events",
-      description: parsed.description || "",
-    });
+    // Normalize: support both { events: [...] } and single-object responses
+    const rawEvents = Array.isArray(parsed.events) ? parsed.events : [parsed];
+
+    const events = rawEvents.map((e: Record<string, string>) => ({
+      title: e.title || "",
+      conference_name: e.conference_name || "",
+      conference_location: e.conference_location || "",
+      event_date: e.event_date || "",
+      event_category: e.event_category === "Previous Events" ? "Previous Events" : "Current Events",
+      description: e.description || "",
+    }));
+
+    return NextResponse.json({ events });
   } catch (aiErr) {
     console.error("AI event parsing failed:", aiErr);
     return NextResponse.json(
