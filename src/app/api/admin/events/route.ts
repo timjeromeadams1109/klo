@@ -71,6 +71,7 @@ export async function POST(req: NextRequest) {
       event_category,
       description: description || null,
       event_date,
+      is_published: true,
     })
     .select()
     .single();
