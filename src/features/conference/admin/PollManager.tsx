@@ -175,9 +175,47 @@ export default function PollManager() {
     }
   };
 
+  const [deployedSet, setDeployedSet] = useState<Set<string>>(new Set());
+  const [deployingId, setDeployingId] = useState<string | null>(null);
+  const [deployingAll, setDeployingAll] = useState(false);
+
+  const queuedPolls = (filterSessionId === "all" ? polls : polls.filter((p) => p.session_id === filterSessionId)).filter((p) => !p.is_deployed);
+
   const deployPoll = async (id: string) => {
-    await fetch(`/api/conference/polls/${id}/deploy`, { method: "POST" });
-    fetchPolls();
+    // If already deployed in this session, confirm before re-deploying
+    if (deployedSet.has(id)) {
+      if (!confirm("This poll has already been deployed. Are you sure you want to deploy it again?")) return;
+    }
+    setDeployingId(id);
+    try {
+      await fetch(`/api/conference/polls/${id}/deploy`, { method: "POST" });
+      setDeployedSet((prev) => new Set(prev).add(id));
+      showSuccess("Poll deployed!");
+      fetchPolls();
+    } finally {
+      setDeployingId(null);
+    }
+  };
+
+  const deployAllPolls = async () => {
+    if (queuedPolls.length === 0) return;
+    setDeployingAll(true);
+    try {
+      await Promise.all(
+        queuedPolls.map((p) =>
+          fetch(`/api/conference/polls/${p.id}/deploy`, { method: "POST" })
+        )
+      );
+      setDeployedSet((prev) => {
+        const next = new Set(prev);
+        queuedPolls.forEach((p) => next.add(p.id));
+        return next;
+      });
+      showSuccess(`${queuedPolls.length} poll${queuedPolls.length !== 1 ? "s" : ""} deployed!`);
+      fetchPolls();
+    } finally {
+      setDeployingAll(false);
+    }
   };
 
   const togglePoll = async (id: string, field: "is_active" | "show_results", value: boolean) => {
@@ -235,7 +273,6 @@ export default function PollManager() {
   const filteredPolls = filterSessionId === "all"
     ? polls
     : polls.filter((p) => p.session_id === filterSessionId);
-  const queuedPolls = filteredPolls.filter((p) => !p.is_deployed);
   const deployedPolls = filteredPolls.filter((p) => p.is_deployed);
 
   return (
@@ -391,10 +428,21 @@ export default function PollManager() {
           {/* Poll Queue */}
           {queuedPolls.length > 0 && (
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-klo-text flex items-center gap-2">
-                <FileText size={16} className="text-klo-muted" />
-                Poll Queue ({queuedPolls.length})
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-klo-text flex items-center gap-2">
+                  <FileText size={16} className="text-klo-muted" />
+                  Poll Queue ({queuedPolls.length})
+                </h3>
+                <button
+                  onClick={deployAllPolls}
+                  disabled={deployingAll}
+                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 text-white hover:brightness-110 transition-colors text-xs font-semibold disabled:opacity-50"
+                  title="Deploy all queued polls at once"
+                >
+                  <Rocket size={14} />
+                  {deployingAll ? "Deploying..." : `Deploy All (${queuedPolls.length})`}
+                </button>
+              </div>
               {queuedPolls.map((poll) => (
                 <div key={poll.id} className="glass rounded-2xl p-4 border border-white/5">
                   <div className="flex items-start justify-between gap-3">
@@ -407,10 +455,12 @@ export default function PollManager() {
                     <div className="flex items-center gap-1">
                       <button
                         onClick={() => deployPoll(poll.id)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-colors text-xs font-medium"
+                        disabled={deployingId === poll.id || deployingAll}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 transition-colors text-xs font-medium disabled:opacity-50"
                         title="Deploy to attendees"
                       >
-                        <Rocket size={14} /> Deploy
+                        <Rocket size={14} />
+                        {deployingId === poll.id ? "Deploying..." : "Deploy"}
                       </button>
                       <button
                         onClick={() => deletePoll(poll.id)}
