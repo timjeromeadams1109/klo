@@ -75,6 +75,27 @@ function formatDate(dateStr: string): string {
   });
 }
 
+function linkifyText(text: string): React.ReactNode[] {
+  const urlRegex = /(https?:\/\/[^\s,)<>]+)/g;
+  const parts = text.split(urlRegex);
+  return parts.map((part, i) =>
+    urlRegex.test(part) ? (
+      <a
+        key={i}
+        href={part}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        className="text-[#2764FF] hover:text-[#21B8CD] underline underline-offset-2 transition-colors"
+      >
+        {part}
+      </a>
+    ) : (
+      <span key={i}>{part}</span>
+    )
+  );
+}
+
 function formatTime(time: string): string {
   const [h, m] = time.split(":").map(Number);
   const suffix = h >= 12 ? "PM" : "AM";
@@ -386,7 +407,7 @@ function EventCard({ event, isPast }: { event: EventItem; isPast?: boolean }) {
             )}
             {event.description && (
               <p className="text-sm text-klo-muted/70 leading-relaxed">
-                {event.description}
+                {linkifyText(event.description)}
               </p>
             )}
             <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-klo-muted pt-1">
