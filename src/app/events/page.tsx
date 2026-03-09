@@ -25,6 +25,7 @@ interface FeaturedKeynote {
   event_date: string;
   event_time: string | null;
   description: string | null;
+  website_url: string | null;
 }
 
 const fadeUp = {
@@ -233,7 +234,7 @@ export default function EventsPage() {
                 </p>
                 {featuredKeynote.description && (
                   <p className="text-sm text-klo-muted/70 leading-relaxed">
-                    {featuredKeynote.description}
+                    {linkifyText(featuredKeynote.description)}
                   </p>
                 )}
                 <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-klo-muted pt-1">
@@ -247,7 +248,7 @@ export default function EventsPage() {
                     {featuredKeynote.conference_location}
                   </span>
                 </div>
-                <div className="pt-2">
+                <div className="pt-2 flex flex-wrap gap-3">
                   <Link
                     href={featuredKeynote.slug ? `/conference/${featuredKeynote.slug}` : "/conference"}
                     className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#2764FF] to-[#21B8CD] text-white font-semibold text-sm rounded-lg hover:brightness-110 transition-colors"
@@ -255,6 +256,18 @@ export default function EventsPage() {
                     View Details
                     <ArrowRight size={14} />
                   </Link>
+                  {featuredKeynote.website_url && (
+                    <a
+                      href={featuredKeynote.website_url.startsWith("http") ? featuredKeynote.website_url : `https://${featuredKeynote.website_url}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-[#2764FF]/10 border border-[#2764FF]/20 text-[#2764FF] hover:bg-[#2764FF]/20 hover:text-[#21B8CD] text-sm font-semibold transition-colors cursor-pointer"
+                    >
+                      <ExternalLink size={14} />
+                      Visit Website
+                    </a>
+                  )}
                 </div>
               </div>
             </Card>
