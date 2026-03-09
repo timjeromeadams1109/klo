@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
 import type { AdminDashboardStats } from "@/types";
 
+export const dynamic = "force-dynamic";
+
 async function verifyAdmin() {
   const session = await getServerSession(authOptions);
   if (!session?.user) return null;
@@ -43,6 +45,11 @@ export async function GET() {
     supabase.from("strategy_rooms").select("is_active"),
     supabase.from("vault_content").select("content_type, tier_required"),
   ]);
+
+  // Log any Supabase errors for debugging
+  if (profilesRes.error) {
+    console.error("[admin/stats] profiles query error:", profilesRes.error.message);
+  }
 
   // Users — all free for now (no tiers)
   const profiles = profilesRes.data ?? [];

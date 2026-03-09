@@ -11,6 +11,7 @@ import {
   Sparkles,
   FileText,
   Download,
+  ExternalLink,
 } from "lucide-react";
 import Badge from "@/components/shared/Badge";
 import Card from "@/components/shared/Card";
@@ -59,6 +60,7 @@ interface EventItem {
   description: string | null;
   is_featured: boolean;
   access_code: string | null;
+  website_url: string | null;
   event_files: EventFile[];
 }
 
@@ -126,7 +128,11 @@ export default function EventsPage() {
       .catch(() => {});
   }, []);
 
-  const sortDate = (d: string) => d === "SAVE THE DATE" ? Infinity : new Date(d).getTime();
+  const sortDate = (d: string) => {
+    if (d === "SAVE THE DATE") return Infinity;
+    const ts = new Date(d).getTime();
+    return isNaN(ts) ? Infinity : ts;
+  };
   const upcomingEvents = events
     .filter((e) => isUpcoming(e.event_date, e.event_time) && e.id !== featuredKeynote?.id)
     .sort((a, b) => sortDate(a.event_date) - sortDate(b.event_date));
@@ -393,6 +399,17 @@ function EventCard({ event, isPast }: { event: EventItem; isPast?: boolean }) {
                 <MapPin size={12} className="text-[#2764FF]/70" />
                 {event.conference_location}
               </span>
+              {event.website_url && (
+                <a
+                  href={event.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-[#2764FF] hover:text-[#21B8CD] underline underline-offset-2 transition-colors"
+                >
+                  <ExternalLink size={12} />
+                  Visit Website
+                </a>
+              )}
             </div>
           </div>
           {!isPast && (

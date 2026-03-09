@@ -46,6 +46,7 @@ interface Event {
   is_featured: boolean;
   access_code: string | null;
   seminar_mode: boolean;
+  website_url: string | null;
   event_files: EventFile[];
 }
 
@@ -98,6 +99,7 @@ export default function EventsAdminTab() {
   const [formTime, setFormTime] = useState("");
   const [formTimezone, setFormTimezone] = useState("America/Chicago");
   const [formDescription, setFormDescription] = useState("");
+  const [formWebsiteUrl, setFormWebsiteUrl] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   // Edit state
@@ -130,6 +132,7 @@ export default function EventsAdminTab() {
     setFormTime("");
     setFormTimezone("America/Chicago");
     setFormDescription("");
+    setFormWebsiteUrl("");
     setParseStatus("idle");
     setParseError(null);
     setParsedEvents([]);
@@ -151,6 +154,7 @@ export default function EventsAdminTab() {
           event_timezone: formTimezone,
           event_category: formCategory,
           description: formDescription,
+          website_url: formWebsiteUrl || undefined,
         }),
       });
       if (res.ok) {
@@ -246,6 +250,7 @@ export default function EventsAdminTab() {
       event_category: event.event_category,
       description: event.description || "",
       access_code: event.access_code || "",
+      website_url: event.website_url || "",
     });
   };
 
@@ -535,6 +540,13 @@ export default function EventsAdminTab() {
                         </button>
                       </div>
                     </div>
+                    <input
+                      type="url"
+                      placeholder="Website URL (optional)"
+                      value={(editFields as Record<string, unknown>).website_url as string ?? ""}
+                      onChange={(e) => setEditFields({ ...editFields, website_url: e.target.value })}
+                      className={inputClass}
+                    />
                     <textarea
                       placeholder="Description"
                       value={(editFields.description as string) ?? ""}
@@ -897,6 +909,13 @@ export default function EventsAdminTab() {
               value={formDescription}
               onChange={(e) => setFormDescription(e.target.value)}
               rows={3}
+              className={inputClass}
+            />
+            <input
+              type="url"
+              placeholder="Website URL (optional)"
+              value={formWebsiteUrl}
+              onChange={(e) => setFormWebsiteUrl(e.target.value)}
               className={inputClass}
             />
             <div className="flex gap-3">

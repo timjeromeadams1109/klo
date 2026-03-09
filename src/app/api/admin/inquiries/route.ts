@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 async function verifyAdmin() {
   const session = await getServerSession(authOptions);
   if (!session?.user) return null;

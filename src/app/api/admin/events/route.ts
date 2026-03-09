@@ -3,6 +3,8 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
 
+export const dynamic = "force-dynamic";
+
 async function verifyAdmin() {
   const session = await getServerSession(authOptions);
   if (!session?.user) return null;
@@ -51,6 +53,7 @@ export async function POST(req: NextRequest) {
     event_date,
     event_time,
     event_timezone,
+    website_url,
   } = body;
 
   if (!title || !conference_name || !conference_location || !event_date) {
@@ -75,6 +78,7 @@ export async function POST(req: NextRequest) {
       event_date,
       event_time: event_time || null,
       event_timezone: event_timezone || "America/Chicago",
+      website_url: website_url || null,
       is_published: true,
     })
     .select()

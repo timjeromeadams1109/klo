@@ -4,6 +4,8 @@ import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
 import type { AdminActivityData, AdminTimeSeriesPoint } from "@/types";
 
+export const dynamic = "force-dynamic";
+
 async function verifyAdmin() {
   const session = await getServerSession(authOptions);
   if (!session?.user) return null;
