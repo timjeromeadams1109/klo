@@ -76,7 +76,7 @@ function formatDate(dateStr: string): string {
 }
 
 function linkifyText(text: string): React.ReactNode[] {
-  const urlPattern = /(https?:\/\/[^\s,)<>]+|www\.[^\s,)<>]+)/gi;
+  const urlPattern = /(https?:\/\/[^\s,)<>]+[^\s,)<>.!?]|www\.[^\s,)<>]+[^\s,)<>.!?])/gi;
   const result: React.ReactNode[] = [];
   let lastIndex = 0;
   let match: RegExpExecArray | null;
@@ -433,7 +433,7 @@ function EventCard({ event, isPast }: { event: EventItem; isPast?: boolean }) {
             </div>
             {event.website_url && (
               <a
-                href={event.website_url}
+                href={event.website_url.startsWith("http") ? event.website_url : `https://${event.website_url}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
