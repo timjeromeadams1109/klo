@@ -1,0 +1,105 @@
+{
+  "name": "KLO Marketing: Social Queue Review",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 12 }]
+        }
+      },
+      "name": "Check Twice Daily",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.KLO_APP_URL }}/api/admin/marketing/social-queue?status=draft",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "name": "Fetch Draft Posts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "KLO Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {},
+          "conditions": [
+            {
+              "id": "has-drafts",
+              "leftValue": "={{ $json.length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ]
+        }
+      },
+      "name": "Has Pending Drafts?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build a summary of pending social posts for review\nconst items = $input.all();\nconst posts = items.map(item => item.json);\n\nconst summary = posts.map((p, i) => \n  `${i + 1}. [${p.platform}] ${p.content.substring(0, 100)}${p.content.length > 100 ? '...' : ''}`\n).join('\\n');\n\nreturn [{\n  json: {\n    count: posts.length,\n    summary,\n    posts\n  }\n}];"
+      },
+      "name": "Build Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 200]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.NOTIFICATION_EMAIL }}",
+        "toEmail": "={{ $env.NOTIFICATION_EMAIL }}",
+        "subject": "{{ $json.count }} social posts ready for review",
+        "emailType": "html",
+        "html": "<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; background: #0D1117; color: #E6EDF3; padding: 32px; border-radius: 16px;\">\n  <div style=\"text-align: center; margin-bottom: 24px;\">\n    <h1 style=\"color: #D4A853; font-size: 22px; margin: 0;\">Social Posts Ready</h1>\n    <p style=\"color: #8B949E; font-size: 14px; margin-top: 8px;\">{{ $json.count }} draft posts awaiting your review</p>\n  </div>\n\n  <div style=\"background: rgba(39,100,255,0.08); border: 1px solid rgba(39,100,255,0.2); border-radius: 12px; padding: 20px; margin: 24px 0;\">\n    <p style=\"color: #8B949E; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 12px 0;\">Pending Posts</p>\n    <pre style=\"color: #E6EDF3; font-size: 13px; white-space: pre-wrap; margin: 0;\">{{ $json.summary }}</pre>\n  </div>\n\n  <div style=\"text-align: center; margin-top: 24px;\">\n    <a href=\"{{ $env.KLO_APP_URL }}/admin\" style=\"display: inline-block; padding: 12px 24px; background: linear-gradient(to right, #2764FF, #21B8CD); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px;\">Review in Dashboard</a>\n  </div>\n\n  <p style=\"color: #8B949E; font-size: 11px; text-align: center; margin-top: 24px;\">\n    Powered by the Keith L. Odom App &bull; Available on App Store &amp; Google Play\n  </p>\n</div>",
+        "options": {}
+      },
+      "name": "Send Review Digest",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1120, 200],
+      "credentials": {
+        "smtp": {
+          "name": "KLO SMTP"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Check Twice Daily": {
+      "main": [[{ "node": "Fetch Draft Posts", "type": "main", "index": 0 }]]
+    },
+    "Fetch Draft Posts": {
+      "main": [[{ "node": "Has Pending Drafts?", "type": "main", "index": 0 }]]
+    },
+    "Has Pending Drafts?": {
+      "main": [
+        [{ "node": "Build Summary", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Build Summary": {
+      "main": [[{ "node": "Send Review Digest", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [{ "name": "marketing" }, { "name": "klo" }]
+}

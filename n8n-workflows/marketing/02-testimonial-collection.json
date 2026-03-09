@@ -1,0 +1,77 @@
+{
+  "name": "KLO Marketing: Testimonial Collection",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 6 }]
+        }
+      },
+      "name": "Check Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.KLO_APP_URL }}/api/admin/events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "name": "Fetch All Events",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "KLO Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Find events that ended 24-30 hours ago (our 6-hour window)\n// and have an organizer email\nconst now = new Date();\nconst h24 = new Date(now.getTime() - 24 * 60 * 60 * 1000);\nconst h30 = new Date(now.getTime() - 30 * 60 * 60 * 1000);\n\nconst items = $input.all();\nreturn items.filter(item => {\n  const d = item.json;\n  if (!d.event_date || d.event_date === 'SAVE THE DATE') return false;\n  if (!d.organizer_email) return false;\n  \n  const eventEnd = d.event_time\n    ? new Date(d.event_date + 'T' + d.event_time + ':00')\n    : new Date(d.event_date + 'T18:00:00');\n  \n  // Event ended between 24-30 hours ago\n  return eventEnd <= h24 && eventEnd >= h30;\n});"
+      },
+      "name": "Events Ended 24h Ago",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.NOTIFICATION_EMAIL }}",
+        "toEmail": "={{ $json.organizer_email }}",
+        "subject": "How was Keith's session at {{ $json.conference_name }}?",
+        "emailType": "html",
+        "html": "<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; background: #0D1117; color: #E6EDF3; padding: 32px; border-radius: 16px;\">\n  <div style=\"text-align: center; margin-bottom: 24px;\">\n    <h1 style=\"color: #D4A853; font-size: 22px; margin: 0;\">Thank You!</h1>\n    <p style=\"color: #8B949E; font-size: 14px; margin-top: 8px;\">We'd love your feedback on {{ $json.conference_name }}</p>\n  </div>\n\n  <p style=\"color: #E6EDF3; font-size: 14px; line-height: 1.7;\">\n    Hi {{ $json.organizer_name || 'there' }},\n  </p>\n  <p style=\"color: #E6EDF3; font-size: 14px; line-height: 1.7;\">\n    Thank you for having Keith speak at <strong>{{ $json.conference_name }}</strong>. We hope the interactive engagement tools added value to your event.\n  </p>\n  <p style=\"color: #E6EDF3; font-size: 14px; line-height: 1.7;\">\n    Would you take 30 seconds to answer two quick questions? Your feedback helps us improve and helps other event organizers discover Keith.\n  </p>\n\n  <div style=\"background: rgba(39,100,255,0.08); border: 1px solid rgba(39,100,255,0.2); border-radius: 12px; padding: 20px; margin: 24px 0;\">\n    <p style=\"color: #8B949E; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin: 0 0 8px 0;\">Quick Survey</p>\n    <p style=\"color: #E6EDF3; font-size: 14px; margin: 0 0 12px 0;\"><strong>1.</strong> On a scale of 1-5, how would you rate the overall experience?</p>\n    <div style=\"display: flex; gap: 8px; margin-bottom: 16px;\">\n      <a href=\"{{ $env.KLO_APP_URL }}/api/admin/marketing/testimonial?event_id={{ $json.id }}&rating=1&email={{ $json.organizer_email }}\" style=\"display: inline-block; width: 40px; height: 40px; line-height: 40px; text-align: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #8B949E; text-decoration: none; font-size: 16px;\">1</a>\n      <a href=\"{{ $env.KLO_APP_URL }}/api/admin/marketing/testimonial?event_id={{ $json.id }}&rating=2&email={{ $json.organizer_email }}\" style=\"display: inline-block; width: 40px; height: 40px; line-height: 40px; text-align: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #8B949E; text-decoration: none; font-size: 16px;\">2</a>\n      <a href=\"{{ $env.KLO_APP_URL }}/api/admin/marketing/testimonial?event_id={{ $json.id }}&rating=3&email={{ $json.organizer_email }}\" style=\"display: inline-block; width: 40px; height: 40px; line-height: 40px; text-align: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #8B949E; text-decoration: none; font-size: 16px;\">3</a>\n      <a href=\"{{ $env.KLO_APP_URL }}/api/admin/marketing/testimonial?event_id={{ $json.id }}&rating=4&email={{ $json.organizer_email }}\" style=\"display: inline-block; width: 40px; height: 40px; line-height: 40px; text-align: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: #8B949E; text-decoration: none; font-size: 16px;\">4</a>\n      <a href=\"{{ $env.KLO_APP_URL }}/api/admin/marketing/testimonial?event_id={{ $json.id }}&rating=5&email={{ $json.organizer_email }}\" style=\"display: inline-block; width: 40px; height: 40px; line-height: 40px; text-align: center; background: rgba(212,168,83,0.2); border: 1px solid rgba(212,168,83,0.4); border-radius: 8px; color: #D4A853; text-decoration: none; font-size: 16px; font-weight: bold;\">5</a>\n    </div>\n    <p style=\"color: #E6EDF3; font-size: 14px; margin: 0;\"><strong>2.</strong> Would you recommend Keith to other event organizers? If so, we'd love a brief quote we can share.</p>\n    <p style=\"color: #8B949E; font-size: 12px; margin: 8px 0 0 0;\">Just reply to this email with your thoughts.</p>\n  </div>\n\n  <p style=\"color: #8B949E; font-size: 11px; text-align: center;\">\n    Powered by the Keith L. Odom App &bull; Available on App Store &amp; Google Play\n  </p>\n</div>",
+        "options": {}
+      },
+      "name": "Send Testimonial Request",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [900, 300],
+      "credentials": {
+        "smtp": {
+          "name": "KLO SMTP"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Check Every 6 Hours": {
+      "main": [[{ "node": "Fetch All Events", "type": "main", "index": 0 }]]
+    },
+    "Fetch All Events": {
+      "main": [[{ "node": "Events Ended 24h Ago", "type": "main", "index": 0 }]]
+    },
+    "Events Ended 24h Ago": {
+      "main": [[{ "node": "Send Testimonial Request", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [{ "name": "marketing" }, { "name": "klo" }]
+}

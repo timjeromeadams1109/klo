@@ -1,0 +1,220 @@
+{
+  "name": "KLO Marketing: Post-Event Report",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "field": "hours", "hoursInterval": 1 }]
+        }
+      },
+      "name": "Check Every Hour",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.KLO_APP_URL }}/api/admin/events",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "name": "Fetch All Events",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [460, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "KLO Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "filter-past-events",
+              "leftValue": "={{ $json.seminar_mode }}",
+              "rightValue": false,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "filter-has-date",
+              "leftValue": "={{ $json.event_date }}",
+              "rightValue": "SAVE THE DATE",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "name": "Filter Recently Ended Events",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [680, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filter to events that ended in the last 2 hours\n// (since we check hourly, this catches events that just turned off seminar_mode)\nconst now = new Date();\nconst twoHoursAgo = new Date(now.getTime() - 2 * 60 * 60 * 1000);\n\nconst items = $input.all();\nconst recent = items.filter(item => {\n  const d = item.json;\n  if (!d.event_date || d.event_date === 'SAVE THE DATE') return false;\n  const eventEnd = d.event_time\n    ? new Date(d.event_date + 'T' + d.event_time + ':00')\n    : new Date(d.event_date + 'T23:59:59');\n  return eventEnd >= twoHoursAgo && eventEnd <= now;\n});\n\nreturn recent;"
+      },
+      "name": "Only Recently Ended",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [900, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.KLO_APP_URL }}/api/admin/events/{{ $json.id }}/report",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "name": "Generate Report",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1120, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "KLO Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {},
+          "conditions": [
+            {
+              "id": "has-organizer-email",
+              "leftValue": "={{ $json.event.organizer_email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
+            }
+          ]
+        }
+      },
+      "name": "Has Organizer Email?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [1340, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "={{ $env.NOTIFICATION_EMAIL }}",
+        "toEmail": "={{ $json.event.organizer_email }}",
+        "subject": "Your Event Report: {{ $json.event.conference_name }}",
+        "emailType": "html",
+        "html": "<div style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; background: #0D1117; color: #E6EDF3; padding: 32px; border-radius: 16px;\">\n  <div style=\"text-align: center; margin-bottom: 24px;\">\n    <h1 style=\"color: #D4A853; font-size: 24px; margin: 0;\">Event Engagement Report</h1>\n    <p style=\"color: #8B949E; font-size: 14px;\">{{ $json.event.conference_name }}</p>\n    <p style=\"color: #8B949E; font-size: 12px;\">{{ $json.event.event_date }} &bull; {{ $json.event.conference_location }}</p>\n  </div>\n\n  <div style=\"display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;\">\n    <div style=\"flex: 1; min-width: 120px; background: rgba(39,100,255,0.1); border: 1px solid rgba(39,100,255,0.2); border-radius: 12px; padding: 16px; text-align: center;\">\n      <div style=\"font-size: 28px; font-weight: bold; color: #2764FF;\">{{ $json.engagement.total_votes }}</div>\n      <div style=\"font-size: 11px; color: #8B949E;\">Total Votes</div>\n    </div>\n    <div style=\"flex: 1; min-width: 120px; background: rgba(39,100,255,0.1); border: 1px solid rgba(39,100,255,0.2); border-radius: 12px; padding: 16px; text-align: center;\">\n      <div style=\"font-size: 28px; font-weight: bold; color: #2764FF;\">{{ $json.engagement.total_questions }}</div>\n      <div style=\"font-size: 11px; color: #8B949E;\">Questions Asked</div>\n    </div>\n    <div style=\"flex: 1; min-width: 120px; background: rgba(39,100,255,0.1); border: 1px solid rgba(39,100,255,0.2); border-radius: 12px; padding: 16px; text-align: center;\">\n      <div style=\"font-size: 28px; font-weight: bold; color: #2764FF;\">{{ $json.engagement.total_polls }}</div>\n      <div style=\"font-size: 11px; color: #8B949E;\">Polls Run</div>\n    </div>\n  </div>\n\n  <p style=\"color: #8B949E; font-size: 13px; line-height: 1.6;\">\n    Thank you for having Keith at your event! Your audience was highly engaged. Download the full report or view detailed results in the Keith L. Odom app.\n  </p>\n\n  <div style=\"text-align: center; margin-top: 24px;\">\n    <a href=\"{{ $env.KLO_APP_URL }}/events\" style=\"display: inline-block; padding: 12px 24px; background: linear-gradient(to right, #2764FF, #21B8CD); color: white; text-decoration: none; border-radius: 8px; font-weight: 600; font-size: 14px;\">View Full Report</a>\n  </div>\n\n  <p style=\"color: #8B949E; font-size: 11px; text-align: center; margin-top: 24px;\">\n    Powered by the Keith L. Odom App &bull; Available on App Store &amp; Google Play\n  </p>\n</div>",
+        "options": {}
+      },
+      "name": "Send Report Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [1560, 200],
+      "credentials": {
+        "smtp": {
+          "name": "KLO SMTP"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.KLO_APP_URL }}/api/admin/marketing/social-queue",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "event_id",
+              "value": "={{ $json.event.id }}"
+            },
+            {
+              "name": "auto_generate",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "Auto-Generate Social Posts",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1560, 400],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "KLO Admin Auth"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $env.KLO_APP_URL }}/api/admin/marketing/email-log",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\n  \"event_id\": \"{{ $json.event.id }}\",\n  \"email_type\": \"post_event_report\",\n  \"recipient_email\": \"{{ $json.event.organizer_email }}\",\n  \"recipient_name\": \"{{ $json.event.organizer_name }}\",\n  \"subject\": \"Your Event Report: {{ $json.event.conference_name }}\"\n}",
+        "options": {}
+      },
+      "name": "Log Email Sent",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1780, 200],
+      "credentials": {
+        "httpHeaderAuth": {
+          "name": "KLO Admin Auth"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Check Every Hour": {
+      "main": [[{ "node": "Fetch All Events", "type": "main", "index": 0 }]]
+    },
+    "Fetch All Events": {
+      "main": [[{ "node": "Filter Recently Ended Events", "type": "main", "index": 0 }]]
+    },
+    "Filter Recently Ended Events": {
+      "main": [[{ "node": "Only Recently Ended", "type": "main", "index": 0 }]]
+    },
+    "Only Recently Ended": {
+      "main": [[{ "node": "Generate Report", "type": "main", "index": 0 }]]
+    },
+    "Generate Report": {
+      "main": [[{ "node": "Has Organizer Email?", "type": "main", "index": 0 }]]
+    },
+    "Has Organizer Email?": {
+      "main": [
+        [{ "node": "Send Report Email", "type": "main", "index": 0 }],
+        [{ "node": "Auto-Generate Social Posts", "type": "main", "index": 0 }]
+      ]
+    },
+    "Send Report Email": {
+      "main": [[{ "node": "Log Email Sent", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [{ "name": "marketing" }, { "name": "klo" }]
+}
