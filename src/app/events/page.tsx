@@ -76,24 +76,34 @@ function formatDate(dateStr: string): string {
 }
 
 function linkifyText(text: string): React.ReactNode[] {
-  const urlRegex = /(https?:\/\/[^\s,)<>]+)/g;
-  const parts = text.split(urlRegex);
-  return parts.map((part, i) =>
-    urlRegex.test(part) ? (
+  const urlPattern = /(https?:\/\/[^\s,)<>]+|www\.[^\s,)<>]+)/gi;
+  const result: React.ReactNode[] = [];
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  while ((match = urlPattern.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      result.push(<span key={`t-${lastIndex}`}>{text.slice(lastIndex, match.index)}</span>);
+    }
+    const url = match[0];
+    const href = url.startsWith("http") ? url : `https://${url}`;
+    result.push(
       <a
-        key={i}
-        href={part}
+        key={`l-${match.index}`}
+        href={href}
         target="_blank"
         rel="noopener noreferrer"
         onClick={(e) => e.stopPropagation()}
-        className="text-[#2764FF] hover:text-[#21B8CD] underline underline-offset-2 transition-colors"
+        className="text-[#2764FF] hover:text-[#21B8CD] underline underline-offset-2 break-all transition-colors"
       >
-        {part}
+        {url}
       </a>
-    ) : (
-      <span key={i}>{part}</span>
-    )
-  );
+    );
+    lastIndex = urlPattern.lastIndex;
+  }
+  if (lastIndex < text.length) {
+    result.push(<span key={`t-${lastIndex}`}>{text.slice(lastIndex)}</span>);
+  }
+  return result;
 }
 
 function formatTime(time: string): string {
