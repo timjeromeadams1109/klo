@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KLO Platform — Summit Delivery Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #0D1117;
+    color: #C9D1D9;
+    line-height: 1.7;
+    padding: 40px 20px;
+  }
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 60px 0 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    margin-bottom: 48px;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(39,100,255,0.1);
+    border: 1px solid rgba(39,100,255,0.2);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #2764FF;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .header h1 {
+    font-size: 42px;
+    font-weight: 800;
+    background: linear-gradient(135deg, #fff, #c7d2fe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+  .header p {
+    font-size: 18px;
+    color: #8B949E;
+  }
+  .header .date {
+    font-size: 14px;
+    color: #484F58;
+    margin-top: 8px;
+  }
+
+  /* Section */
+  section {
+    margin-bottom: 48px;
+  }
+  h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #E2E8F0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(39,100,255,0.2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #2764FF, #21B8CD);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    flex-shrink: 0;
+  }
+  h3 {
+    font-size: 17px;
+    font-weight: 700;
+    color: #E2E8F0;
+    margin: 24px 0 12px;
+  }
+  p, li {
+    font-size: 15px;
+    color: #C9D1D9;
+    margin-bottom: 8px;
+  }
+  ul, ol {
+    padding-left: 24px;
+    margin-bottom: 16px;
+  }
+  li { margin-bottom: 6px; }
+
+  /* Cards */
+  .card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #2764FF;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* URL boxes */
+  .url-box {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(39,100,255,0.06);
+    border: 1px solid rgba(39,100,255,0.15);
+    border-radius: 10px;
+    padding: 14px 20px;
+    margin: 12px 0;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 15px;
+    color: #21B8CD;
+    word-break: break-all;
+  }
+  .url-box .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #2764FF;
+    flex-shrink: 0;
+  }
+
+  /* Credential table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+  }
+  th {
+    text-align: left;
+    font-size: 12px;
+    font-weight: 700;
+    color: #8B949E;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  td {
+    padding: 12px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  td.mono {
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    color: #E2E8F0;
+  }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* Alert boxes */
+  .alert {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    font-size: 14px;
+  }
+  .alert-warn {
+    background: rgba(234,179,8,0.08);
+    border: 1px solid rgba(234,179,8,0.2);
+    color: #EAB308;
+  }
+  .alert-info {
+    background: rgba(39,100,255,0.08);
+    border: 1px solid rgba(39,100,255,0.15);
+    color: #93C5FD;
+  }
+  .alert-success {
+    background: rgba(34,197,94,0.08);
+    border: 1px solid rgba(34,197,94,0.2);
+    color: #4ADE80;
+  }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    padding: 0;
+  }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+  .checklist li::before {
+    content: '☐';
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* Step numbering */
+  .steps {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+  }
+  .steps li {
+    counter-increment: step;
+    padding: 12px 0 12px 48px;
+    position: relative;
+    border-left: 2px solid rgba(39,100,255,0.15);
+    margin-left: 16px;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: -14px;
+    top: 12px;
+    width: 26px;
+    height: 26px;
+    background: #2764FF;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 700;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .steps li:last-child { border-left-color: transparent; }
+
+  code {
+    background: rgba(255,255,255,0.06);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'SF Mono', 'Fira Code', monospace;
+    font-size: 13px;
+    color: #E2E8F0;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    padding: 40px 0 20px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    margin-top: 48px;
+    color: #484F58;
+    font-size: 13px;
+  }
+
+  @media print {
+    body { background: #fff; color: #1a1a1a; }
+    .card { border: 1px solid #ddd; }
+    h2 { color: #1a1a1a; }
+    td, th, p, li { color: #333; }
+    .url-box { background: #f5f5f5; border-color: #ddd; color: #2764FF; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-badge">Delivery Guide</div>
+    <h1>KLO Engagement Platform</h1>
+    <p>New Life Leadership Conference — Montgomery, AL</p>
+    <p class="date">Saturday, March 7, 2026 &nbsp;|&nbsp; Prepared by Maven (Tim Adams)</p>
+  </div>
+
+  <!-- 1. Platform URLs -->
+  <section>
+    <h2><span class="num">1</span> Platform URLs</h2>
+    <p>The platform is live and ready. Here are the key URLs:</p>
+
+    <div class="card">
+      <div class="card-title">Main Platform</div>
+      <div class="url-box"><span class="dot"></span> https://klo-app.vercel.app</div>
+      <p>Full platform: assessments, AI advisor, vault, booking, events, and more.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Conference Engagement Page</div>
+      <div class="url-box"><span class="dot"></span> https://klo-app.vercel.app/conference</div>
+      <p>Where attendees go to ask questions, vote in polls, and submit word cloud words. This is the audience-facing page.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Conference Monitor (Admin)</div>
+      <div class="url-box"><span class="dot"></span> https://klo-app.vercel.app/conference/monitor</div>
+      <p>Real-time dashboard for the presenter. Shows incoming questions, poll results, and word cloud. <strong>Must be logged in as Owner or Admin.</strong></p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">QR Code / Engagement Magnet</div>
+      <div class="url-box"><span class="dot"></span> https://klo-app.vercel.app/conference/join</div>
+      <p>Full-screen page designed to be projected. Shows a QR code that attendees scan to join the conference. Looks great on any screen size.</p>
+    </div>
+  </section>
+
+  <!-- 2. Login Credentials -->
+  <section>
+    <h2><span class="num">2</span> Login Credentials</h2>
+    <div class="alert alert-warn">🔒 <strong>Staff only</strong> — do not share these credentials with attendees. Attendees do NOT need to log in to participate in the conference.</div>
+
+    <table>
+      <thead>
+        <tr><th>Role</th><th>Email</th><th>Password</th><th>Use For</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Owner</strong></td>
+          <td class="mono">keith@keithlodom.io</td>
+          <td class="mono">Password123!</td>
+          <td>Full access — conference monitor, admin panel, all features</td>
+        </tr>
+        <tr>
+          <td><strong>Admin</strong></td>
+          <td class="mono">admin@keithlodom.io</td>
+          <td class="mono">Password123!</td>
+          <td>Conference monitor, event management, content moderation</td>
+        </tr>
+        <tr>
+          <td><strong>Moderator</strong></td>
+          <td class="mono">moderator@keithlodom.io</td>
+          <td class="mono">Password123!</td>
+          <td>Question moderation, marking questions as answered</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="alert alert-info">💡 Attendees participate without logging in. They just scan the QR code and go to <code>/conference</code>.</div>
+  </section>
+
+  <!-- 3. Day-Of Setup -->
+  <section>
+    <h2><span class="num">3</span> Day-Of Setup (30 min before)</h2>
+
+    <ol class="steps">
+      <li><strong>Connect to venue WiFi</strong> on your laptop/tablet. Confirm <code>klo-app.vercel.app</code> loads.</li>
+      <li><strong>Log in as Owner</strong> at <code>/auth/signin</code> using Keith's credentials above.</li>
+      <li><strong>Open the Conference Monitor</strong> at <code>/conference/monitor</code> on your device (laptop or tablet). This is your real-time dashboard — keep it open throughout the session.</li>
+      <li><strong>Activate Seminar Mode.</strong> On the monitor page, toggle "Seminar Mode" ON. This unlocks the interactive tools (polls, Q&A, word cloud) for attendees. <em>Tools stay locked until you activate this.</em></li>
+      <li><strong>Set up the projector.</strong> On the projected screen, open <code>/conference/join</code> in full-screen (press <code>F11</code> or <code>Cmd+Shift+F</code> in Chrome). This shows the QR code for attendees to scan.</li>
+      <li><strong>Test with your phone.</strong> Scan the QR code, submit a test question, and verify it appears on the monitor. Delete the test question from the monitor afterward.</li>
+      <li><strong>Create your polls</strong> from the monitor page. You can create polls before the session starts and activate them at the right moment.</li>
+    </ol>
+  </section>
+
+  <!-- 4. During the Session -->
+  <section>
+    <h2><span class="num">4</span> During the Session</h2>
+
+    <h3>Opening (first 2 minutes)</h3>
+    <ul>
+      <li>Show the QR code slide (<code>/conference/join</code>) on the projector</li>
+      <li>Say: <em>"Scan this QR code to ask questions, vote in polls, and participate live. No login required — just point your camera."</em></li>
+      <li>Give attendees ~60 seconds to connect</li>
+    </ul>
+
+    <h3>Q&A</h3>
+    <ul>
+      <li>Attendees submit questions from their phones at <code>/conference</code></li>
+      <li>Questions appear on your monitor in real-time with upvote counts</li>
+      <li>You can mark questions as "Answered" from the monitor</li>
+      <li>Questions with the most upvotes rise to the top</li>
+    </ul>
+
+    <h3>Live Polls</h3>
+    <ul>
+      <li>Create polls from the monitor page (you can pre-create them)</li>
+      <li>Activate a poll when you're ready — attendees see it instantly</li>
+      <li>Results update in real-time on both the monitor and audience view</li>
+      <li>Each person gets one vote per poll (works correctly on shared WiFi)</li>
+    </ul>
+
+    <h3>Word Cloud</h3>
+    <ul>
+      <li>Ask a question like <em>"In one word, what does innovation mean to you?"</em></li>
+      <li>Attendees type their word on the conference page</li>
+      <li>The word cloud builds in real-time — popular words appear larger</li>
+    </ul>
+
+    <div class="alert alert-success">✅ <strong>Optimized for 100+ users</strong> — shared WiFi voting, debounced real-time updates, server-side caching, and SQL-side aggregation ensure smooth performance even with a full room.</div>
+  </section>
+
+  <!-- 5. Platform Features to Highlight -->
+  <section>
+    <h2><span class="num">5</span> Platform Features to Highlight</h2>
+    <p>Beyond the conference tools, here's what attendees can explore on the platform:</p>
+
+    <div class="card">
+      <div class="card-title">Assessments</div>
+      <p>Four interactive assessments attendees can take from their phones:</p>
+      <ul>
+        <li><strong>AI Readiness Assessment</strong> — gauge your organization's AI preparedness</li>
+        <li><strong>Church Technology Readiness</strong> — evaluate digital ministry capabilities</li>
+        <li><strong>Cyber Risk Assessment</strong> — identify security vulnerabilities</li>
+        <li><strong>Governance Assessment</strong> — review organizational governance health</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">The Vault</div>
+      <p>Curated executive briefings and resources. Featured content:</p>
+      <ul>
+        <li><strong>"Navigating the Moral Frontier of Generative AI in Ministry"</strong> — brand new briefing available now</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title">AI Strategy Advisor</div>
+      <p>AI-powered chat for technology strategy questions. Includes a Policy Builder tool for generating governance frameworks.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Booking & Consultation</div>
+      <p>Attendees can book a 1-on-1 consultation with Keith directly from the platform.</p>
+    </div>
+  </section>
+
+  <!-- 6. Projector-Ready Slides -->
+  <section>
+    <h2><span class="num">6</span> Projector-Ready Slides (PPTX)</h2>
+    <p>Two presentation decks are included and ready to present:</p>
+
+    <div class="card">
+      <div class="card-title">Platform Guide</div>
+      <p><code>platform-guide.pptx</code> — Full overview of the KLO Engagement Platform. Covers all features, assessments, vault, AI advisor, and booking.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Conference v2.2 Guide</div>
+      <p><code>conference-v2-guide.pptx</code> — Focused on conference tools: live polls, Q&A, word cloud, and what's new (shared WiFi voting, 100+ user optimization).</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Credentials Slide</div>
+      <p><code>credentials-slide.pptx</code> — Staff-only slide with login credentials. <strong>Do NOT project this to the audience.</strong></p>
+    </div>
+
+    <div class="alert alert-info">💡 All PPTX files are in the <code>public/</code> folder. They can also be downloaded from:<br><code>klo-app.vercel.app/platform-guide.pptx</code> and <code>klo-app.vercel.app/conference-v2-guide.pptx</code></div>
+  </section>
+
+  <!-- 7. Troubleshooting -->
+  <section>
+    <h2><span class="num">7</span> Troubleshooting</h2>
+
+    <h3>Attendees can't scan the QR code</h3>
+    <ul>
+      <li>Tell them to type <code>klo-app.vercel.app/conference</code> in their browser</li>
+      <li>Works on any phone — iPhone, Android, any browser</li>
+    </ul>
+
+    <h3>Polls/Q&A not showing for attendees</h3>
+    <ul>
+      <li>Make sure <strong>Seminar Mode is ON</strong> in the monitor page</li>
+      <li>If still not working, have attendees refresh their browser</li>
+    </ul>
+
+    <h3>Attendee says they already voted</h3>
+    <ul>
+      <li>Each browser session gets one vote per poll — this is by design</li>
+      <li>If they clear their browser or use incognito, they could vote again (acceptable edge case)</li>
+    </ul>
+
+    <h3>Page is slow or not updating</h3>
+    <ul>
+      <li>The app has CDN caching (2-5 seconds). Real-time updates use WebSockets — they should appear within 1 second</li>
+      <li>If an attendee's page seems stuck, a browser refresh fixes it</li>
+    </ul>
+
+    <h3>Need to remove an inappropriate question</h3>
+    <ul>
+      <li>From the monitor, click the question and delete/hide it</li>
+      <li>It disappears for all attendees immediately</li>
+    </ul>
+  </section>
+
+  <!-- 8. Pre-Event Checklist -->
+  <section>
+    <h2><span class="num">8</span> Pre-Event Checklist</h2>
+
+    <ul class="checklist">
+      <li>Venue WiFi tested and working on your devices</li>
+      <li>Logged in to platform as Owner (keith@keithlodom.io)</li>
+      <li>Conference Monitor open on laptop/tablet</li>
+      <li>Seminar Mode activated</li>
+      <li>QR code page projected and visible</li>
+      <li>Test question submitted and verified on monitor</li>
+      <li>Test data cleaned (no leftover test questions/polls)</li>
+      <li>Polls pre-created for the session</li>
+      <li>PPTX presentations loaded and ready</li>
+      <li>Phone charged (for backup monitoring)</li>
+      <li>Backup URL ready to share verbally (klo-app.vercel.app/conference)</li>
+    </ul>
+  </section>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>KLO Engagement Platform &nbsp;|&nbsp; Built by Maven (Tim Adams) &nbsp;|&nbsp; March 2026</p>
+    <p style="margin-top: 4px;">Support: timjeromeadams@gmail.com</p>
+  </div>
+
+</div>
+</body>
+</html>

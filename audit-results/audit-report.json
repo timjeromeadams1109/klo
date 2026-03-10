@@ -1,0 +1,3578 @@
+{
+  "url": "https://klo-app.vercel.app",
+  "timestamp": "2026-03-07T05:25:41.346Z",
+  "duration": "134.8s",
+  "threshold": 80,
+  "pages": {
+    "/": {
+      "overallScore": 85,
+      "categories": {
+        "performance": {
+          "score": 83,
+          "pass": 9,
+          "warn": 2,
+          "fail": 1,
+          "info": 0,
+          "total": 12
+        },
+        "accessibility": {
+          "score": 95,
+          "pass": 10,
+          "warn": 1,
+          "fail": 0,
+          "info": 0,
+          "total": 11
+        },
+        "seo": {
+          "score": 94,
+          "pass": 8,
+          "warn": 1,
+          "fail": 0,
+          "info": 0,
+          "total": 9
+        },
+        "security": {
+          "score": 89,
+          "pass": 11,
+          "warn": 3,
+          "fail": 0,
+          "info": 0,
+          "total": 14
+        },
+        "images": {
+          "score": 90,
+          "pass": 4,
+          "warn": 1,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "pwa": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "code-quality": {
+          "score": 71,
+          "pass": 5,
+          "warn": 0,
+          "fail": 2,
+          "info": 0,
+          "total": 7
+        },
+        "ux": {
+          "score": 90,
+          "pass": 3,
+          "warn": 1,
+          "fail": 0,
+          "info": 1,
+          "total": 5
+        },
+        "responsive": {
+          "score": 57,
+          "pass": 8,
+          "warn": 0,
+          "fail": 6,
+          "info": 0,
+          "total": 14
+        }
+      },
+      "checks": [
+        {
+          "name": "Time to First Byte (TTFB)",
+          "value": "28ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 200ms, Needs improvement < 600ms"
+        },
+        {
+          "name": "DOM Content Loaded",
+          "value": "352ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Full Page Load",
+          "value": "413ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "DOM Interactive",
+          "value": "352ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Page Weight (transferred)",
+          "value": "14KB",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 500KB, Acceptable < 1.5MB"
+        },
+        {
+          "name": "Largest Contentful Paint (LCP)",
+          "value": "384ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 2.5s, Poor > 4s"
+        },
+        {
+          "name": "Cumulative Layout Shift (CLS)",
+          "value": "0.002",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 0.1, Poor > 0.25"
+        },
+        {
+          "name": "Total HTTP Requests",
+          "value": "80",
+          "status": "fail",
+          "category": "performance",
+          "detail": "Breakdown: {\"woff2\":2,\"app/_next/image\":9,\"css\":2,\"js\":27,\"app/api/auth/session\":1,\"app/booking\":4,\"app/conference\":4,\"app/consult\":5,\"app/events\":4,\"app/api/featured-keynote\":1,\"app/advisor\":4,\"app/vault\":4,\"app/assessments\":4,\"app/\":3,\"app/auth/signin\":5,\"jpg\":1}"
+        },
+        {
+          "name": "Total JavaScript (transferred)",
+          "value": "268KB",
+          "status": "warn",
+          "category": "performance",
+          "detail": "Good < 200KB, Acceptable < 500KB"
+        },
+        {
+          "name": "Total CSS (transferred)",
+          "value": "124KB",
+          "status": "warn",
+          "category": "performance"
+        },
+        {
+          "name": "Third-Party Requests",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Long Tasks (>50ms)",
+          "value": "1",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Images with alt text",
+          "value": "11/11",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "All images have alt text"
+        },
+        {
+          "name": "Form input labels",
+          "value": "0/0 labeled",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Single H1 tag",
+          "value": "1 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Heading hierarchy (no skipped levels)",
+          "value": "Correct",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "Heading order: 1 > 2 > 3 > 2 > 3 > 2 > 2 > 3 > 2 > 3 > 2 > 3 > 3 > 3 > 3 > 4 > 4 > 4"
+        },
+        {
+          "name": "Color contrast (WCAG AA)",
+          "value": "1 issues",
+          "status": "warn",
+          "category": "accessibility"
+        },
+        {
+          "name": "ARIA landmarks",
+          "value": "4 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Skip navigation link",
+          "value": "Present",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "HTML lang attribute",
+          "value": "en",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Positive tabindex values",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "Positive tabindex disrupts natural tab order"
+        },
+        {
+          "name": "Empty links",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Empty buttons",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Page title",
+          "value": "\"Keith L. Odom | AI Strategist, Leadership Speaker & Executiv\" (69 chars)",
+          "status": "warn",
+          "category": "seo",
+          "detail": "Optimal: 30-60 characters"
+        },
+        {
+          "name": "Meta description",
+          "value": "149 chars",
+          "status": "pass",
+          "category": "seo",
+          "detail": "Optimal: 120-160 characters"
+        },
+        {
+          "name": "Open Graph tags",
+          "value": "title, desc, image, type",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Twitter Card tags",
+          "value": "summary_large_image",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Canonical URL",
+          "value": "https://klo-app.vercel.app/",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Viewport meta tag",
+          "value": "width=device-width, initial-scale=1, viewport-fit=cover",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Structured data (JSON-LD)",
+          "value": "3 blocks",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Favicon",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Charset declaration",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "HSTS",
+          "value": "max-age=63072000; includeSubDomains; preload",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Content Security Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com http...",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Content-Type-Options",
+          "value": "nosniff",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Frame-Options",
+          "value": "SAMEORIGIN",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(self), interest-cohort=()",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-XSS-Protection",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Opener-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Resource-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "HTTPS",
+          "value": "Yes",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Secure cookies",
+          "value": "2/2 secure",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "HttpOnly cookies",
+          "value": "2/2",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Mixed content",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Exposed sensitive data",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Images with explicit dimensions",
+          "value": "11/11",
+          "status": "pass",
+          "category": "images",
+          "detail": "Explicit dimensions prevent CLS"
+        },
+        {
+          "name": "Below-fold images use lazy loading",
+          "value": "All lazy-loaded",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Oversized images (>2.5x display size)",
+          "value": "4 found",
+          "status": "warn",
+          "category": "images"
+        },
+        {
+          "name": "Modern image formats (WebP/AVIF)",
+          "value": "0 modern, 0 legacy",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Responsive images (srcset/picture)",
+          "value": "11 of 11",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Manifest completeness",
+          "value": "name, icons, start_url, display, theme",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Web App Manifest",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Service Worker",
+          "value": "Registered",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Theme color",
+          "value": "#0D1117",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Apple touch icon",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Valid document structure",
+          "value": "Valid",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Inline styles",
+          "value": "39 elements",
+          "status": "fail",
+          "category": "code-quality",
+          "detail": "Prefer CSS classes over inline styles"
+        },
+        {
+          "name": "Render-blocking resources",
+          "value": "2 CSS, 14 JS",
+          "status": "fail",
+          "category": "code-quality",
+          "detail": "Use async/defer for scripts, media queries for CSS"
+        },
+        {
+          "name": "Deprecated HTML tags",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "target=\"_blank\" without rel=\"noopener\"",
+          "value": "0 found",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Duplicate element IDs",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Placeholder/broken links (href=\"#\" or empty)",
+          "value": "0 found",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Interactive elements have hover/focus feedback",
+          "value": "1/1",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Print stylesheet",
+          "value": "Missing",
+          "status": "info",
+          "category": "ux"
+        },
+        {
+          "name": "Font display strategy",
+          "value": "Not set",
+          "status": "warn",
+          "category": "ux",
+          "detail": "Use font-display: swap to prevent FOIT"
+        },
+        {
+          "name": "Console errors",
+          "value": "None",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Broken resources (4xx/5xx)",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality",
+          "detail": ""
+        },
+        {
+          "name": "Responsive (iPhone 15): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPhone 15): Touch targets >= 44px",
+          "value": "4 undersized of 44",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Overflowing images",
+          "value": "1",
+          "status": "fail",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Touch targets >= 44px",
+          "value": "7 undersized of 44",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Overflowing images",
+          "value": "1",
+          "status": "fail",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Overflowing images",
+          "value": "1",
+          "status": "fail",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Wide 1920): Overflowing images",
+          "value": "1",
+          "status": "fail",
+          "category": "responsive"
+        }
+      ],
+      "passedThreshold": true
+    },
+    "/events": {
+      "overallScore": 90,
+      "categories": {
+        "performance": {
+          "score": 79,
+          "pass": 8,
+          "warn": 3,
+          "fail": 1,
+          "info": 0,
+          "total": 12
+        },
+        "accessibility": {
+          "score": 91,
+          "pass": 9,
+          "warn": 2,
+          "fail": 0,
+          "info": 0,
+          "total": 11
+        },
+        "seo": {
+          "score": 94,
+          "pass": 8,
+          "warn": 1,
+          "fail": 0,
+          "info": 0,
+          "total": 9
+        },
+        "security": {
+          "score": 89,
+          "pass": 11,
+          "warn": 3,
+          "fail": 0,
+          "info": 0,
+          "total": 14
+        },
+        "images": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "pwa": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "code-quality": {
+          "score": 79,
+          "pass": 5,
+          "warn": 1,
+          "fail": 1,
+          "info": 0,
+          "total": 7
+        },
+        "ux": {
+          "score": 90,
+          "pass": 3,
+          "warn": 1,
+          "fail": 0,
+          "info": 1,
+          "total": 5
+        },
+        "responsive": {
+          "score": 86,
+          "pass": 12,
+          "warn": 0,
+          "fail": 2,
+          "info": 0,
+          "total": 14
+        }
+      },
+      "checks": [
+        {
+          "name": "Time to First Byte (TTFB)",
+          "value": "29ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 200ms, Needs improvement < 600ms"
+        },
+        {
+          "name": "DOM Content Loaded",
+          "value": "144ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Full Page Load",
+          "value": "239ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "DOM Interactive",
+          "value": "144ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Page Weight (transferred)",
+          "value": "10KB",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 500KB, Acceptable < 1.5MB"
+        },
+        {
+          "name": "Largest Contentful Paint (LCP)",
+          "value": "492ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 2.5s, Poor > 4s"
+        },
+        {
+          "name": "Cumulative Layout Shift (CLS)",
+          "value": "0.112",
+          "status": "warn",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 0.1, Poor > 0.25"
+        },
+        {
+          "name": "Total HTTP Requests",
+          "value": "72",
+          "status": "fail",
+          "category": "performance",
+          "detail": "Breakdown: {\"woff2\":2,\"app/_next/image\":1,\"css\":2,\"js\":27,\"app/api/auth/session\":1,\"app/booking\":5,\"app/conference\":4,\"app/events\":4,\"app/consult\":4,\"app/api/events\":1,\"app/api/featured-keynote\":1,\"app/vault\":4,\"app/assessments\":4,\"app/advisor\":4,\"app/\":3,\"app/auth/signin\":5}"
+        },
+        {
+          "name": "Total JavaScript (transferred)",
+          "value": "214KB",
+          "status": "warn",
+          "category": "performance",
+          "detail": "Good < 200KB, Acceptable < 500KB"
+        },
+        {
+          "name": "Total CSS (transferred)",
+          "value": "96KB",
+          "status": "warn",
+          "category": "performance"
+        },
+        {
+          "name": "Third-Party Requests",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Long Tasks (>50ms)",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Images with alt text",
+          "value": "2/2",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "All images have alt text"
+        },
+        {
+          "name": "Form input labels",
+          "value": "0/0 labeled",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Single H1 tag",
+          "value": "1 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Heading hierarchy (no skipped levels)",
+          "value": "1 skipped",
+          "status": "warn",
+          "category": "accessibility",
+          "detail": "Heading order: 1 > 3 > 2 > 3 > 3 > 3 > 3 > 3 > 4 > 4 > 4"
+        },
+        {
+          "name": "Color contrast (WCAG AA)",
+          "value": "1 issues",
+          "status": "warn",
+          "category": "accessibility"
+        },
+        {
+          "name": "ARIA landmarks",
+          "value": "4 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Skip navigation link",
+          "value": "Present",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "HTML lang attribute",
+          "value": "en",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Positive tabindex values",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "Positive tabindex disrupts natural tab order"
+        },
+        {
+          "name": "Empty links",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Empty buttons",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Page title",
+          "value": "\"Keith L. Odom | AI Strategist, Leadership Speaker & Executiv\" (69 chars)",
+          "status": "warn",
+          "category": "seo",
+          "detail": "Optimal: 30-60 characters"
+        },
+        {
+          "name": "Meta description",
+          "value": "149 chars",
+          "status": "pass",
+          "category": "seo",
+          "detail": "Optimal: 120-160 characters"
+        },
+        {
+          "name": "Open Graph tags",
+          "value": "title, desc, image, type",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Twitter Card tags",
+          "value": "summary_large_image",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Canonical URL",
+          "value": "https://klo-app.vercel.app/",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Viewport meta tag",
+          "value": "width=device-width, initial-scale=1, viewport-fit=cover",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Structured data (JSON-LD)",
+          "value": "3 blocks",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Favicon",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Charset declaration",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "HSTS",
+          "value": "max-age=63072000; includeSubDomains; preload",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Content Security Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com http...",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Content-Type-Options",
+          "value": "nosniff",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Frame-Options",
+          "value": "SAMEORIGIN",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(self), interest-cohort=()",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-XSS-Protection",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Opener-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Resource-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "HTTPS",
+          "value": "Yes",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Secure cookies",
+          "value": "2/2 secure",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "HttpOnly cookies",
+          "value": "2/2",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Mixed content",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Exposed sensitive data",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Images with explicit dimensions",
+          "value": "2/2",
+          "status": "pass",
+          "category": "images",
+          "detail": "Explicit dimensions prevent CLS"
+        },
+        {
+          "name": "Below-fold images use lazy loading",
+          "value": "All lazy-loaded",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Oversized images (>2.5x display size)",
+          "value": "0 found",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Modern image formats (WebP/AVIF)",
+          "value": "0 modern, 0 legacy",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Responsive images (srcset/picture)",
+          "value": "2 of 2",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Manifest completeness",
+          "value": "name, icons, start_url, display, theme",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Web App Manifest",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Service Worker",
+          "value": "Registered",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Theme color",
+          "value": "#0D1117",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Apple touch icon",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Valid document structure",
+          "value": "Valid",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Inline styles",
+          "value": "17 elements",
+          "status": "warn",
+          "category": "code-quality",
+          "detail": "Prefer CSS classes over inline styles"
+        },
+        {
+          "name": "Render-blocking resources",
+          "value": "2 CSS, 14 JS",
+          "status": "fail",
+          "category": "code-quality",
+          "detail": "Use async/defer for scripts, media queries for CSS"
+        },
+        {
+          "name": "Deprecated HTML tags",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "target=\"_blank\" without rel=\"noopener\"",
+          "value": "0 found",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Duplicate element IDs",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Placeholder/broken links (href=\"#\" or empty)",
+          "value": "0 found",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Interactive elements have hover/focus feedback",
+          "value": "1/1",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Print stylesheet",
+          "value": "Missing",
+          "status": "info",
+          "category": "ux"
+        },
+        {
+          "name": "Font display strategy",
+          "value": "Not set",
+          "status": "warn",
+          "category": "ux",
+          "detail": "Use font-display: swap to prevent FOIT"
+        },
+        {
+          "name": "Console errors",
+          "value": "None",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Broken resources (4xx/5xx)",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality",
+          "detail": ""
+        },
+        {
+          "name": "Responsive (iPhone 15): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPhone 15): Touch targets >= 44px",
+          "value": "8 undersized of 35",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Touch targets >= 44px",
+          "value": "11 undersized of 35",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Wide 1920): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        }
+      ],
+      "passedThreshold": true
+    },
+    "/booking": {
+      "overallScore": 89,
+      "categories": {
+        "performance": {
+          "score": 83,
+          "pass": 9,
+          "warn": 2,
+          "fail": 1,
+          "info": 0,
+          "total": 12
+        },
+        "accessibility": {
+          "score": 91,
+          "pass": 9,
+          "warn": 2,
+          "fail": 0,
+          "info": 0,
+          "total": 11
+        },
+        "seo": {
+          "score": 94,
+          "pass": 8,
+          "warn": 1,
+          "fail": 0,
+          "info": 0,
+          "total": 9
+        },
+        "security": {
+          "score": 89,
+          "pass": 11,
+          "warn": 3,
+          "fail": 0,
+          "info": 0,
+          "total": 14
+        },
+        "images": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "pwa": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "code-quality": {
+          "score": 71,
+          "pass": 5,
+          "warn": 0,
+          "fail": 2,
+          "info": 0,
+          "total": 7
+        },
+        "ux": {
+          "score": 90,
+          "pass": 3,
+          "warn": 1,
+          "fail": 0,
+          "info": 1,
+          "total": 5
+        },
+        "responsive": {
+          "score": 86,
+          "pass": 12,
+          "warn": 0,
+          "fail": 2,
+          "info": 0,
+          "total": 14
+        }
+      },
+      "checks": [
+        {
+          "name": "Time to First Byte (TTFB)",
+          "value": "29ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 200ms, Needs improvement < 600ms"
+        },
+        {
+          "name": "DOM Content Loaded",
+          "value": "161ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Full Page Load",
+          "value": "228ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "DOM Interactive",
+          "value": "161ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Page Weight (transferred)",
+          "value": "13KB",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 500KB, Acceptable < 1.5MB"
+        },
+        {
+          "name": "Largest Contentful Paint (LCP)",
+          "value": "868ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 2.5s, Poor > 4s"
+        },
+        {
+          "name": "Cumulative Layout Shift (CLS)",
+          "value": "0.001",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 0.1, Poor > 0.25"
+        },
+        {
+          "name": "Total HTTP Requests",
+          "value": "71",
+          "status": "fail",
+          "category": "performance",
+          "detail": "Breakdown: {\"woff2\":2,\"css\":2,\"app/_next/image\":2,\"js\":27,\"app/api/auth/session\":1,\"app/booking\":5,\"app/conference\":4,\"app/events\":4,\"app/consult\":4,\"app/vault\":4,\"app/assessments\":4,\"app/advisor\":4,\"app/\":3,\"app/auth/signin\":5}"
+        },
+        {
+          "name": "Total JavaScript (transferred)",
+          "value": "210KB",
+          "status": "warn",
+          "category": "performance",
+          "detail": "Good < 200KB, Acceptable < 500KB"
+        },
+        {
+          "name": "Total CSS (transferred)",
+          "value": "114KB",
+          "status": "warn",
+          "category": "performance"
+        },
+        {
+          "name": "Third-Party Requests",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Long Tasks (>50ms)",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Images with alt text",
+          "value": "3/3",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "All images have alt text"
+        },
+        {
+          "name": "Form input labels",
+          "value": "9/9 labeled",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Single H1 tag",
+          "value": "1 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Heading hierarchy (no skipped levels)",
+          "value": "1 skipped",
+          "status": "warn",
+          "category": "accessibility",
+          "detail": "Heading order: 1 > 2 > 2 > 4 > 4 > 4"
+        },
+        {
+          "name": "Color contrast (WCAG AA)",
+          "value": "1 issues",
+          "status": "warn",
+          "category": "accessibility"
+        },
+        {
+          "name": "ARIA landmarks",
+          "value": "4 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Skip navigation link",
+          "value": "Present",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "HTML lang attribute",
+          "value": "en",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Positive tabindex values",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "Positive tabindex disrupts natural tab order"
+        },
+        {
+          "name": "Empty links",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Empty buttons",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Page title",
+          "value": "\"Book Keith L. Odom | KLO\" (24 chars)",
+          "status": "warn",
+          "category": "seo",
+          "detail": "Optimal: 30-60 characters"
+        },
+        {
+          "name": "Meta description",
+          "value": "159 chars",
+          "status": "pass",
+          "category": "seo",
+          "detail": "Optimal: 120-160 characters"
+        },
+        {
+          "name": "Open Graph tags",
+          "value": "title, desc, image, type",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Twitter Card tags",
+          "value": "summary_large_image",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Canonical URL",
+          "value": "https://klo-app.vercel.app/",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Viewport meta tag",
+          "value": "width=device-width, initial-scale=1, viewport-fit=cover",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Structured data (JSON-LD)",
+          "value": "3 blocks",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Favicon",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Charset declaration",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "HSTS",
+          "value": "max-age=63072000; includeSubDomains; preload",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Content Security Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com http...",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Content-Type-Options",
+          "value": "nosniff",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Frame-Options",
+          "value": "SAMEORIGIN",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(self), interest-cohort=()",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-XSS-Protection",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Opener-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Resource-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "HTTPS",
+          "value": "Yes",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Secure cookies",
+          "value": "2/2 secure",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "HttpOnly cookies",
+          "value": "2/2",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Mixed content",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Exposed sensitive data",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Images with explicit dimensions",
+          "value": "3/3",
+          "status": "pass",
+          "category": "images",
+          "detail": "Explicit dimensions prevent CLS"
+        },
+        {
+          "name": "Below-fold images use lazy loading",
+          "value": "All lazy-loaded",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Oversized images (>2.5x display size)",
+          "value": "0 found",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Modern image formats (WebP/AVIF)",
+          "value": "0 modern, 0 legacy",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Responsive images (srcset/picture)",
+          "value": "3 of 3",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Manifest completeness",
+          "value": "name, icons, start_url, display, theme",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Web App Manifest",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Service Worker",
+          "value": "Registered",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Theme color",
+          "value": "#0D1117",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Apple touch icon",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Valid document structure",
+          "value": "Valid",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Inline styles",
+          "value": "26 elements",
+          "status": "fail",
+          "category": "code-quality",
+          "detail": "Prefer CSS classes over inline styles"
+        },
+        {
+          "name": "Render-blocking resources",
+          "value": "2 CSS, 14 JS",
+          "status": "fail",
+          "category": "code-quality",
+          "detail": "Use async/defer for scripts, media queries for CSS"
+        },
+        {
+          "name": "Deprecated HTML tags",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "target=\"_blank\" without rel=\"noopener\"",
+          "value": "0 found",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Duplicate element IDs",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Placeholder/broken links (href=\"#\" or empty)",
+          "value": "0 found",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Interactive elements have hover/focus feedback",
+          "value": "3/3",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Print stylesheet",
+          "value": "Missing",
+          "status": "info",
+          "category": "ux"
+        },
+        {
+          "name": "Font display strategy",
+          "value": "Not set",
+          "status": "warn",
+          "category": "ux",
+          "detail": "Use font-display: swap to prevent FOIT"
+        },
+        {
+          "name": "Console errors",
+          "value": "None",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Broken resources (4xx/5xx)",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality",
+          "detail": ""
+        },
+        {
+          "name": "Responsive (iPhone 15): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPhone 15): Touch targets >= 44px",
+          "value": "4 undersized of 41",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Touch targets >= 44px",
+          "value": "7 undersized of 41",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Wide 1920): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        }
+      ],
+      "passedThreshold": true
+    },
+    "/conference": {
+      "overallScore": 85,
+      "categories": {
+        "performance": {
+          "score": 83,
+          "pass": 9,
+          "warn": 2,
+          "fail": 1,
+          "info": 0,
+          "total": 12
+        },
+        "accessibility": {
+          "score": 86,
+          "pass": 9,
+          "warn": 1,
+          "fail": 1,
+          "info": 0,
+          "total": 11
+        },
+        "seo": {
+          "score": 94,
+          "pass": 8,
+          "warn": 1,
+          "fail": 0,
+          "info": 0,
+          "total": 9
+        },
+        "security": {
+          "score": 89,
+          "pass": 11,
+          "warn": 3,
+          "fail": 0,
+          "info": 0,
+          "total": 14
+        },
+        "images": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "pwa": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "code-quality": {
+          "score": 71,
+          "pass": 5,
+          "warn": 0,
+          "fail": 2,
+          "info": 0,
+          "total": 7
+        },
+        "ux": {
+          "score": 60,
+          "pass": 1,
+          "warn": 2,
+          "fail": 1,
+          "info": 1,
+          "total": 5
+        },
+        "responsive": {
+          "score": 86,
+          "pass": 12,
+          "warn": 0,
+          "fail": 2,
+          "info": 0,
+          "total": 14
+        }
+      },
+      "checks": [
+        {
+          "name": "Time to First Byte (TTFB)",
+          "value": "31ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 200ms, Needs improvement < 600ms"
+        },
+        {
+          "name": "DOM Content Loaded",
+          "value": "486ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Full Page Load",
+          "value": "527ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "DOM Interactive",
+          "value": "486ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Page Weight (transferred)",
+          "value": "12KB",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 500KB, Acceptable < 1.5MB"
+        },
+        {
+          "name": "Largest Contentful Paint (LCP)",
+          "value": "904ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 2.5s, Poor > 4s"
+        },
+        {
+          "name": "Cumulative Layout Shift (CLS)",
+          "value": "0.020",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 0.1, Poor > 0.25"
+        },
+        {
+          "name": "Total HTTP Requests",
+          "value": "85",
+          "status": "fail",
+          "category": "performance",
+          "detail": "Breakdown: {\"woff2\":2,\"css\":2,\"app/_next/image\":1,\"js\":28,\"app/api/auth/session\":1,\"app/advisor\":5,\"app/about\":4,\"app/conference\":4,\"app/booking\":4,\"app/events\":4,\"app/consult\":4,\"app/vault\":4,\"app/assessments\":4,\"app/\":3,\"app/api/conference/settings\":1,\"app/api/conference/sessions\":2,\"app/api/featured-keynote\":1,\"app/auth/signin\":5,\"app/api/conference/polls\":2,\"app/api/conference/questions\":2,\"app/api/conference/word-cloud\":1,\"app/api/conference/announcements\":1}"
+        },
+        {
+          "name": "Total JavaScript (transferred)",
+          "value": "364KB",
+          "status": "warn",
+          "category": "performance",
+          "detail": "Good < 200KB, Acceptable < 500KB"
+        },
+        {
+          "name": "Total CSS (transferred)",
+          "value": "96KB",
+          "status": "warn",
+          "category": "performance"
+        },
+        {
+          "name": "Third-Party Requests",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Long Tasks (>50ms)",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Images with alt text",
+          "value": "2/2",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "All images have alt text"
+        },
+        {
+          "name": "Form input labels",
+          "value": "0/1 labeled",
+          "status": "fail",
+          "category": "accessibility"
+        },
+        {
+          "name": "Single H1 tag",
+          "value": "1 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Heading hierarchy (no skipped levels)",
+          "value": "Correct",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "Heading order: 1 > 2 > 3 > 2 > 3 > 2 > 2 > 3 > 3 > 3 > 3 > 3 > 2 > 3 > 3 > 3 > 3 > 3 > 4 > 4 > 4"
+        },
+        {
+          "name": "Color contrast (WCAG AA)",
+          "value": "1 issues",
+          "status": "warn",
+          "category": "accessibility"
+        },
+        {
+          "name": "ARIA landmarks",
+          "value": "4 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Skip navigation link",
+          "value": "Present",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "HTML lang attribute",
+          "value": "en",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Positive tabindex values",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "Positive tabindex disrupts natural tab order"
+        },
+        {
+          "name": "Empty links",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Empty buttons",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Page title",
+          "value": "\"Keith L. Odom | AI Strategist, Leadership Speaker & Executiv\" (69 chars)",
+          "status": "warn",
+          "category": "seo",
+          "detail": "Optimal: 30-60 characters"
+        },
+        {
+          "name": "Meta description",
+          "value": "149 chars",
+          "status": "pass",
+          "category": "seo",
+          "detail": "Optimal: 120-160 characters"
+        },
+        {
+          "name": "Open Graph tags",
+          "value": "title, desc, image, type",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Twitter Card tags",
+          "value": "summary_large_image",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Canonical URL",
+          "value": "https://klo-app.vercel.app/",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Viewport meta tag",
+          "value": "width=device-width, initial-scale=1, viewport-fit=cover",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Structured data (JSON-LD)",
+          "value": "3 blocks",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Favicon",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Charset declaration",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "HSTS",
+          "value": "max-age=63072000; includeSubDomains; preload",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Content Security Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com http...",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Content-Type-Options",
+          "value": "nosniff",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Frame-Options",
+          "value": "SAMEORIGIN",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(self), interest-cohort=()",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-XSS-Protection",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Opener-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Resource-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "HTTPS",
+          "value": "Yes",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Secure cookies",
+          "value": "2/2 secure",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "HttpOnly cookies",
+          "value": "2/2",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Mixed content",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Exposed sensitive data",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Images with explicit dimensions",
+          "value": "2/2",
+          "status": "pass",
+          "category": "images",
+          "detail": "Explicit dimensions prevent CLS"
+        },
+        {
+          "name": "Below-fold images use lazy loading",
+          "value": "All lazy-loaded",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Oversized images (>2.5x display size)",
+          "value": "0 found",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Modern image formats (WebP/AVIF)",
+          "value": "0 modern, 0 legacy",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Responsive images (srcset/picture)",
+          "value": "2 of 2",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Manifest completeness",
+          "value": "name, icons, start_url, display, theme",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Web App Manifest",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Service Worker",
+          "value": "Registered",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Theme color",
+          "value": "#0D1117",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Apple touch icon",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Valid document structure",
+          "value": "Valid",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Inline styles",
+          "value": "32 elements",
+          "status": "fail",
+          "category": "code-quality",
+          "detail": "Prefer CSS classes over inline styles"
+        },
+        {
+          "name": "Render-blocking resources",
+          "value": "2 CSS, 13 JS",
+          "status": "fail",
+          "category": "code-quality",
+          "detail": "Use async/defer for scripts, media queries for CSS"
+        },
+        {
+          "name": "Deprecated HTML tags",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "target=\"_blank\" without rel=\"noopener\"",
+          "value": "0 found",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Duplicate element IDs",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Placeholder/broken links (href=\"#\" or empty)",
+          "value": "4 found",
+          "status": "fail",
+          "category": "ux"
+        },
+        {
+          "name": "Interactive elements have hover/focus feedback",
+          "value": "7/7",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Print stylesheet",
+          "value": "Missing",
+          "status": "info",
+          "category": "ux"
+        },
+        {
+          "name": "Font display strategy",
+          "value": "Not set",
+          "status": "warn",
+          "category": "ux",
+          "detail": "Use font-display: swap to prevent FOIT"
+        },
+        {
+          "name": "Console errors",
+          "value": "1 errors",
+          "status": "warn",
+          "category": "ux",
+          "detail": "WebSocket connection to 'wss://yrztblvazkrzxgztfzzn.supabase.co/realtime/v1/websocket?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlyenRibHZhemtyenhnenRmenpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIzMzQ1NzEsImV4cCI6MjA4NzkxMDU3MX0.Z_XPmXcvGfEPw_Wjz8VoD1ee9oLBvoQ61lugJXoKT4Q%0A&vsn=2.0.0' failed: HTTP Authentication failed; no valid credentials available"
+        },
+        {
+          "name": "Broken resources (4xx/5xx)",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality",
+          "detail": ""
+        },
+        {
+          "name": "Responsive (iPhone 15): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPhone 15): Touch targets >= 44px",
+          "value": "10 undersized of 44",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Touch targets >= 44px",
+          "value": "13 undersized of 44",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Wide 1920): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        }
+      ],
+      "passedThreshold": true
+    },
+    "/assessments": {
+      "overallScore": 90,
+      "categories": {
+        "performance": {
+          "score": 83,
+          "pass": 9,
+          "warn": 2,
+          "fail": 1,
+          "info": 0,
+          "total": 12
+        },
+        "accessibility": {
+          "score": 91,
+          "pass": 9,
+          "warn": 2,
+          "fail": 0,
+          "info": 0,
+          "total": 11
+        },
+        "seo": {
+          "score": 94,
+          "pass": 8,
+          "warn": 1,
+          "fail": 0,
+          "info": 0,
+          "total": 9
+        },
+        "security": {
+          "score": 89,
+          "pass": 11,
+          "warn": 3,
+          "fail": 0,
+          "info": 0,
+          "total": 14
+        },
+        "images": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "pwa": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "code-quality": {
+          "score": 79,
+          "pass": 5,
+          "warn": 1,
+          "fail": 1,
+          "info": 0,
+          "total": 7
+        },
+        "ux": {
+          "score": 90,
+          "pass": 3,
+          "warn": 1,
+          "fail": 0,
+          "info": 1,
+          "total": 5
+        },
+        "responsive": {
+          "score": 86,
+          "pass": 12,
+          "warn": 0,
+          "fail": 2,
+          "info": 0,
+          "total": 14
+        }
+      },
+      "checks": [
+        {
+          "name": "Time to First Byte (TTFB)",
+          "value": "24ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 200ms, Needs improvement < 600ms"
+        },
+        {
+          "name": "DOM Content Loaded",
+          "value": "158ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Full Page Load",
+          "value": "231ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "DOM Interactive",
+          "value": "158ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Page Weight (transferred)",
+          "value": "11KB",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 500KB, Acceptable < 1.5MB"
+        },
+        {
+          "name": "Largest Contentful Paint (LCP)",
+          "value": "272ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 2.5s, Poor > 4s"
+        },
+        {
+          "name": "Cumulative Layout Shift (CLS)",
+          "value": "0.001",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 0.1, Poor > 0.25"
+        },
+        {
+          "name": "Total HTTP Requests",
+          "value": "81",
+          "status": "fail",
+          "category": "performance",
+          "detail": "Breakdown: {\"woff2\":2,\"css\":2,\"app/_next/image\":1,\"js\":30,\"app/api/auth/session\":1,\"app/booking\":4,\"app/conference\":4,\"app/events\":4,\"app/consult\":4,\"app/assessments/ai-readiness\":6,\"app/assessments/church-readiness\":4,\"app/vault\":4,\"app/assessments\":3,\"app/advisor\":4,\"app/\":3,\"app/auth/signin\":5}"
+        },
+        {
+          "name": "Total JavaScript (transferred)",
+          "value": "207KB",
+          "status": "warn",
+          "category": "performance",
+          "detail": "Good < 200KB, Acceptable < 500KB"
+        },
+        {
+          "name": "Total CSS (transferred)",
+          "value": "96KB",
+          "status": "warn",
+          "category": "performance"
+        },
+        {
+          "name": "Third-Party Requests",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Long Tasks (>50ms)",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Images with alt text",
+          "value": "2/2",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "All images have alt text"
+        },
+        {
+          "name": "Form input labels",
+          "value": "0/0 labeled",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Single H1 tag",
+          "value": "1 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Heading hierarchy (no skipped levels)",
+          "value": "1 skipped",
+          "status": "warn",
+          "category": "accessibility",
+          "detail": "Heading order: 1 > 3 > 3 > 3 > 3 > 4 > 4 > 4"
+        },
+        {
+          "name": "Color contrast (WCAG AA)",
+          "value": "1 issues",
+          "status": "warn",
+          "category": "accessibility"
+        },
+        {
+          "name": "ARIA landmarks",
+          "value": "4 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Skip navigation link",
+          "value": "Present",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "HTML lang attribute",
+          "value": "en",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Positive tabindex values",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "Positive tabindex disrupts natural tab order"
+        },
+        {
+          "name": "Empty links",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Empty buttons",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Page title",
+          "value": "\"Digital Readiness Assessments | KLO\" (35 chars)",
+          "status": "pass",
+          "category": "seo",
+          "detail": "Optimal: 30-60 characters"
+        },
+        {
+          "name": "Meta description",
+          "value": "174 chars",
+          "status": "warn",
+          "category": "seo",
+          "detail": "Optimal: 120-160 characters"
+        },
+        {
+          "name": "Open Graph tags",
+          "value": "title, desc, image, type",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Twitter Card tags",
+          "value": "summary_large_image",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Canonical URL",
+          "value": "https://klo-app.vercel.app/",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Viewport meta tag",
+          "value": "width=device-width, initial-scale=1, viewport-fit=cover",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Structured data (JSON-LD)",
+          "value": "3 blocks",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Favicon",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Charset declaration",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "HSTS",
+          "value": "max-age=63072000; includeSubDomains; preload",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Content Security Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com http...",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Content-Type-Options",
+          "value": "nosniff",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Frame-Options",
+          "value": "SAMEORIGIN",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(self), interest-cohort=()",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-XSS-Protection",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Opener-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Resource-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "HTTPS",
+          "value": "Yes",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Secure cookies",
+          "value": "2/2 secure",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "HttpOnly cookies",
+          "value": "2/2",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Mixed content",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Exposed sensitive data",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Images with explicit dimensions",
+          "value": "2/2",
+          "status": "pass",
+          "category": "images",
+          "detail": "Explicit dimensions prevent CLS"
+        },
+        {
+          "name": "Below-fold images use lazy loading",
+          "value": "All lazy-loaded",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Oversized images (>2.5x display size)",
+          "value": "0 found",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Modern image formats (WebP/AVIF)",
+          "value": "0 modern, 0 legacy",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Responsive images (srcset/picture)",
+          "value": "2 of 2",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Manifest completeness",
+          "value": "name, icons, start_url, display, theme",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Web App Manifest",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Service Worker",
+          "value": "Registered",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Theme color",
+          "value": "#0D1117",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Apple touch icon",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Valid document structure",
+          "value": "Valid",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Inline styles",
+          "value": "12 elements",
+          "status": "warn",
+          "category": "code-quality",
+          "detail": "Prefer CSS classes over inline styles"
+        },
+        {
+          "name": "Render-blocking resources",
+          "value": "2 CSS, 17 JS",
+          "status": "fail",
+          "category": "code-quality",
+          "detail": "Use async/defer for scripts, media queries for CSS"
+        },
+        {
+          "name": "Deprecated HTML tags",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "target=\"_blank\" without rel=\"noopener\"",
+          "value": "0 found",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Duplicate element IDs",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Placeholder/broken links (href=\"#\" or empty)",
+          "value": "0 found",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Interactive elements have hover/focus feedback",
+          "value": "1/1",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Print stylesheet",
+          "value": "Missing",
+          "status": "info",
+          "category": "ux"
+        },
+        {
+          "name": "Font display strategy",
+          "value": "Not set",
+          "status": "warn",
+          "category": "ux",
+          "detail": "Use font-display: swap to prevent FOIT"
+        },
+        {
+          "name": "Console errors",
+          "value": "None",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Broken resources (4xx/5xx)",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality",
+          "detail": ""
+        },
+        {
+          "name": "Responsive (iPhone 15): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPhone 15): Touch targets >= 44px",
+          "value": "7 undersized of 33",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Touch targets >= 44px",
+          "value": "10 undersized of 33",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Wide 1920): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        }
+      ],
+      "passedThreshold": true
+    },
+    "/advisor": {
+      "overallScore": 89,
+      "categories": {
+        "performance": {
+          "score": 83,
+          "pass": 9,
+          "warn": 2,
+          "fail": 1,
+          "info": 0,
+          "total": 12
+        },
+        "accessibility": {
+          "score": 82,
+          "pass": 8,
+          "warn": 2,
+          "fail": 1,
+          "info": 0,
+          "total": 11
+        },
+        "seo": {
+          "score": 89,
+          "pass": 7,
+          "warn": 2,
+          "fail": 0,
+          "info": 0,
+          "total": 9
+        },
+        "security": {
+          "score": 89,
+          "pass": 11,
+          "warn": 3,
+          "fail": 0,
+          "info": 0,
+          "total": 14
+        },
+        "images": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "pwa": {
+          "score": 100,
+          "pass": 5,
+          "warn": 0,
+          "fail": 0,
+          "info": 0,
+          "total": 5
+        },
+        "code-quality": {
+          "score": 79,
+          "pass": 5,
+          "warn": 1,
+          "fail": 1,
+          "info": 0,
+          "total": 7
+        },
+        "ux": {
+          "score": 90,
+          "pass": 3,
+          "warn": 1,
+          "fail": 0,
+          "info": 1,
+          "total": 5
+        },
+        "responsive": {
+          "score": 86,
+          "pass": 12,
+          "warn": 0,
+          "fail": 2,
+          "info": 0,
+          "total": 14
+        }
+      },
+      "checks": [
+        {
+          "name": "Time to First Byte (TTFB)",
+          "value": "28ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 200ms, Needs improvement < 600ms"
+        },
+        {
+          "name": "DOM Content Loaded",
+          "value": "150ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Full Page Load",
+          "value": "212ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "DOM Interactive",
+          "value": "150ms",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Page Weight (transferred)",
+          "value": "11KB",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Good < 500KB, Acceptable < 1.5MB"
+        },
+        {
+          "name": "Largest Contentful Paint (LCP)",
+          "value": "784ms",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 2.5s, Poor > 4s"
+        },
+        {
+          "name": "Cumulative Layout Shift (CLS)",
+          "value": "0.002",
+          "status": "pass",
+          "category": "performance",
+          "detail": "Core Web Vital: Good < 0.1, Poor > 0.25"
+        },
+        {
+          "name": "Total HTTP Requests",
+          "value": "80",
+          "status": "fail",
+          "category": "performance",
+          "detail": "Breakdown: {\"woff2\":2,\"app/_next/image\":1,\"css\":2,\"js\":29,\"app/api/auth/session\":1,\"app/booking\":4,\"app/about\":5,\"app/events\":4,\"app/conference\":4,\"app/advisor/policy-builder\":5,\"app/consult\":4,\"app/vault\":4,\"app/assessments\":4,\"app/advisor\":3,\"app/\":3,\"app/auth/signin\":5}"
+        },
+        {
+          "name": "Total JavaScript (transferred)",
+          "value": "254KB",
+          "status": "warn",
+          "category": "performance",
+          "detail": "Good < 200KB, Acceptable < 500KB"
+        },
+        {
+          "name": "Total CSS (transferred)",
+          "value": "96KB",
+          "status": "warn",
+          "category": "performance"
+        },
+        {
+          "name": "Third-Party Requests",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Long Tasks (>50ms)",
+          "value": "0",
+          "status": "pass",
+          "category": "performance"
+        },
+        {
+          "name": "Images with alt text",
+          "value": "2/2",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "All images have alt text"
+        },
+        {
+          "name": "Form input labels",
+          "value": "0/1 labeled",
+          "status": "fail",
+          "category": "accessibility"
+        },
+        {
+          "name": "Single H1 tag",
+          "value": "1 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Heading hierarchy (no skipped levels)",
+          "value": "1 skipped",
+          "status": "warn",
+          "category": "accessibility",
+          "detail": "Heading order: 1 > 4 > 4 > 4"
+        },
+        {
+          "name": "Color contrast (WCAG AA)",
+          "value": "1 issues",
+          "status": "warn",
+          "category": "accessibility"
+        },
+        {
+          "name": "ARIA landmarks",
+          "value": "5 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Skip navigation link",
+          "value": "Present",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "HTML lang attribute",
+          "value": "en",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Positive tabindex values",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility",
+          "detail": "Positive tabindex disrupts natural tab order"
+        },
+        {
+          "name": "Empty links",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Empty buttons",
+          "value": "0 found",
+          "status": "pass",
+          "category": "accessibility"
+        },
+        {
+          "name": "Page title",
+          "value": "\"AI Strategic Advisor | KLO\" (26 chars)",
+          "status": "warn",
+          "category": "seo",
+          "detail": "Optimal: 30-60 characters"
+        },
+        {
+          "name": "Meta description",
+          "value": "165 chars",
+          "status": "warn",
+          "category": "seo",
+          "detail": "Optimal: 120-160 characters"
+        },
+        {
+          "name": "Open Graph tags",
+          "value": "title, desc, image, type",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Twitter Card tags",
+          "value": "summary_large_image",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Canonical URL",
+          "value": "https://klo-app.vercel.app/",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Viewport meta tag",
+          "value": "width=device-width, initial-scale=1, viewport-fit=cover",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Structured data (JSON-LD)",
+          "value": "3 blocks",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Favicon",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "Charset declaration",
+          "value": "Present",
+          "status": "pass",
+          "category": "seo"
+        },
+        {
+          "name": "HSTS",
+          "value": "max-age=63072000; includeSubDomains; preload",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Content Security Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-inline' https://js.stripe.com http...",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Content-Type-Options",
+          "value": "nosniff",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-Frame-Options",
+          "value": "SAMEORIGIN",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(self), interest-cohort=()",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "X-XSS-Protection",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Opener-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "Cross-Origin-Resource-Policy",
+          "value": "Missing",
+          "status": "warn",
+          "category": "security"
+        },
+        {
+          "name": "HTTPS",
+          "value": "Yes",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Secure cookies",
+          "value": "2/2 secure",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "HttpOnly cookies",
+          "value": "2/2",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Mixed content",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Exposed sensitive data",
+          "value": "None detected",
+          "status": "pass",
+          "category": "security"
+        },
+        {
+          "name": "Images with explicit dimensions",
+          "value": "2/2",
+          "status": "pass",
+          "category": "images",
+          "detail": "Explicit dimensions prevent CLS"
+        },
+        {
+          "name": "Below-fold images use lazy loading",
+          "value": "All lazy-loaded",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Oversized images (>2.5x display size)",
+          "value": "0 found",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Modern image formats (WebP/AVIF)",
+          "value": "0 modern, 0 legacy",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Responsive images (srcset/picture)",
+          "value": "2 of 2",
+          "status": "pass",
+          "category": "images"
+        },
+        {
+          "name": "Manifest completeness",
+          "value": "name, icons, start_url, display, theme",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Web App Manifest",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Service Worker",
+          "value": "Registered",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Theme color",
+          "value": "#0D1117",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Apple touch icon",
+          "value": "Present",
+          "status": "pass",
+          "category": "pwa"
+        },
+        {
+          "name": "Valid document structure",
+          "value": "Valid",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Inline styles",
+          "value": "18 elements",
+          "status": "warn",
+          "category": "code-quality",
+          "detail": "Prefer CSS classes over inline styles"
+        },
+        {
+          "name": "Render-blocking resources",
+          "value": "2 CSS, 14 JS",
+          "status": "fail",
+          "category": "code-quality",
+          "detail": "Use async/defer for scripts, media queries for CSS"
+        },
+        {
+          "name": "Deprecated HTML tags",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "target=\"_blank\" without rel=\"noopener\"",
+          "value": "0 found",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Duplicate element IDs",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality"
+        },
+        {
+          "name": "Placeholder/broken links (href=\"#\" or empty)",
+          "value": "0 found",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Interactive elements have hover/focus feedback",
+          "value": "8/8",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Print stylesheet",
+          "value": "Missing",
+          "status": "info",
+          "category": "ux"
+        },
+        {
+          "name": "Font display strategy",
+          "value": "Not set",
+          "status": "warn",
+          "category": "ux",
+          "detail": "Use font-display: swap to prevent FOIT"
+        },
+        {
+          "name": "Console errors",
+          "value": "None",
+          "status": "pass",
+          "category": "ux"
+        },
+        {
+          "name": "Broken resources (4xx/5xx)",
+          "value": "None",
+          "status": "pass",
+          "category": "code-quality",
+          "detail": ""
+        },
+        {
+          "name": "Responsive (iPhone 15): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPhone 15): Touch targets >= 44px",
+          "value": "6 undersized of 38",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPhone 15): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Touch targets >= 44px",
+          "value": "9 undersized of 38",
+          "status": "fail",
+          "category": "responsive",
+          "detail": "WCAG 2.5.8: Touch targets should be at least 44x44px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (iPad Pro 11): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Desktop 1440): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Horizontal overflow",
+          "value": "No overflow",
+          "status": "pass",
+          "category": "responsive"
+        },
+        {
+          "name": "Responsive (Wide 1920): Base font size",
+          "value": "16px",
+          "status": "pass",
+          "category": "responsive",
+          "detail": "Minimum recommended: 16px"
+        },
+        {
+          "name": "Responsive (Wide 1920): Overflowing images",
+          "value": "0",
+          "status": "pass",
+          "category": "responsive"
+        }
+      ],
+      "passedThreshold": true
+    }
+  },
+  "summary": {
+    "totalChecks": 492,
+    "averageScore": 88,
+    "allPassed": true
+  }
+}

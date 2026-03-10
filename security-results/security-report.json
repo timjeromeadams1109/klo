@@ -1,0 +1,466 @@
+{
+  "projectDir": "/Users/timothyadams/klo-app",
+  "timestamp": "2026-03-07T05:23:21.310Z",
+  "duration": "1.7s",
+  "score": 88,
+  "threshold": 80,
+  "passed": true,
+  "filesScanned": 229,
+  "totalFindings": 28,
+  "counts": {
+    "critical": 0,
+    "high": 3,
+    "medium": 2,
+    "low": 0,
+    "info": 3,
+    "pass": 20
+  },
+  "categories": {
+    "secrets": [
+      {
+        "name": ".env files in .gitignore",
+        "value": "Protected",
+        "severity": "pass",
+        "category": "secrets",
+        "file": ".gitignore",
+        "detail": null
+      },
+      {
+        "name": "Environment files not in git",
+        "value": "Clean",
+        "severity": "pass",
+        "category": "secrets"
+      },
+      {
+        "name": "NEXTAUTH_SECRET strength",
+        "value": "Strong (44 chars)",
+        "severity": "pass",
+        "category": "secrets",
+        "file": ".env.local",
+        "detail": null
+      },
+      {
+        "name": "Supabase service role key",
+        "value": "Present in env file",
+        "severity": "info",
+        "category": "secrets",
+        "file": ".env.local",
+        "detail": "Ensure this file is gitignored. Service role key bypasses RLS."
+      },
+      {
+        "name": "OWNER_PASSWORD storage",
+        "value": "Plaintext",
+        "severity": "high",
+        "category": "secrets",
+        "file": ".env.local",
+        "detail": "Hash with bcrypt: node -e \"require('bcryptjs').hash('pw',12).then(console.log)\""
+      },
+      {
+        "name": "ADMIN_PASSWORD storage",
+        "value": "Plaintext",
+        "severity": "high",
+        "category": "secrets",
+        "file": ".env.local",
+        "detail": "Hash with bcrypt: node -e \"require('bcryptjs').hash('pw',12).then(console.log)\""
+      },
+      {
+        "name": "MODERATOR_PASSWORD storage",
+        "value": "Plaintext",
+        "severity": "high",
+        "category": "secrets",
+        "file": ".env.local",
+        "detail": "Hash with bcrypt: node -e \"require('bcryptjs').hash('pw',12).then(console.log)\""
+      }
+    ],
+    "auth": [
+      {
+        "name": "Admin layout server-side auth",
+        "value": "Protected",
+        "severity": "pass",
+        "category": "auth",
+        "file": "src/app/admin/layout.tsx",
+        "detail": null
+      },
+      {
+        "name": "Webhook signature verification",
+        "value": "Implemented",
+        "severity": "pass",
+        "category": "auth",
+        "file": "src/app/api/stripe/webhook/route.ts",
+        "detail": null
+      }
+    ],
+    "injection": [
+      {
+        "name": "dangerouslySetInnerHTML",
+        "value": "dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}",
+        "severity": "pass",
+        "category": "injection",
+        "file": "src/components/shared/JsonLd.tsx:9",
+        "detail": "Safe: JSON.stringify escapes content"
+      }
+    ],
+    "config": [
+      {
+        "name": "Content-Security-Policy header",
+        "value": "Configured",
+        "severity": "pass",
+        "category": "config",
+        "file": "next.config.ts"
+      },
+      {
+        "name": "CSP allows unsafe-inline scripts",
+        "value": "'unsafe-inline' in script-src",
+        "severity": "medium",
+        "category": "config",
+        "file": "next.config.ts",
+        "detail": "Replace with nonce-based CSP for production"
+      },
+      {
+        "name": "X-Frame-Options header",
+        "value": "Set",
+        "severity": "pass",
+        "category": "config",
+        "file": "next.config.ts"
+      },
+      {
+        "name": "X-Content-Type-Options header",
+        "value": "Set",
+        "severity": "pass",
+        "category": "config",
+        "file": "next.config.ts"
+      },
+      {
+        "name": "Referrer-Policy header",
+        "value": "Set",
+        "severity": "pass",
+        "category": "config",
+        "file": "next.config.ts"
+      },
+      {
+        "name": "Strict-Transport-Security (HSTS)",
+        "value": "Set",
+        "severity": "pass",
+        "category": "config",
+        "file": "next.config.ts"
+      },
+      {
+        "name": "Route middleware",
+        "value": "Not found",
+        "severity": "info",
+        "category": "config",
+        "detail": "Consider middleware for route-level auth protection"
+      }
+    ],
+    "dependencies": [
+      {
+        "name": "npm audit",
+        "value": "Could not run",
+        "severity": "info",
+        "category": "dependencies",
+        "file": "package.json"
+      }
+    ],
+    "data-exposure": [
+      {
+        "name": "Sensitive data in console log",
+        "value": "console.warn(\n                  \"[Auth] A credential account",
+        "severity": "medium",
+        "category": "data-exposure",
+        "file": "src/lib/auth.ts:72",
+        "detail": "Remove or redact sensitive data from logs"
+      }
+    ],
+    "uploads": [
+      {
+        "name": "File upload size limit",
+        "value": "Implemented",
+        "severity": "pass",
+        "category": "uploads",
+        "file": "src/app/api/admin/events/[id]/files/route.ts",
+        "detail": null
+      },
+      {
+        "name": "File type validation",
+        "value": "Implemented",
+        "severity": "pass",
+        "category": "uploads",
+        "file": "src/app/api/admin/events/[id]/files/route.ts",
+        "detail": null
+      },
+      {
+        "name": "Upload filename sanitization",
+        "value": "Sanitized",
+        "severity": "pass",
+        "category": "uploads",
+        "file": "src/app/api/admin/events/[id]/files/route.ts",
+        "detail": null
+      },
+      {
+        "name": "File upload size limit",
+        "value": "Implemented",
+        "severity": "pass",
+        "category": "uploads",
+        "file": "src/app/api/admin/events/parse/route.ts",
+        "detail": null
+      },
+      {
+        "name": "File type validation",
+        "value": "Implemented",
+        "severity": "pass",
+        "category": "uploads",
+        "file": "src/app/api/admin/events/parse/route.ts",
+        "detail": null
+      },
+      {
+        "name": "Upload filename sanitization",
+        "value": "Sanitized",
+        "severity": "pass",
+        "category": "uploads",
+        "file": "src/app/api/admin/events/parse/route.ts",
+        "detail": null
+      },
+      {
+        "name": "File upload size limit",
+        "value": "Implemented",
+        "severity": "pass",
+        "category": "uploads",
+        "file": "src/app/api/conference/polls/upload/route.ts",
+        "detail": null
+      },
+      {
+        "name": "File type validation",
+        "value": "Implemented",
+        "severity": "pass",
+        "category": "uploads",
+        "file": "src/app/api/conference/polls/upload/route.ts",
+        "detail": null
+      },
+      {
+        "name": "Upload filename sanitization",
+        "value": "Sanitized",
+        "severity": "pass",
+        "category": "uploads",
+        "file": "src/app/api/conference/polls/upload/route.ts",
+        "detail": null
+      }
+    ]
+  },
+  "findings": [
+    {
+      "name": ".env files in .gitignore",
+      "value": "Protected",
+      "severity": "pass",
+      "category": "secrets",
+      "file": ".gitignore",
+      "detail": null
+    },
+    {
+      "name": "Environment files not in git",
+      "value": "Clean",
+      "severity": "pass",
+      "category": "secrets"
+    },
+    {
+      "name": "NEXTAUTH_SECRET strength",
+      "value": "Strong (44 chars)",
+      "severity": "pass",
+      "category": "secrets",
+      "file": ".env.local",
+      "detail": null
+    },
+    {
+      "name": "Supabase service role key",
+      "value": "Present in env file",
+      "severity": "info",
+      "category": "secrets",
+      "file": ".env.local",
+      "detail": "Ensure this file is gitignored. Service role key bypasses RLS."
+    },
+    {
+      "name": "OWNER_PASSWORD storage",
+      "value": "Plaintext",
+      "severity": "high",
+      "category": "secrets",
+      "file": ".env.local",
+      "detail": "Hash with bcrypt: node -e \"require('bcryptjs').hash('pw',12).then(console.log)\""
+    },
+    {
+      "name": "ADMIN_PASSWORD storage",
+      "value": "Plaintext",
+      "severity": "high",
+      "category": "secrets",
+      "file": ".env.local",
+      "detail": "Hash with bcrypt: node -e \"require('bcryptjs').hash('pw',12).then(console.log)\""
+    },
+    {
+      "name": "MODERATOR_PASSWORD storage",
+      "value": "Plaintext",
+      "severity": "high",
+      "category": "secrets",
+      "file": ".env.local",
+      "detail": "Hash with bcrypt: node -e \"require('bcryptjs').hash('pw',12).then(console.log)\""
+    },
+    {
+      "name": "Admin layout server-side auth",
+      "value": "Protected",
+      "severity": "pass",
+      "category": "auth",
+      "file": "src/app/admin/layout.tsx",
+      "detail": null
+    },
+    {
+      "name": "Webhook signature verification",
+      "value": "Implemented",
+      "severity": "pass",
+      "category": "auth",
+      "file": "src/app/api/stripe/webhook/route.ts",
+      "detail": null
+    },
+    {
+      "name": "dangerouslySetInnerHTML",
+      "value": "dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}",
+      "severity": "pass",
+      "category": "injection",
+      "file": "src/components/shared/JsonLd.tsx:9",
+      "detail": "Safe: JSON.stringify escapes content"
+    },
+    {
+      "name": "Content-Security-Policy header",
+      "value": "Configured",
+      "severity": "pass",
+      "category": "config",
+      "file": "next.config.ts"
+    },
+    {
+      "name": "CSP allows unsafe-inline scripts",
+      "value": "'unsafe-inline' in script-src",
+      "severity": "medium",
+      "category": "config",
+      "file": "next.config.ts",
+      "detail": "Replace with nonce-based CSP for production"
+    },
+    {
+      "name": "X-Frame-Options header",
+      "value": "Set",
+      "severity": "pass",
+      "category": "config",
+      "file": "next.config.ts"
+    },
+    {
+      "name": "X-Content-Type-Options header",
+      "value": "Set",
+      "severity": "pass",
+      "category": "config",
+      "file": "next.config.ts"
+    },
+    {
+      "name": "Referrer-Policy header",
+      "value": "Set",
+      "severity": "pass",
+      "category": "config",
+      "file": "next.config.ts"
+    },
+    {
+      "name": "Strict-Transport-Security (HSTS)",
+      "value": "Set",
+      "severity": "pass",
+      "category": "config",
+      "file": "next.config.ts"
+    },
+    {
+      "name": "Route middleware",
+      "value": "Not found",
+      "severity": "info",
+      "category": "config",
+      "detail": "Consider middleware for route-level auth protection"
+    },
+    {
+      "name": "npm audit",
+      "value": "Could not run",
+      "severity": "info",
+      "category": "dependencies",
+      "file": "package.json"
+    },
+    {
+      "name": "Sensitive data in console log",
+      "value": "console.warn(\n                  \"[Auth] A credential account",
+      "severity": "medium",
+      "category": "data-exposure",
+      "file": "src/lib/auth.ts:72",
+      "detail": "Remove or redact sensitive data from logs"
+    },
+    {
+      "name": "File upload size limit",
+      "value": "Implemented",
+      "severity": "pass",
+      "category": "uploads",
+      "file": "src/app/api/admin/events/[id]/files/route.ts",
+      "detail": null
+    },
+    {
+      "name": "File type validation",
+      "value": "Implemented",
+      "severity": "pass",
+      "category": "uploads",
+      "file": "src/app/api/admin/events/[id]/files/route.ts",
+      "detail": null
+    },
+    {
+      "name": "Upload filename sanitization",
+      "value": "Sanitized",
+      "severity": "pass",
+      "category": "uploads",
+      "file": "src/app/api/admin/events/[id]/files/route.ts",
+      "detail": null
+    },
+    {
+      "name": "File upload size limit",
+      "value": "Implemented",
+      "severity": "pass",
+      "category": "uploads",
+      "file": "src/app/api/admin/events/parse/route.ts",
+      "detail": null
+    },
+    {
+      "name": "File type validation",
+      "value": "Implemented",
+      "severity": "pass",
+      "category": "uploads",
+      "file": "src/app/api/admin/events/parse/route.ts",
+      "detail": null
+    },
+    {
+      "name": "Upload filename sanitization",
+      "value": "Sanitized",
+      "severity": "pass",
+      "category": "uploads",
+      "file": "src/app/api/admin/events/parse/route.ts",
+      "detail": null
+    },
+    {
+      "name": "File upload size limit",
+      "value": "Implemented",
+      "severity": "pass",
+      "category": "uploads",
+      "file": "src/app/api/conference/polls/upload/route.ts",
+      "detail": null
+    },
+    {
+      "name": "File type validation",
+      "value": "Implemented",
+      "severity": "pass",
+      "category": "uploads",
+      "file": "src/app/api/conference/polls/upload/route.ts",
+      "detail": null
+    },
+    {
+      "name": "Upload filename sanitization",
+      "value": "Sanitized",
+      "severity": "pass",
+      "category": "uploads",
+      "file": "src/app/api/conference/polls/upload/route.ts",
+      "detail": null
+    }
+  ]
+}

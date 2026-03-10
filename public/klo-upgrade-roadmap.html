@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>KLO Platform: Your Next Level</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0D1117;--surface:#161B22;--slate:#21262D;--border:#21262D;
+  --text:#E6EDF3;--muted:#8B949E;
+  --accent:#2764FF;--cyan:#21B8CD;--gold:#C8A84E;--gold-light:#E8D5A0;
+  --purple:#8840FF;--lime:#6ECF55;--magenta:#F77A81;
+}
+html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden;width:1920px;height:1080px}
+.slide{width:1920px;height:1080px;display:none;position:absolute;top:0;left:0;padding:80px 120px;flex-direction:column;justify-content:center;overflow:hidden}
+.slide.active{display:flex}
+
+/* Backgrounds */
+.bg-gradient{background:linear-gradient(160deg,#0D1117 0%,#0F1923 40%,#111D2B 100%)}
+.bg-surface{background:linear-gradient(180deg,#0D1117 0%,#161B22 100%)}
+.bg-deep{background:linear-gradient(160deg,#080C12 0%,#0D1117 50%,#111927 100%)}
+
+/* Typography */
+h1{font-family:'Playfair Display',serif;font-size:72px;font-weight:700;line-height:1.1;letter-spacing:-1px}
+h2{font-family:'Playfair Display',serif;font-size:56px;font-weight:700;line-height:1.15;letter-spacing:-0.5px}
+h3{font-size:32px;font-weight:700;line-height:1.3}
+p,.body{font-size:26px;line-height:1.6;color:var(--muted)}
+.label{font-size:16px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:var(--gold)}
+.accent-text{background:linear-gradient(135deg,var(--accent),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.gold-text{color:var(--gold)}
+.cyan-text{color:var(--cyan)}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px}
+.card-glow{box-shadow:0 0 30px rgba(39,100,255,0.08),0 4px 24px rgba(0,0,0,0.3)}
+.card-gold{border-color:rgba(200,168,78,0.3);box-shadow:0 0 30px rgba(200,168,78,0.08)}
+
+/* Utilities */
+.flex{display:flex}.gap-32{gap:32px}.gap-24{gap:24px}.gap-16{gap:16px}.gap-48{gap:48px}
+.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}
+.flex-1{flex:1}.text-center{text-align:center}
+.mt-auto{margin-top:auto}.mt-24{margin-top:24px}.mt-32{margin-top:32px}.mt-48{margin-top:48px}.mb-16{margin-bottom:16px}.mb-24{margin-bottom:24px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:32px}
+
+/* Decorative */
+.glow-orb{position:absolute;border-radius:50%;filter:blur(120px);pointer-events:none;opacity:0.15}
+.divider{width:80px;height:3px;background:linear-gradient(90deg,var(--accent),var(--cyan));border-radius:2px;margin:20px 0}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;border-radius:100px;font-size:15px;font-weight:600;background:rgba(39,100,255,0.12);color:var(--accent);border:1px solid rgba(39,100,255,0.2)}
+.badge-gold{background:rgba(200,168,78,0.12);color:var(--gold);border-color:rgba(200,168,78,0.2)}
+.badge-cyan{background:rgba(33,184,205,0.12);color:var(--cyan);border-color:rgba(33,184,205,0.2)}
+.badge-lime{background:rgba(110,207,85,0.12);color:var(--lime);border-color:rgba(110,207,85,0.2)}
+
+.check-item{display:flex;align-items:flex-start;gap:16px;font-size:24px;line-height:1.5;color:var(--text)}
+.check-icon{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:3px;font-size:15px;color:#fff}
+
+.step-num{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--cyan));display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex-shrink:0}
+.timeline-dot{width:16px;height:16px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.timeline-line{width:2px;flex:1;background:linear-gradient(180deg,var(--accent),var(--cyan))}
+
+table{width:100%;border-collapse:separate;border-spacing:0;border-radius:16px;overflow:hidden;font-size:24px}
+th{background:rgba(39,100,255,0.12);padding:20px 32px;text-align:left;font-weight:600;color:var(--accent);border-bottom:1px solid var(--border)}
+td{padding:20px 32px;border-bottom:1px solid rgba(33,38,45,0.5);color:var(--text)}
+tr:last-child td{border-bottom:none}
+tr:nth-child(even) td{background:rgba(22,27,34,0.5)}
+
+/* Nav */
+.nav{position:fixed;bottom:32px;right:40px;display:flex;gap:12px;z-index:100}
+.nav button{width:48px;height:48px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s}
+.nav button:hover{background:var(--accent);border-color:var(--accent)}
+.slide-counter{position:fixed;bottom:40px;left:50%;transform:translateX(-50%);font-size:14px;color:var(--muted);z-index:100}
+</style>
+</head>
+<body>
+
+<!-- Slide 1: Title -->
+<div class="slide bg-gradient active" id="slide-1">
+  <div class="glow-orb" style="width:600px;height:600px;background:var(--accent);top:-200px;right:-100px"></div>
+  <div class="glow-orb" style="width:400px;height:400px;background:var(--gold);bottom:-150px;left:100px"></div>
+  <div style="max-width:1200px">
+    <div class="label mb-24">KLO Platform Upgrade</div>
+    <h1 style="font-size:88px;margin-bottom:24px">Your <span class="accent-text">Next Level</span></h1>
+    <div class="divider"></div>
+    <p style="font-size:30px;max-width:800px;margin-top:24px">Custom domain, Apple App Store, Google Play Store &mdash; a professional platform your audience can find, trust, and share.</p>
+    <div class="flex gap-16 mt-48">
+      <div class="badge-gold badge">Custom Domain</div>
+      <div class="badge">App Store</div>
+      <div class="badge-lime badge">Google Play</div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: Where You Are Today -->
+<div class="slide bg-surface" id="slide-2">
+  <div class="glow-orb" style="width:500px;height:500px;background:var(--cyan);top:-200px;left:-100px"></div>
+  <div class="label mb-16">Current State</div>
+  <h2 class="mb-24">Where You Are Today</h2>
+  <div class="divider mb-24"></div>
+  <div class="grid-3 mt-32">
+    <div class="card card-glow">
+      <div style="font-size:40px;margin-bottom:16px">&#127760;</div>
+      <h3 style="margin-bottom:12px">Live on Vercel</h3>
+      <p style="font-size:22px">Hosted at klo-app.vercel.app with global CDN, automatic deployments, and SSL.</p>
+    </div>
+    <div class="card card-glow">
+      <div style="font-size:40px;margin-bottom:16px">&#128241;</div>
+      <h3 style="margin-bottom:12px">Mobile-Optimized</h3>
+      <p style="font-size:22px">Fully responsive design with PWA support, service worker caching, and installable on any device.</p>
+    </div>
+    <div class="card card-glow">
+      <div style="font-size:40px;margin-bottom:16px">&#9889;</div>
+      <h3 style="margin-bottom:12px">Capacitor Ready</h3>
+      <p style="font-size:22px">iOS &amp; Android native shells configured with icons, splash screens, deep links, and native APIs.</p>
+    </div>
+  </div>
+  <div class="flex gap-32 mt-48">
+    <div class="check-item"><div class="check-icon">&#10003;</div>4 Assessments + AI Chat</div>
+    <div class="check-item"><div class="check-icon">&#10003;</div>Stripe Subscriptions</div>
+    <div class="check-item"><div class="check-icon">&#10003;</div>Conference Booking</div>
+    <div class="check-item"><div class="check-icon">&#10003;</div>PDF/Word/PPT Downloads</div>
+  </div>
+</div>
+
+<!-- Slide 3: The Vision -->
+<div class="slide bg-deep" id="slide-3">
+  <div class="glow-orb" style="width:700px;height:700px;background:var(--gold);top:50%;left:50%;transform:translate(-50%,-50%)"></div>
+  <div class="text-center" style="position:relative;z-index:1">
+    <div class="label mb-16">The Vision</div>
+    <h1 style="font-size:80px;margin-bottom:32px">Own Your <span class="gold-text">Platform</span></h1>
+    <div class="divider" style="margin:20px auto"></div>
+    <p style="font-size:30px;max-width:900px;margin:24px auto 48px">A branded domain and native app store presence transforms your digital platform from a website into a <strong style="color:var(--text)">professional ecosystem</strong> your audience trusts and shares.</p>
+    <div class="flex gap-48 justify-center">
+      <div class="text-center">
+        <div style="font-size:52px;font-weight:700;color:var(--accent)">keithlodom.io</div>
+        <p style="font-size:20px;margin-top:8px">Branded Domain</p>
+      </div>
+      <div style="font-size:48px;color:var(--muted);align-self:center">+</div>
+      <div class="text-center">
+        <div style="font-size:52px;font-weight:700;color:var(--text)">App Store</div>
+        <p style="font-size:20px;margin-top:8px">iOS &amp; Android</p>
+      </div>
+      <div style="font-size:48px;color:var(--muted);align-self:center">=</div>
+      <div class="text-center">
+        <div style="font-size:52px;font-weight:700;color:var(--gold)">Professional</div>
+        <p style="font-size:20px;margin-top:8px">Discoverable &amp; Owned</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 4: Phase 1 — Custom Domain -->
+<div class="slide bg-gradient" id="slide-4">
+  <div class="glow-orb" style="width:400px;height:400px;background:var(--accent);bottom:-100px;right:200px"></div>
+  <div class="flex gap-16 items-center mb-16">
+    <div class="badge">Phase 1</div>
+    <div class="label" style="margin:0">Custom Domain</div>
+  </div>
+  <h2 class="mb-24">keithlodom.io &rarr; Your Brand</h2>
+  <div class="divider mb-24"></div>
+  <div class="grid-2 mt-32">
+    <div>
+      <div class="flex flex-col gap-24">
+        <div class="flex gap-16 items-center">
+          <div class="step-num">1</div>
+          <div><h3>Point DNS to Vercel</h3><p style="font-size:22px">Update A/CNAME records at your domain registrar</p></div>
+        </div>
+        <div class="flex gap-16 items-center">
+          <div class="step-num">2</div>
+          <div><h3>Add Domain in Vercel</h3><p style="font-size:22px">Configure keithlodom.io in project settings</p></div>
+        </div>
+        <div class="flex gap-16 items-center">
+          <div class="step-num">3</div>
+          <div><h3>SSL Auto-Provisioned</h3><p style="font-size:22px">Vercel issues Let's Encrypt certificate automatically</p></div>
+        </div>
+        <div class="flex gap-16 items-center">
+          <div class="step-num">4</div>
+          <div><h3>Go Live</h3><p style="font-size:22px">Redirect old URL &rarr; branded domain</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="card card-gold" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+      <div style="font-size:22px;color:var(--muted);margin-bottom:8px">Timeline</div>
+      <div style="font-size:72px;font-weight:700;color:var(--gold)">Same Day</div>
+      <div style="font-size:22px;color:var(--muted);margin-top:16px">DNS propagation: minutes to hours</div>
+      <div style="margin-top:32px;padding-top:32px;border-top:1px solid var(--border);width:100%">
+        <div style="font-size:22px;color:var(--muted)">Cost</div>
+        <div style="font-size:40px;font-weight:700;color:var(--text)">$12&ndash;20<span style="font-size:22px;color:var(--muted)">/year</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 5: Domain Benefits -->
+<div class="slide bg-surface" id="slide-5">
+  <div class="glow-orb" style="width:500px;height:500px;background:var(--gold);top:-200px;right:-100px"></div>
+  <div class="label mb-16">Why It Matters</div>
+  <h2 class="mb-24">Domain <span class="gold-text">Benefits</span></h2>
+  <div class="divider mb-24"></div>
+  <div class="grid-2 mt-32" style="gap:24px">
+    <div class="card" style="border-left:3px solid var(--gold)">
+      <h3 style="color:var(--gold);margin-bottom:12px">&#128270; Search Engine Visibility</h3>
+      <p style="font-size:22px">Custom domains rank higher in Google. "keithlodom.io" builds domain authority that a Vercel subdomain cannot.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--accent)">
+      <h3 style="color:var(--accent);margin-bottom:12px">&#127775; Professional Credibility</h3>
+      <p style="font-size:22px">Share keithlodom.io instead of klo-app.vercel.app. First impressions matter for conferences and clients.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--cyan)">
+      <h3 style="color:var(--cyan);margin-bottom:12px">&#128232; Branded QR Codes &amp; Links</h3>
+      <p style="font-size:22px">Print keithlodom.io/assess on materials, business cards, and slides. Clean, memorable URLs.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--lime)">
+      <h3 style="color:var(--lime);margin-bottom:12px">&#9993; Professional Email Ready</h3>
+      <p style="font-size:22px">Enable keith@keithlodom.io via Google Workspace or Zoho. Builds trust with every message.</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--purple);grid-column:span 2">
+      <h3 style="color:var(--purple);margin-bottom:12px">&#128279; Permanent Marketing URLs</h3>
+      <p style="font-size:22px">Every link you share in emails, social media, and printed materials points to a domain you own forever. No platform lock-in.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 6: Domain — What's Needed -->
+<div class="slide bg-deep" id="slide-6">
+  <div class="glow-orb" style="width:400px;height:400px;background:var(--accent);top:100px;right:-100px"></div>
+  <div class="label mb-16">Phase 1 Details</div>
+  <h2 class="mb-24">Domain: What's Needed</h2>
+  <div class="divider mb-24"></div>
+  <div class="grid-2 mt-32">
+    <div class="flex flex-col gap-24">
+      <div class="card">
+        <h3 style="margin-bottom:16px">DNS Configuration</h3>
+        <div style="background:var(--bg);border-radius:8px;padding:20px;font-family:monospace;font-size:20px;color:var(--cyan);line-height:1.8">
+          A &nbsp;&nbsp;&nbsp;&nbsp;@ &nbsp;&nbsp;&rarr; 76.76.21.21<br>
+          CNAME www &rarr; cname.vercel-dns.com
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:16px">Vercel Settings</h3>
+        <p style="font-size:22px">Add keithlodom.io + www.keithlodom.io in Project &rarr; Settings &rarr; Domains. Vercel handles SSL and redirects.</p>
+      </div>
+    </div>
+    <div class="flex flex-col gap-24">
+      <div class="card card-gold">
+        <h3 style="color:var(--gold);margin-bottom:20px">Summary</h3>
+        <div class="flex flex-col gap-16">
+          <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Time:</strong> 30 minutes active work</div></div>
+          <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Cost:</strong> $12&ndash;20/yr domain renewal</div></div>
+          <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>SSL:</strong> Auto-provisioned by Vercel</div></div>
+          <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Downtime:</strong> Zero &mdash; old URL still works</div></div>
+          <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Redirect:</strong> Old URL auto-redirects to new domain</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 7: Phase 2 — Apple App Store -->
+<div class="slide bg-gradient" id="slide-7">
+  <div class="glow-orb" style="width:500px;height:500px;background:var(--accent);bottom:-200px;left:-100px"></div>
+  <div class="flex gap-16 items-center mb-16">
+    <div class="badge">Phase 2</div>
+    <div class="label" style="margin:0">Apple App Store</div>
+  </div>
+  <h2 class="mb-24">Publish to the <span class="accent-text">App Store</span></h2>
+  <div class="divider mb-24"></div>
+  <div class="grid-2 mt-32">
+    <div class="flex flex-col gap-24">
+      <div class="flex gap-16 items-center">
+        <div class="step-num">1</div>
+        <div><h3>Apple Developer Account</h3><p style="font-size:22px">Enroll at developer.apple.com ($99/year)</p></div>
+      </div>
+      <div class="flex gap-16 items-center">
+        <div class="step-num">2</div>
+        <div><h3>App Store Connect Setup</h3><p style="font-size:22px">Create app listing, upload screenshots, write description</p></div>
+      </div>
+      <div class="flex gap-16 items-center">
+        <div class="step-num">3</div>
+        <div><h3>Build &amp; Submit</h3><p style="font-size:22px">Capacitor builds native iOS binary, submit via Xcode</p></div>
+      </div>
+      <div class="flex gap-16 items-center">
+        <div class="step-num">4</div>
+        <div><h3>TestFlight &rarr; Review</h3><p style="font-size:22px">Beta test internally, then submit for Apple review</p></div>
+      </div>
+    </div>
+    <div class="card card-glow" style="display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+      <div style="font-size:80px;margin-bottom:16px">&#63743;</div>
+      <div style="font-size:22px;color:var(--muted);margin-bottom:8px">Timeline</div>
+      <div style="font-size:56px;font-weight:700;color:var(--accent)">1&ndash;2 Weeks</div>
+      <div style="font-size:22px;color:var(--muted);margin-top:16px">Including Apple review (24&ndash;48 hours)</div>
+      <div style="margin-top:32px;padding-top:32px;border-top:1px solid var(--border);width:100%">
+        <div style="font-size:22px;color:var(--muted)">Cost</div>
+        <div style="font-size:40px;font-weight:700;color:var(--text)">$99<span style="font-size:22px;color:var(--muted)">/year</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 8: iOS — What Users See -->
+<div class="slide bg-surface" id="slide-8">
+  <div class="glow-orb" style="width:400px;height:400px;background:var(--accent);top:-100px;right:300px"></div>
+  <div class="label mb-16">User Experience</div>
+  <h2 class="mb-24">iOS: What Users See</h2>
+  <div class="divider mb-24"></div>
+  <div class="grid-3 mt-32" style="gap:24px">
+    <div class="card card-glow text-center">
+      <div style="font-size:48px;margin-bottom:16px">&#128270;</div>
+      <h3 style="margin-bottom:12px">Find in App Store</h3>
+      <p style="font-size:22px">Search "KLO" or "Keith Odom" and find a real, verified App Store listing.</p>
+    </div>
+    <div class="card card-glow text-center">
+      <div style="font-size:48px;margin-bottom:16px">&#11015;&#65039;</div>
+      <h3 style="margin-bottom:12px">Tap "GET"</h3>
+      <p style="font-size:22px">One-tap install with Face ID / Touch ID confirmation. No browser required.</p>
+    </div>
+    <div class="card card-glow text-center">
+      <div style="font-size:48px;margin-bottom:16px">&#128276;</div>
+      <h3 style="margin-bottom:12px">Push Notifications</h3>
+      <p style="font-size:22px">Send assessment reminders, new content alerts, and conference updates directly.</p>
+    </div>
+    <div class="card card-glow text-center">
+      <div style="font-size:48px;margin-bottom:16px">&#127968;</div>
+      <h3 style="margin-bottom:12px">Home Screen Icon</h3>
+      <p style="font-size:22px">KLO branded icon on every user's home screen &mdash; always one tap away.</p>
+    </div>
+    <div class="card card-glow text-center">
+      <div style="font-size:48px;margin-bottom:16px">&#128274;</div>
+      <h3 style="margin-bottom:12px">Biometric Login</h3>
+      <p style="font-size:22px">Face ID and Touch ID for secure, instant access without typing passwords.</p>
+    </div>
+    <div class="card card-glow text-center">
+      <div style="font-size:48px;margin-bottom:16px">&#9733;</div>
+      <h3 style="margin-bottom:12px">Ratings &amp; Reviews</h3>
+      <p style="font-size:22px">Collect App Store reviews that build social proof and drive organic discovery.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 9: Phase 3 — Google Play Store -->
+<div class="slide bg-deep" id="slide-9">
+  <div class="glow-orb" style="width:500px;height:500px;background:var(--lime);bottom:-200px;right:-100px"></div>
+  <div class="flex gap-16 items-center mb-16">
+    <div class="badge-lime badge">Phase 3</div>
+    <div class="label" style="margin:0;color:var(--lime)">Google Play Store</div>
+  </div>
+  <h2 class="mb-24">Publish to <span style="color:var(--lime)">Google Play</span></h2>
+  <div class="divider" style="background:linear-gradient(90deg,var(--lime),var(--cyan));margin-bottom:24px"></div>
+  <div class="grid-2 mt-32">
+    <div class="flex flex-col gap-24">
+      <div class="flex gap-16 items-center">
+        <div class="step-num" style="background:linear-gradient(135deg,var(--lime),var(--cyan))">1</div>
+        <div><h3>Google Play Console</h3><p style="font-size:22px">Register at play.google.com/console ($25 one-time)</p></div>
+      </div>
+      <div class="flex gap-16 items-center">
+        <div class="step-num" style="background:linear-gradient(135deg,var(--lime),var(--cyan))">2</div>
+        <div><h3>Store Listing</h3><p style="font-size:22px">Screenshots, description, content rating, privacy policy</p></div>
+      </div>
+      <div class="flex gap-16 items-center">
+        <div class="step-num" style="background:linear-gradient(135deg,var(--lime),var(--cyan))">3</div>
+        <div><h3>Build &amp; Upload AAB</h3><p style="font-size:22px">Capacitor builds Android App Bundle, upload to Play Console</p></div>
+      </div>
+      <div class="flex gap-16 items-center">
+        <div class="step-num" style="background:linear-gradient(135deg,var(--lime),var(--cyan))">4</div>
+        <div><h3>Internal Testing &rarr; Production</h3><p style="font-size:22px">Test track first, then submit for review</p></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:rgba(110,207,85,0.3);box-shadow:0 0 30px rgba(110,207,85,0.08);display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center">
+      <div style="font-size:80px;margin-bottom:16px">&#9654;&#65039;</div>
+      <div style="font-size:22px;color:var(--muted);margin-bottom:8px">Timeline</div>
+      <div style="font-size:56px;font-weight:700;color:var(--lime)">1&ndash;3 Days</div>
+      <div style="font-size:22px;color:var(--muted);margin-top:16px">Google review is typically faster than Apple</div>
+      <div style="margin-top:32px;padding-top:32px;border-top:1px solid var(--border);width:100%">
+        <div style="font-size:22px;color:var(--muted)">Cost</div>
+        <div style="font-size:40px;font-weight:700;color:var(--text)">$25<span style="font-size:22px;color:var(--muted)"> one-time</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 10: Android — What Users See -->
+<div class="slide bg-surface" id="slide-10">
+  <div class="glow-orb" style="width:400px;height:400px;background:var(--lime);top:-100px;left:300px"></div>
+  <div class="label mb-16">User Experience</div>
+  <h2 class="mb-24">Android: What Users See</h2>
+  <div class="divider" style="background:linear-gradient(90deg,var(--lime),var(--cyan));margin-bottom:24px"></div>
+  <div class="grid-3 mt-32" style="gap:24px">
+    <div class="card text-center" style="border-color:rgba(110,207,85,0.15)">
+      <div style="font-size:48px;margin-bottom:16px">&#128270;</div>
+      <h3 style="margin-bottom:12px">Find on Google Play</h3>
+      <p style="font-size:22px">Search and discover KLO in the Play Store &mdash; 3 billion+ active Android devices.</p>
+    </div>
+    <div class="card text-center" style="border-color:rgba(110,207,85,0.15)">
+      <div style="font-size:48px;margin-bottom:16px">&#11015;&#65039;</div>
+      <h3 style="margin-bottom:12px">Tap "Install"</h3>
+      <p style="font-size:22px">Instant install from Play Store. Auto-updates keep users on the latest version.</p>
+    </div>
+    <div class="card text-center" style="border-color:rgba(110,207,85,0.15)">
+      <div style="font-size:48px;margin-bottom:16px">&#128276;</div>
+      <h3 style="margin-bottom:12px">Push Notifications</h3>
+      <p style="font-size:22px">Firebase Cloud Messaging for real-time alerts and engagement.</p>
+    </div>
+    <div class="card text-center" style="border-color:rgba(110,207,85,0.15)">
+      <div style="font-size:48px;margin-bottom:16px">&#128193;</div>
+      <h3 style="margin-bottom:12px">App Drawer Icon</h3>
+      <p style="font-size:22px">Branded KLO icon in the app drawer and on home screen widgets.</p>
+    </div>
+    <div class="card text-center" style="border-color:rgba(110,207,85,0.15)">
+      <div style="font-size:48px;margin-bottom:16px">&#128279;</div>
+      <h3 style="margin-bottom:12px">Deep Links</h3>
+      <p style="font-size:22px">Links in emails and social open directly in the app, not the browser.</p>
+    </div>
+    <div class="card text-center" style="border-color:rgba(110,207,85,0.15)">
+      <div style="font-size:48px;margin-bottom:16px">&#127760;</div>
+      <h3 style="margin-bottom:12px">Google Integration</h3>
+      <p style="font-size:22px">Sign in with Google, Google Pay, and seamless Android ecosystem features.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 11: Already Built for App Stores -->
+<div class="slide bg-gradient" id="slide-11">
+  <div class="glow-orb" style="width:600px;height:600px;background:var(--cyan);top:-200px;right:-200px"></div>
+  <div class="label mb-16">Already Done</div>
+  <h2 class="mb-24">Built &amp; Ready for <span class="accent-text">App Stores</span></h2>
+  <div class="divider mb-24"></div>
+  <p style="font-size:26px;max-width:900px;margin-bottom:40px">Your app already has the native foundations configured. This is not a rebuild &mdash; it's a <strong style="color:var(--text)">submission process</strong>.</p>
+  <div class="grid-3" style="gap:20px">
+    <div class="card" style="padding:28px">
+      <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>App Icons</strong><br><span style="color:var(--muted);font-size:20px">All sizes generated for both platforms</span></div></div>
+    </div>
+    <div class="card" style="padding:28px">
+      <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Splash Screens</strong><br><span style="color:var(--muted);font-size:20px">Branded launch screens configured</span></div></div>
+    </div>
+    <div class="card" style="padding:28px">
+      <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Deep Links</strong><br><span style="color:var(--muted);font-size:20px">URL routing to in-app content</span></div></div>
+    </div>
+    <div class="card" style="padding:28px">
+      <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Safe Area Insets</strong><br><span style="color:var(--muted);font-size:20px">Notch &amp; Dynamic Island support</span></div></div>
+    </div>
+    <div class="card" style="padding:28px">
+      <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Native Status Bar</strong><br><span style="color:var(--muted);font-size:20px">Styled to match KLO dark theme</span></div></div>
+    </div>
+    <div class="card" style="padding:28px">
+      <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Keyboard Handling</strong><br><span style="color:var(--muted);font-size:20px">Native keyboard push &amp; dismiss</span></div></div>
+    </div>
+    <div class="card" style="padding:28px">
+      <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Back Button (Android)</strong><br><span style="color:var(--muted);font-size:20px">Hardware back navigation handled</span></div></div>
+    </div>
+    <div class="card" style="padding:28px">
+      <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>Capacitor 8.x</strong><br><span style="color:var(--muted);font-size:20px">Latest native runtime configured</span></div></div>
+    </div>
+    <div class="card" style="padding:28px">
+      <div class="check-item"><div class="check-icon">&#10003;</div><div><strong>PWA Fallback</strong><br><span style="color:var(--muted);font-size:20px">Service worker + offline support</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 12: What's Still Needed -->
+<div class="slide bg-surface" id="slide-12">
+  <div class="glow-orb" style="width:400px;height:400px;background:var(--gold);bottom:-100px;left:-100px"></div>
+  <div class="label mb-16">Remaining Items</div>
+  <h2 class="mb-24">What's <span class="gold-text">Still Needed</span></h2>
+  <div class="divider mb-24"></div>
+  <div class="grid-2 mt-32">
+    <div class="card card-gold">
+      <h3 style="color:var(--gold);margin-bottom:20px">From Keith</h3>
+      <div class="flex flex-col gap-16">
+        <div class="check-item" style="color:var(--muted)"><div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;margin-top:3px"></div>Apple Developer Account enrollment ($99/yr)</div>
+        <div class="check-item" style="color:var(--muted)"><div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;margin-top:3px"></div>Google Play Console registration ($25)</div>
+        <div class="check-item" style="color:var(--muted)"><div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;margin-top:3px"></div>Short marketing description (80 chars)</div>
+        <div class="check-item" style="color:var(--muted)"><div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;margin-top:3px"></div>Full description (up to 4000 chars)</div>
+        <div class="check-item" style="color:var(--muted)"><div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--gold);flex-shrink:0;margin-top:3px"></div>Approve screenshots &amp; store visuals</div>
+      </div>
+    </div>
+    <div class="card card-glow">
+      <h3 style="color:var(--accent);margin-bottom:20px">Development Work</h3>
+      <div class="flex flex-col gap-16">
+        <div class="check-item" style="color:var(--muted)"><div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--accent);flex-shrink:0;margin-top:3px"></div>Generate 6.7" &amp; 5.5" App Store screenshots</div>
+        <div class="check-item" style="color:var(--muted)"><div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--accent);flex-shrink:0;margin-top:3px"></div>Generate Play Store phone + tablet screenshots</div>
+        <div class="check-item" style="color:var(--muted)"><div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--accent);flex-shrink:0;margin-top:3px"></div>Create privacy policy page at /privacy</div>
+        <div class="check-item" style="color:var(--muted)"><div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--accent);flex-shrink:0;margin-top:3px"></div>Configure push notification service</div>
+        <div class="check-item" style="color:var(--muted)"><div style="width:28px;height:28px;border-radius:50%;border:2px solid var(--accent);flex-shrink:0;margin-top:3px"></div>TestFlight + internal testing track setup</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 13: Investment Summary -->
+<div class="slide bg-deep" id="slide-13">
+  <div class="glow-orb" style="width:500px;height:500px;background:var(--accent);top:-200px;left:50%;transform:translateX(-50%)"></div>
+  <div class="label mb-16">Investment</div>
+  <h2 class="mb-24">Investment <span class="accent-text">Summary</span></h2>
+  <div class="divider mb-24"></div>
+  <div style="max-width:1400px;margin-top:32px">
+    <table>
+      <thead>
+        <tr>
+          <th style="width:30%">Item</th>
+          <th style="width:20%">Cost</th>
+          <th style="width:15%">Frequency</th>
+          <th style="width:35%">Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Custom Domain</strong> (keithlodom.io)</td>
+          <td style="color:var(--gold);font-weight:600">$12&ndash;20</td>
+          <td>Per year</td>
+          <td>Already registered &mdash; just needs DNS update</td>
+        </tr>
+        <tr>
+          <td><strong>Apple Developer Program</strong></td>
+          <td style="color:var(--gold);font-weight:600">$99</td>
+          <td>Per year</td>
+          <td>Required for App Store &amp; TestFlight</td>
+        </tr>
+        <tr>
+          <td><strong>Google Play Console</strong></td>
+          <td style="color:var(--gold);font-weight:600">$25</td>
+          <td>One-time</td>
+          <td>Lifetime access to publish apps</td>
+        </tr>
+        <tr>
+          <td><strong>Development Time</strong></td>
+          <td style="color:var(--gold);font-weight:600">Included</td>
+          <td>&mdash;</td>
+          <td>Screenshots, submission, store optimization</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="card card-gold mt-48" style="display:flex;justify-content:space-between;align-items:center;padding:32px 48px">
+      <div>
+        <div style="font-size:20px;color:var(--muted)">Total Year 1 Investment</div>
+        <div style="font-size:48px;font-weight:700;color:var(--gold)">~$136&ndash;144</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-size:20px;color:var(--muted)">Ongoing Annual</div>
+        <div style="font-size:48px;font-weight:700;color:var(--text)">~$111&ndash;119<span style="font-size:22px;color:var(--muted)">/yr</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 14: Roadmap Timeline -->
+<div class="slide bg-gradient" id="slide-14">
+  <div class="glow-orb" style="width:600px;height:600px;background:var(--accent);bottom:-300px;right:-200px"></div>
+  <div class="label mb-16">Timeline</div>
+  <h2 class="mb-24">Roadmap <span class="accent-text">Timeline</span></h2>
+  <div class="divider mb-24"></div>
+  <div style="display:flex;gap:40px;margin-top:48px;align-items:stretch">
+    <!-- Phase 1 -->
+    <div class="card card-gold flex-1" style="display:flex;flex-direction:column;text-align:center;padding:48px 32px">
+      <div class="badge-gold badge" style="align-self:center;margin-bottom:24px">Phase 1</div>
+      <h3 style="font-size:28px;color:var(--gold);margin-bottom:8px">Custom Domain</h3>
+      <div style="font-size:56px;font-weight:700;margin:16px 0">Day 1</div>
+      <div class="divider" style="background:var(--gold);margin:16px auto"></div>
+      <div class="flex flex-col gap-12 mt-auto" style="text-align:left">
+        <div style="font-size:20px;color:var(--muted)">&#10003; DNS configuration</div>
+        <div style="font-size:20px;color:var(--muted)">&#10003; Vercel domain setup</div>
+        <div style="font-size:20px;color:var(--muted)">&#10003; SSL provisioned</div>
+        <div style="font-size:20px;color:var(--muted)">&#10003; Redirect old URL</div>
+      </div>
+    </div>
+    <!-- Arrow -->
+    <div style="display:flex;align-items:center;font-size:48px;color:var(--muted)">&rarr;</div>
+    <!-- Phase 2 -->
+    <div class="card card-glow flex-1" style="display:flex;flex-direction:column;text-align:center;padding:48px 32px">
+      <div class="badge" style="align-self:center;margin-bottom:24px">Phase 2</div>
+      <h3 style="font-size:28px;color:var(--accent);margin-bottom:8px">Apple App Store</h3>
+      <div style="font-size:56px;font-weight:700;margin:16px 0">Week 1&ndash;2</div>
+      <div class="divider" style="margin:16px auto"></div>
+      <div class="flex flex-col gap-12 mt-auto" style="text-align:left">
+        <div style="font-size:20px;color:var(--muted)">&#10003; Developer account</div>
+        <div style="font-size:20px;color:var(--muted)">&#10003; Screenshots &amp; listing</div>
+        <div style="font-size:20px;color:var(--muted)">&#10003; TestFlight beta</div>
+        <div style="font-size:20px;color:var(--muted)">&#10003; Submit for review</div>
+      </div>
+    </div>
+    <!-- Arrow -->
+    <div style="display:flex;align-items:center;font-size:48px;color:var(--muted)">&rarr;</div>
+    <!-- Phase 3 -->
+    <div class="card flex-1" style="border-color:rgba(110,207,85,0.3);box-shadow:0 0 30px rgba(110,207,85,0.08);display:flex;flex-direction:column;text-align:center;padding:48px 32px">
+      <div class="badge-lime badge" style="align-self:center;margin-bottom:24px">Phase 3</div>
+      <h3 style="font-size:28px;color:var(--lime);margin-bottom:8px">Google Play Store</h3>
+      <div style="font-size:56px;font-weight:700;margin:16px 0">Week 2&ndash;3</div>
+      <div class="divider" style="background:linear-gradient(90deg,var(--lime),var(--cyan));margin:16px auto"></div>
+      <div class="flex flex-col gap-12 mt-auto" style="text-align:left">
+        <div style="font-size:20px;color:var(--muted)">&#10003; Play Console setup</div>
+        <div style="font-size:20px;color:var(--muted)">&#10003; Store listing &amp; assets</div>
+        <div style="font-size:20px;color:var(--muted)">&#10003; Internal testing</div>
+        <div style="font-size:20px;color:var(--muted)">&#10003; Production release</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 15: Let's Go -->
+<div class="slide bg-deep" id="slide-15">
+  <div class="glow-orb" style="width:800px;height:800px;background:var(--accent);top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.1"></div>
+  <div class="glow-orb" style="width:400px;height:400px;background:var(--gold);bottom:-100px;right:-100px"></div>
+  <div class="text-center" style="position:relative;z-index:1">
+    <div class="label mb-16">Next Steps</div>
+    <h1 style="font-size:88px;margin-bottom:24px">Let's <span class="accent-text">Go</span></h1>
+    <div class="divider" style="margin:20px auto"></div>
+    <p style="font-size:30px;max-width:800px;margin:24px auto 56px">Your platform is built. The foundation is solid. All that's left is to make it <strong style="color:var(--text)">official</strong>.</p>
+    <div class="flex gap-32 justify-center mb-24" style="margin-bottom:56px">
+      <div class="card" style="padding:32px 48px;text-align:center;min-width:280px">
+        <div style="font-size:20px;color:var(--gold);font-weight:600;margin-bottom:8px">Step 1</div>
+        <div style="font-size:24px;font-weight:600">Approve this roadmap</div>
+      </div>
+      <div class="card" style="padding:32px 48px;text-align:center;min-width:280px">
+        <div style="font-size:20px;color:var(--accent);font-weight:600;margin-bottom:8px">Step 2</div>
+        <div style="font-size:24px;font-weight:600">Register developer accounts</div>
+      </div>
+      <div class="card" style="padding:32px 48px;text-align:center;min-width:280px">
+        <div style="font-size:20px;color:var(--lime);font-weight:600;margin-bottom:8px">Step 3</div>
+        <div style="font-size:24px;font-weight:600">We handle the rest</div>
+      </div>
+    </div>
+    <div style="font-size:22px;color:var(--muted)">Tim Adams &bull; KLO Platform Development</div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <button onclick="prevSlide()" aria-label="Previous">&#8592;</button>
+  <button onclick="nextSlide()" aria-label="Next">&#8594;</button>
+</div>
+<div class="slide-counter"><span id="current">1</span> / <span id="total">15</span></div>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+let current = 0;
+function showSlide(n) {
+  slides[current].classList.remove('active');
+  current = ((n % slides.length) + slides.length) % slides.length;
+  slides[current].classList.add('active');
+  document.getElementById('current').textContent = current + 1;
+}
+function nextSlide() { showSlide(current + 1); }
+function prevSlide() { showSlide(current - 1); }
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+</script>
+</body>
+</html>
