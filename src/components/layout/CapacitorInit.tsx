@@ -39,6 +39,14 @@ export default function CapacitorInit() {
         Keyboard.addListener("keyboardWillHide", () => {
           document.body.classList.remove("keyboard-open");
         });
+
+        // Initialize push notifications
+        const { initPushNotifications } = await import("@/lib/push-notifications");
+        const token = await initPushNotifications();
+        if (token) {
+          // Store token for later use (could send to server)
+          localStorage.setItem("klo-push-token", token);
+        }
       } catch {
         // Not running in Capacitor — silently ignore
       }

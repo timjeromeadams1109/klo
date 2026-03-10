@@ -7,6 +7,7 @@ import AuthProvider from "@/components/layout/AuthProvider";
 import SkipLink from "@/components/layout/SkipLink";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
 import CapacitorInit from "@/components/layout/CapacitorInit";
+import BiometricGate from "@/components/layout/BiometricGate";
 import TitleFade from "@/components/layout/TitleFade";
 import JsonLd, {
   personJsonLd,
@@ -111,20 +112,22 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased bg-[#0D1117] text-klo-text no-overscroll">
         <AuthProvider>
-          <SkipLink />
-          <TopNav />
-          <main
-            id="main-content"
-            className="min-h-screen md:pb-0"
-            style={{
-              paddingTop: "calc(72px + env(safe-area-inset-top, 0px))",
-              paddingBottom: "calc(72px + env(safe-area-inset-bottom, 0px))",
-            }}
-          >
-            {children}
-          </main>
-          <BottomNav />
-          <Footer />
+          <BiometricGate>
+            <SkipLink />
+            <TopNav />
+            <main
+              id="main-content"
+              className="min-h-screen md:pb-0"
+              style={{
+                paddingTop: "calc(72px + env(safe-area-inset-top, 0px))",
+                paddingBottom: "calc(72px + env(safe-area-inset-bottom, 0px))",
+              }}
+            >
+              {children}
+            </main>
+            <BottomNav />
+            <Footer />
+          </BiometricGate>
         </AuthProvider>
         <TitleFade />
         <CapacitorInit />

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   BarChart3,
@@ -18,6 +18,7 @@ import {
   Bell,
   Mail,
   FileText,
+  Fingerprint,
 } from "lucide-react";
 import Badge from "@/components/shared/Badge";
 import Button from "@/components/shared/Button";
@@ -25,6 +26,11 @@ import Card from "@/components/shared/Card";
 import { useSubscription } from "@/hooks/useSubscription";
 import { signOut } from "next-auth/react";
 import { haptics } from "@/lib/haptics";
+import { isBiometricAvailable, biometricVerify } from "@/lib/biometric-auth";
+import {
+  isBiometricLockEnabled,
+  setBiometricLockEnabled,
+} from "@/components/layout/BiometricGate";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -357,6 +363,66 @@ function SavedContentTab() {
   );
 }
 
+function PushNotificationRow() {
+  const [isNative, setIsNative] = useState(false);
+  const [pushEnabled, setPushEnabled] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useState(() => {
+    import("@capacitor/core").then(({ Capacitor }) => {
+      if (Capacitor.isNativePlatform()) {
+        setIsNative(true);
+        import("@/lib/push-notifications").then(({ checkPushPermission }) => {
+          checkPushPermission().then(setPushEnabled);
+        });
+      }
+    }).catch(() => {});
+  });
+
+  if (!isNative) return null;
+
+  const handleEnable = async () => {
+    setLoading(true);
+    try {
+      const { initPushNotifications } = await import("@/lib/push-notifications");
+      const token = await initPushNotifications();
+      if (token) {
+        localStorage.setItem("klo-push-token", token);
+        setPushEnabled(true);
+        haptics.success();
+      }
+    } catch {
+      // Permission denied or error
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center gap-3">
+        <Bell size={16} className="text-[#C8A84E]" />
+        <div>
+          <p className="text-sm font-medium text-klo-text">Push Notifications</p>
+          <p className="text-xs text-klo-muted">
+            {pushEnabled ? "Enabled" : "Disabled"} — receive alerts on your device
+          </p>
+        </div>
+      </div>
+      {pushEnabled ? (
+        <span className="text-xs text-emerald-400 font-medium">Enabled</span>
+      ) : (
+        <button
+          onClick={handleEnable}
+          disabled={loading}
+          className="px-3 py-1.5 text-xs font-medium rounded-lg bg-[#2764FF] text-white hover:bg-[#2764FF]/80 transition-colors disabled:opacity-50 cursor-pointer"
+        >
+          {loading ? "Enabling..." : "Enable"}
+        </button>
+      )}
+    </div>
+  );
+}
+
 function SettingsTab() {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -374,6 +440,33 @@ function SettingsTab() {
     newVaultContent: false,
   });
   const [saved, setSaved] = useState(false);
+  const [biometricAvailable, setBiometricAvailable] = useState(false);
+  const [biometricEnabled, setBiometricEnabled] = useState(false);
+
+  useEffect(() => {
+    isBiometricAvailable().then((available) => {
+      setBiometricAvailable(available);
+      if (available) {
+        setBiometricEnabled(isBiometricLockEnabled());
+      }
+    });
+  }, []);
+
+  const handleBiometricToggle = async () => {
+    if (!biometricEnabled) {
+      // Verify identity before enabling
+      const verified = await biometricVerify("Enable biometric lock");
+      if (verified) {
+        setBiometricLockEnabled(true);
+        setBiometricEnabled(true);
+        haptics.success();
+      }
+    } else {
+      setBiometricLockEnabled(false);
+      setBiometricEnabled(false);
+      haptics.light();
+    }
+  };
 
   const handleSave = () => {
     setSaved(true);
@@ -486,6 +579,7 @@ function SettingsTab() {
         </h3>
         <Card>
           <div className="space-y-4">
+            <PushNotificationRow />
             {[
               {
                 key: "emailDigests" as const,
@@ -546,8 +640,47 @@ function SettingsTab() {
         </Card>
       </motion.div>
 
+      {/* Biometric Lock — only visible on native with biometric hardware */}
+      {biometricAvailable && (
+        <motion.div variants={fadeUp} custom={2}>
+          <h3 className="font-display text-lg font-semibold text-klo-text mb-4">
+            Security
+          </h3>
+          <Card>
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <Fingerprint size={16} className="text-[#C8A84E]" />
+                <div>
+                  <p className="text-sm font-medium text-klo-text">
+                    Biometric Lock
+                  </p>
+                  <p className="text-xs text-klo-muted">
+                    Require Face ID or Touch ID when reopening the app
+                  </p>
+                </div>
+              </div>
+              <button
+                role="switch"
+                aria-checked={biometricEnabled}
+                aria-label="Biometric Lock"
+                onClick={handleBiometricToggle}
+                className={`relative w-11 h-6 rounded-full transition-colors duration-200 cursor-pointer ${
+                  biometricEnabled ? "bg-[#2764FF]" : "bg-klo-slate"
+                }`}
+              >
+                <span
+                  className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform duration-200 ${
+                    biometricEnabled ? "translate-x-5" : "translate-x-0"
+                  }`}
+                />
+              </button>
+            </div>
+          </Card>
+        </motion.div>
+      )}
+
       {/* Actions */}
-      <motion.div variants={fadeUp} custom={2} className="flex flex-col gap-4">
+      <motion.div variants={fadeUp} custom={3} className="flex flex-col gap-4">
         <Button variant="primary" onClick={handleSave}>
           {saved ? "Changes Saved!" : "Save Changes"}
         </Button>
@@ -562,7 +695,7 @@ function SettingsTab() {
       </motion.div>
 
       {/* Delete Account */}
-      <motion.div variants={fadeUp} custom={3} className="mt-4 pt-8 border-t border-[#21262D]">
+      <motion.div variants={fadeUp} custom={4} className="mt-4 pt-8 border-t border-[#21262D]">
         <h3 className="font-display text-lg font-semibold text-red-400 mb-2">
           Delete Account
         </h3>
