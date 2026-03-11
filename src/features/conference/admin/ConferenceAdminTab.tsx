@@ -71,47 +71,102 @@ export default function ConferenceAdminTab() {
 
   return (
     <div className="space-y-6">
-      {/* Step 1: Pick your event — always visible */}
+      {/* Step 1: Pick your mode — standalone or event-scoped */}
       <div className="glass rounded-2xl p-5 border border-[#2764FF]/20 bg-gradient-to-r from-[#2764FF]/5 to-transparent">
-        <div className="flex items-center gap-3 mb-1">
+        <div className="flex items-center gap-3 mb-3">
           <div className="w-8 h-8 rounded-lg bg-[#2764FF]/10 flex items-center justify-center">
             <CalendarDays size={16} className="text-[#2764FF]" />
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-klo-text">Which event are you managing?</h3>
-            <p className="text-xs text-klo-muted">Everything below will be scoped to this event.</p>
+            <h3 className="text-sm font-semibold text-klo-text">Session Mode</h3>
+            <p className="text-xs text-klo-muted">Choose how you want to create and manage sessions.</p>
           </div>
         </div>
-        <div className="mt-3">
-          {eventsLoading ? (
-            <div className="h-10 bg-white/5 rounded-lg animate-pulse" />
-          ) : events.length === 0 ? (
-            <div className="flex items-center gap-2 text-sm text-klo-muted py-2">
-              <span>No events yet.</span>
-              <span className="text-[#2764FF]">Go to the Events tab to create one first.</span>
+
+        {/* Mode selector cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+          <button
+            onClick={() => setSelectedEventId("")}
+            className={`flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${
+              !selectedEventId
+                ? "border-[#2764FF]/40 bg-[#2764FF]/10"
+                : "border-white/5 hover:border-white/10"
+            }`}
+          >
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${
+              !selectedEventId ? "bg-[#2764FF]/20 text-[#2764FF]" : "bg-white/5 text-klo-muted"
+            }`}>
+              <Radio size={16} />
             </div>
-          ) : (
-            <select
-              value={selectedEventId}
-              onChange={(e) => setSelectedEventId(e.target.value)}
-              className="w-full bg-klo-dark border border-white/10 rounded-lg px-4 py-2.5 text-sm text-klo-text focus:outline-none focus:border-[#2764FF]/50"
-            >
-              <option value="">All Events (Global)</option>
-              {events.map((ev) => (
-                <option key={ev.id} value={ev.id}>
-                  {ev.conference_name || ev.title}
-                  {ev.event_date && ev.event_date !== "SAVE THE DATE"
-                    ? ` — ${new Date(ev.event_date + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })}`
-                    : ""}
-                </option>
-              ))}
-            </select>
-          )}
+            <div>
+              <p className={`text-sm font-semibold ${!selectedEventId ? "text-[#2764FF]" : "text-klo-text"}`}>
+                Standalone Session
+              </p>
+              <p className="text-xs text-klo-muted">Not tied to any event</p>
+            </div>
+          </button>
+          <button
+            onClick={() => {
+              if (events.length > 0 && !selectedEventId) {
+                setSelectedEventId(events[0].id);
+              }
+            }}
+            className={`flex items-center gap-3 p-3 rounded-xl border text-left transition-all ${
+              selectedEventId
+                ? "border-klo-gold/40 bg-klo-gold/10"
+                : "border-white/5 hover:border-white/10"
+            }`}
+          >
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm ${
+              selectedEventId ? "bg-klo-gold/20 text-klo-gold" : "bg-white/5 text-klo-muted"
+            }`}>
+              <CalendarDays size={16} />
+            </div>
+            <div>
+              <p className={`text-sm font-semibold ${selectedEventId ? "text-klo-gold" : "text-klo-text"}`}>
+                Event Session
+              </p>
+              <p className="text-xs text-klo-muted">Tied to a specific event</p>
+            </div>
+          </button>
         </div>
-        {selectedEvent && (
-          <p className="mt-2 text-xs text-klo-muted">
-            Polls, Q&A, sessions, and announcements below are for{" "}
-            <span className="text-klo-text font-medium">{selectedEvent.conference_name || selectedEvent.title}</span>.
+
+        {/* Event dropdown — only visible when Event Session mode is selected */}
+        {selectedEventId ? (
+          <div>
+            {eventsLoading ? (
+              <div className="h-10 bg-white/5 rounded-lg animate-pulse" />
+            ) : events.length === 0 ? (
+              <div className="flex items-center gap-2 text-sm text-klo-muted py-2">
+                <span>No events yet.</span>
+                <span className="text-[#2764FF]">Go to the Events tab to create one first.</span>
+              </div>
+            ) : (
+              <select
+                value={selectedEventId}
+                onChange={(e) => setSelectedEventId(e.target.value)}
+                className="w-full bg-klo-dark border border-white/10 rounded-lg px-4 py-2.5 text-sm text-klo-text focus:outline-none focus:border-klo-gold/50"
+              >
+                {events.map((ev) => (
+                  <option key={ev.id} value={ev.id}>
+                    {ev.conference_name || ev.title}
+                    {ev.event_date && ev.event_date !== "SAVE THE DATE"
+                      ? ` — ${new Date(ev.event_date + "T12:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric" })}`
+                      : ""}
+                  </option>
+                ))}
+              </select>
+            )}
+            {selectedEvent && (
+              <p className="mt-2 text-xs text-klo-muted">
+                Sessions, polls, Q&A, and announcements below are for{" "}
+                <span className="text-klo-text font-medium">{selectedEvent.conference_name || selectedEvent.title}</span>.
+              </p>
+            )}
+          </div>
+        ) : (
+          <p className="text-xs text-klo-muted">
+            Sessions created here won&apos;t be linked to any event. Use this for one-off presentations or testing.
           </p>
         )}
       </div>
@@ -156,6 +211,17 @@ export default function ConferenceAdminTab() {
               <div className="flex items-center gap-2 mb-3">
                 <h2 className="text-base font-semibold text-klo-text">Sessions</h2>
                 <span className="text-xs text-klo-muted">— break your event into time blocks</span>
+                {selectedEventId ? (
+                  <span className="ml-auto inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-klo-gold/10 text-klo-gold border border-klo-gold/20">
+                    <CalendarDays size={10} />
+                    Event: {selectedEvent?.conference_name || selectedEvent?.title}
+                  </span>
+                ) : (
+                  <span className="ml-auto inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-[#2764FF]/10 text-[#2764FF] border border-[#2764FF]/20">
+                    <Radio size={10} />
+                    Standalone Mode
+                  </span>
+                )}
               </div>
               <SessionManager eventId={eventId} />
             </div>
