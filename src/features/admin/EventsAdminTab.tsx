@@ -259,18 +259,25 @@ export default function EventsAdminTab() {
       description: event.description || "",
       access_code: event.access_code || "",
       website_url: event.website_url || "",
-      start_date: event.start_date || "",
-      end_date: event.end_date || "",
+      start_date: event.start_date || null,
+      end_date: event.end_date || null,
     });
   };
 
   const handleSaveEdit = async (eventId: string) => {
     setSaving(true);
     try {
+      // Sanitize: empty strings → null for nullable DB columns
+      const payload = { ...editFields };
+      for (const key of ["start_date", "end_date", "event_time", "website_url", "access_code", "description"] as const) {
+        if (key in payload && (payload as Record<string, unknown>)[key] === "") {
+          (payload as Record<string, unknown>)[key] = null;
+        }
+      }
       const res = await fetch(`/api/admin/events/${eventId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(editFields),
+        body: JSON.stringify(payload),
       });
       if (res.ok) {
         setEditingEvent(null);
