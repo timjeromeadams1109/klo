@@ -8,6 +8,7 @@ import SkipLink from "@/components/layout/SkipLink";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
 import CapacitorInit from "@/components/layout/CapacitorInit";
 import BiometricGate from "@/components/layout/BiometricGate";
+import OfflineBanner from "@/components/layout/OfflineBanner";
 import TitleFade from "@/components/layout/TitleFade";
 import JsonLd, {
   personJsonLd,
@@ -113,6 +114,7 @@ export default function RootLayout({
       <body className="font-body antialiased bg-[#0D1117] text-klo-text no-overscroll">
         <AuthProvider>
           <BiometricGate>
+            <OfflineBanner />
             <SkipLink />
             <TopNav />
             <main

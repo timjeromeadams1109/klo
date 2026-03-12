@@ -33,12 +33,15 @@ export async function initPushNotifications(): Promise<string | null> {
         }
       );
 
-      // Handle notification tap (opens app)
+      // Handle notification tap — navigate to target page if specified
       PushNotifications.addListener(
         "pushNotificationActionPerformed",
         (action) => {
           console.log("[Push] Action:", action.notification.title);
-          // Could navigate to specific page based on action.notification.data
+          const data = action.notification.data as Record<string, string> | undefined;
+          if (data?.url) {
+            window.location.href = data.url;
+          }
         }
       );
     });

@@ -1,0 +1,23 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": ["TEAMID.io.keithlodom.klo"],
+        "paths": [
+          "/conference/*",
+          "/events/*",
+          "/vault/*",
+          "/assessments/*",
+          "/strategy-rooms/*",
+          "/pricing/*",
+          "/booking",
+          "/profile"
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["TEAMID.io.keithlodom.klo"]
+  }
+}

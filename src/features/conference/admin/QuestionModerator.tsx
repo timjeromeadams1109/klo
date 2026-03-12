@@ -9,7 +9,7 @@ interface QuestionModeratorProps {
   eventId?: string;
 }
 
-export default function QuestionModerator({ eventId }: QuestionModeratorProps = {}) {
+export default function QuestionModerator({ eventId }: QuestionModeratorProps) {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [archivedQuestions, setArchivedQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(true);

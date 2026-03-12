@@ -40,6 +40,10 @@ export default function CapacitorInit() {
           document.body.classList.remove("keyboard-open");
         });
 
+        // Lock to portrait on phones
+        const { lockPortrait } = await import("@/lib/screen-orientation");
+        await lockPortrait();
+
         // Initialize push notifications
         const { initPushNotifications } = await import("@/lib/push-notifications");
         const token = await initPushNotifications();
@@ -47,6 +51,16 @@ export default function CapacitorInit() {
           // Store token for later use (could send to server)
           localStorage.setItem("klo-push-token", token);
         }
+
+        // Handle deep links / app URL open
+        const { App: CapApp } = await import("@capacitor/app");
+        CapApp.addListener("appUrlOpen", (event) => {
+          const url = new URL(event.url);
+          const path = url.pathname;
+          if (path && path !== "/") {
+            window.location.href = path;
+          }
+        });
       } catch {
         // Not running in Capacitor — silently ignore
       }
