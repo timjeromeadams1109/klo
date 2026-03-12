@@ -519,7 +519,7 @@ export default function EventsPage() {
             >
               {upcomingEvents.map((event, i) => (
                 <motion.div key={event.id} variants={fadeUp} custom={i + 1}>
-                  <EventCard event={event} onViewDetails={setSelectedEventId} />
+                  <EventCard event={event} isLive={isToday(event.event_date)} onViewDetails={setSelectedEventId} />
                 </motion.div>
               ))}
             </motion.div>
@@ -600,10 +600,12 @@ export default function EventsPage() {
 function EventCard({
   event,
   isPastEvent,
+  isLive,
   onViewDetails,
 }: {
   event: EventItem;
   isPastEvent?: boolean;
+  isLive?: boolean;
   onViewDetails?: (id: string) => void;
 }) {
   const files = event.event_files ?? [];
@@ -677,7 +679,7 @@ function EventCard({
               View More Details
               <ChevronDown size={14} />
             </button>
-            {!isPastEvent && (
+            {!isPastEvent && isLive && (
               <Link
                 href={event.slug ? `/conference/${event.slug}` : "/conference"}
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-[#2764FF] to-[#21B8CD] text-white font-semibold text-sm rounded-lg hover:brightness-110 transition-colors"
@@ -685,6 +687,12 @@ function EventCard({
                 Join Event
                 <ArrowRight size={14} />
               </Link>
+            )}
+            {!isPastEvent && !isLive && (
+              <span className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/5 text-klo-muted/50 border border-white/5 font-semibold text-sm rounded-lg cursor-not-allowed">
+                Join Event
+                <ArrowRight size={14} />
+              </span>
             )}
             {/* Past event presentation CTA */}
             {isPastEvent && (
