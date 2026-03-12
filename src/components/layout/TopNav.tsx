@@ -8,6 +8,7 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession } from "next-auth/react";
 import UserMenu from "@/components/layout/UserMenu";
+import { useSeminarMode } from "@/features/conference/hooks/useSeminarMode";
 
 interface NavLink {
   label: string;
@@ -31,13 +32,17 @@ export default function TopNav() {
   const { data: session } = useSession();
   const userRole = (session?.user as { role?: string } | undefined)?.role;
   const isAdmin = ["owner", "admin"].includes(userRole ?? "");
+  const { seminarMode } = useSeminarMode();
 
   const activeNavLinks = useMemo(
-    () =>
-      isAdmin
-        ? [...navLinks, { label: "Admin", href: "/admin" }]
-        : navLinks,
-    [isAdmin]
+    () => {
+      let links = seminarMode.active
+        ? navLinks
+        : navLinks.filter((l) => l.href !== "/conference");
+      if (isAdmin) links = [...links, { label: "Admin", href: "/admin" }];
+      return links;
+    },
+    [isAdmin, seminarMode.active]
   );
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);

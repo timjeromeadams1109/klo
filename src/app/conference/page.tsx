@@ -239,10 +239,6 @@ export default function ConferencePage() {
           variants={staggerContainer}
           className="relative z-10 max-w-4xl mx-auto text-center"
         >
-          <motion.div variants={fadeUp} custom={0} className="mb-6">
-            <LiveBadge />
-          </motion.div>
-
           <motion.div variants={fadeUp} custom={0.5}>
             <Badge variant="gold" className="mb-4">
               Conference Companion
