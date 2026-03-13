@@ -323,15 +323,18 @@ export default function EventsPage() {
                         <Badge variant="green">Live Now</Badge>
                       </div>
                       <h3 className="text-xl md:text-2xl font-bold text-klo-text">
-                        {event.display_name_mode === "session" && event.session_name
-                          ? event.session_name
-                          : event.conference_name}
+                        {event.conference_name}
                       </h3>
-                      <p className="text-sm md:text-base text-klo-muted leading-relaxed">
-                        {event.display_name_mode === "session" && event.session_name
-                          ? event.conference_name
-                          : event.title}
-                      </p>
+                      {event.session_name && (
+                        <p className="text-sm md:text-base text-klo-muted leading-relaxed font-medium">
+                          {event.session_name}
+                        </p>
+                      )}
+                      {event.title !== event.conference_name && !event.session_name && (
+                        <p className="text-sm md:text-base text-klo-muted leading-relaxed">
+                          {event.title}
+                        </p>
+                      )}
                       {event.description && (
                         <p className="text-sm text-klo-muted/70 leading-relaxed">
                           {linkifyText(event.description)}
@@ -787,9 +790,7 @@ function EventCard({
           <div className="flex-1 space-y-2">
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="text-lg font-semibold text-klo-text">
-                {event.display_name_mode === "session" && event.session_name
-                  ? event.session_name
-                  : event.title}
+                {event.title}
               </h3>
               {isPastEvent && <Badge variant="muted">Past</Badge>}
               <button
@@ -807,15 +808,16 @@ function EventCard({
                 <Share2 size={14} />
               </button>
             </div>
-            {event.display_name_mode === "session" && event.session_name ? (
+            {event.session_name && (
+              <p className="text-sm text-klo-muted leading-relaxed">
+                {event.session_name}
+              </p>
+            )}
+            {event.conference_name !== event.title && !event.session_name && (
               <p className="text-sm text-klo-muted leading-relaxed">
                 {event.conference_name}
               </p>
-            ) : event.conference_name !== event.title ? (
-              <p className="text-sm text-klo-muted leading-relaxed">
-                {event.conference_name}
-              </p>
-            ) : null}
+            )}
             {event.description && (
               <p className="text-sm text-klo-muted/70 leading-relaxed">
                 {linkifyText(event.description)}
