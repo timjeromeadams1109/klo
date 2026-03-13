@@ -55,6 +55,7 @@ interface Event {
   is_guest_presenter: boolean;
   session_end_time: string | null;
   display_name_mode: string;
+  show_countdown: boolean;
   event_status: string;
   event_status_override: boolean;
   event_files: EventFile[];
@@ -287,6 +288,7 @@ export default function EventsAdminTab() {
       is_guest_presenter: event.is_guest_presenter || false,
       session_end_time: event.session_end_time || "",
       display_name_mode: event.display_name_mode || "event",
+      show_countdown: event.show_countdown || false,
       event_status: event.event_status || "upcoming",
       event_status_override: event.event_status_override || false,
     } as Partial<Event>);
@@ -719,6 +721,28 @@ export default function EventsAdminTab() {
                         <option value="session">Session Name</option>
                       </select>
                       <span className="text-xs text-klo-muted/60">Shown as heading on engagement page</span>
+                    </div>
+
+                    {/* Countdown Clock Toggle */}
+                    <div className="space-y-1">
+                      <label className="flex items-center gap-3 cursor-pointer">
+                        <button
+                          type="button"
+                          onClick={() => setEditFields({ ...editFields, show_countdown: !(editFields as Record<string, unknown>).show_countdown })}
+                          className={`relative w-11 h-6 rounded-full transition-colors duration-200 ${
+                            (editFields as Record<string, unknown>).show_countdown ? "bg-[#2764FF]" : "bg-klo-slate"
+                          }`}
+                          role="switch"
+                          aria-checked={!!(editFields as Record<string, unknown>).show_countdown}
+                          aria-label="Show Countdown Clock"
+                        >
+                          <span className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-200 ${
+                            (editFields as Record<string, unknown>).show_countdown ? "translate-x-5" : ""
+                          }`} />
+                        </button>
+                        <span className="text-sm text-klo-text">Show Countdown Clock on Events Page</span>
+                      </label>
+                      <p className="text-xs text-klo-muted/60 pl-14">Displays a live countdown timer. Disappears when the event goes live.</p>
                     </div>
 
                     {/* Event Status Override */}

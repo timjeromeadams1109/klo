@@ -66,6 +66,8 @@ interface EventItem {
   session_name: string | null;
   room_location: string | null;
   display_name_mode: string | null;
+  show_countdown: boolean;
+  event_timezone: string | null;
   event_files: EventFile[];
 }
 
@@ -233,6 +235,11 @@ export default function EventsPage() {
     .filter((e) => isPast(e.event_date, e.event_time))
     .sort((a, b) => sortDate(b.event_date) - sortDate(a.event_date));
 
+  // Countdown events: show_countdown enabled, upcoming (not live yet, not past)
+  const countdownEvents = events
+    .filter((e) => e.show_countdown && !isToday(e.event_date) && isUpcoming(e.event_date, e.event_time))
+    .sort((a, b) => sortDate(a.event_date) - sortDate(b.event_date));
+
   const selectedEvent = events.find((e) => e.id === selectedEventId);
 
   return (
@@ -249,7 +256,7 @@ export default function EventsPage() {
         >
           <motion.div variants={fadeUp} custom={0}>
             <Badge variant="blue" className="mb-6">
-              Upcoming &amp; Past Events
+              Live &amp; Upcoming Events
             </Badge>
           </motion.div>
 
@@ -258,7 +265,7 @@ export default function EventsPage() {
             custom={1}
             className="font-display text-4xl md:text-6xl font-bold text-klo-text leading-tight"
           >
-            Events
+            Live Events
           </motion.h1>
 
           <motion.p
@@ -271,6 +278,17 @@ export default function EventsPage() {
           </motion.p>
         </motion.div>
       </section>
+
+      {/* Countdown Clocks */}
+      {countdownEvents.length > 0 && (
+        <section className="px-6 pb-12">
+          <div className="max-w-4xl mx-auto space-y-6">
+            {countdownEvents.map((event) => (
+              <CountdownClock key={event.id} event={event} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Live Events — only visible when today matches an event date */}
       {liveEvents.length > 0 && (
@@ -607,6 +625,146 @@ export default function EventsPage() {
     </div>
   );
 }
+
+/* ------------------------------------------------------------------ */
+/*  Countdown Clock                                                     */
+/* ------------------------------------------------------------------ */
+
+interface TimeLeft {
+  months: number;
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+  total: number;
+}
+
+function getTimeLeft(eventDate: string, eventTime: string | null, eventTimezone: string | null): TimeLeft {
+  const tz = eventTimezone || "America/Chicago";
+  const timeStr = eventTime || "00:00";
+  // Build a date string in the event's timezone
+  const targetStr = `${eventDate}T${timeStr}:00`;
+  // Use Intl to get the offset for the target timezone
+  const now = new Date();
+  const nowInTz = new Date(now.toLocaleString("en-US", { timeZone: tz }));
+  const targetLocal = new Date(targetStr);
+  // Offset between local interpretation and actual timezone
+  const offset = targetLocal.getTime() - nowInTz.getTime() + now.getTime();
+  const target = new Date(offset);
+  const diff = target.getTime() - now.getTime();
+
+  if (diff <= 0) return { months: 0, days: 0, hours: 0, minutes: 0, seconds: 0, total: 0 };
+
+  // Calculate months and remaining days
+  const nowDate = new Date(now.toLocaleString("en-US", { timeZone: tz }));
+  const targetDate = new Date(targetStr);
+  let months = (targetDate.getFullYear() - nowDate.getFullYear()) * 12 + (targetDate.getMonth() - nowDate.getMonth());
+  // If the day/time hasn't been reached this month, subtract a month
+  const tempDate = new Date(nowDate);
+  tempDate.setMonth(tempDate.getMonth() + months);
+  if (tempDate > targetDate) months--;
+  if (months < 0) months = 0;
+
+  // Get remaining time after subtracting full months
+  const afterMonths = new Date(nowDate);
+  afterMonths.setMonth(afterMonths.getMonth() + months);
+  const remainingMs = targetDate.getTime() - afterMonths.getTime();
+  // Add the sub-day portion from the current time
+  const nowTimeMs = nowDate.getHours() * 3600000 + nowDate.getMinutes() * 60000 + nowDate.getSeconds() * 1000;
+  const targetTimeMs = targetDate.getHours() * 3600000 + targetDate.getMinutes() * 60000;
+  let totalRemainingMs = remainingMs - nowTimeMs + targetTimeMs;
+  if (totalRemainingMs < 0 && months > 0) {
+    months--;
+    totalRemainingMs += 30 * 24 * 3600000; // approximate
+  }
+
+  const days = Math.floor(totalRemainingMs / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((totalRemainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((totalRemainingMs % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((totalRemainingMs % (1000 * 60)) / 1000);
+
+  return { months: Math.max(0, months), days: Math.max(0, days), hours: Math.max(0, hours), minutes: Math.max(0, minutes), seconds: Math.max(0, seconds), total: diff };
+}
+
+function CountdownClock({ event }: { event: EventItem }) {
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
+    getTimeLeft(event.event_date, event.event_time, event.event_timezone)
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const tl = getTimeLeft(event.event_date, event.event_time, event.event_timezone);
+      setTimeLeft(tl);
+      if (tl.total <= 0) clearInterval(interval);
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [event.event_date, event.event_time, event.event_timezone]);
+
+  // Don't render if countdown is done
+  if (timeLeft.total <= 0) return null;
+
+  const displayName = event.display_name_mode === "session" && event.session_name
+    ? event.session_name
+    : event.conference_name;
+
+  const units = [
+    ...(timeLeft.months > 0 ? [{ value: timeLeft.months, label: timeLeft.months === 1 ? "Month" : "Months" }] : []),
+    { value: timeLeft.days, label: timeLeft.days === 1 ? "Day" : "Days" },
+    { value: timeLeft.hours, label: timeLeft.hours === 1 ? "Hour" : "Hours" },
+    { value: timeLeft.minutes, label: timeLeft.minutes === 1 ? "Minute" : "Minutes" },
+    { value: timeLeft.seconds, label: timeLeft.seconds === 1 ? "Second" : "Seconds" },
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      <Card className="relative overflow-hidden border-[#2764FF]/20 bg-gradient-to-br from-[#2764FF]/5 via-transparent to-[#21B8CD]/5">
+        <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-[#2764FF] to-[#21B8CD]" />
+        <div className="text-center py-4 space-y-5">
+          <div className="space-y-2">
+            <p className="text-sm font-medium text-[#2764FF] uppercase tracking-wider">Counting Down To</p>
+            <h3 className="font-display text-2xl md:text-3xl font-bold text-klo-text">
+              {displayName}
+            </h3>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-klo-muted">
+              <span className="inline-flex items-center gap-1.5">
+                <Calendar size={14} className="text-[#2764FF]/70" />
+                {formatDateRange(event.start_date, event.end_date, event.event_date)}
+                {event.event_time && ` at ${formatTime(event.event_time)}`}
+              </span>
+              <span className="inline-flex items-center gap-1.5">
+                <MapPin size={14} className="text-[#2764FF]/70" />
+                {event.conference_location}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center justify-center gap-3 md:gap-5">
+            {units.map((unit) => (
+              <div key={unit.label} className="flex flex-col items-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-[#0D1117] border border-white/10 flex items-center justify-center">
+                  <span className="font-display text-2xl md:text-3xl font-bold text-klo-text tabular-nums">
+                    {String(unit.value).padStart(2, "0")}
+                  </span>
+                </div>
+                <span className="text-[10px] md:text-xs text-klo-muted mt-1.5 uppercase tracking-wider">
+                  {unit.label}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Card>
+    </motion.div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/*  Event Card                                                          */
+/* ------------------------------------------------------------------ */
 
 function EventCard({
   event,
