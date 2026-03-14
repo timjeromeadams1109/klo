@@ -85,11 +85,13 @@ const TRAINING_SECTIONS: TrainingSection[] = [
       { icon: Users, label: "Use Admin Credentials", detail: "Enter your admin email and password. Only owner and admin roles can access the dashboard." },
       { icon: Star, label: "Find the Admin Link", detail: "Once signed in, the gold \"Admin\" link appears in the top navigation bar" },
       { icon: LayoutDashboard, label: "Explore 9 Tabs", detail: "The dashboard has 9 tabs: Overview, Events, Conference, Inquiries, Presentations, Users, Content, Revenue, and Tools" },
+      { icon: Zap, label: "Request a Site Update", detail: "Click the blue \"Request Update\" button (top-right) to submit a change request for any part of the website that isn't managed in the dashboard — like homepage text, bio, images, or pricing" },
     ],
     tips: [
       "Only users with the \"admin\" or \"owner\" role can see the Admin link. Moderators have limited conference access.",
       "The Inquiries tab shows a blue badge with the count of new/unread inquiries.",
       "Use the Refresh button (top-right) to reload data on any tab.",
+      "For changes to website content (homepage, about page, images, etc.), use the blue \"Request Update\" button — Tim will handle it quickly.",
     ],
   },
   {

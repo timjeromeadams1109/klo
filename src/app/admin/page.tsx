@@ -23,6 +23,7 @@ import {
   Vote,
   Inbox,
   BookOpen,
+  Send,
 } from "lucide-react";
 import Modal from "@/components/shared/Modal";
 import {
@@ -371,6 +372,13 @@ export default function AdminPage() {
               </p>
             </div>
             <div className="flex items-center gap-2">
+              <button
+                onClick={() => router.push("/admin/request-update")}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2764FF]/10 border border-[#2764FF]/20 text-[#2764FF] hover:bg-[#2764FF]/20 transition-colors text-sm"
+              >
+                <Send className="w-4 h-4" />
+                Request Update
+              </button>
               <button
                 onClick={() => router.push("/admin/training")}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-klo-gold/10 border border-klo-gold/20 text-klo-gold hover:bg-klo-gold/20 transition-colors text-sm"
