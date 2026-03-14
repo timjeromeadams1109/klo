@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import {
   Users,
@@ -22,6 +22,7 @@ import {
   BarChart3,
   Vote,
   Inbox,
+  BookOpen,
 } from "lucide-react";
 import Modal from "@/components/shared/Modal";
 import {
@@ -163,7 +164,9 @@ function ChartTooltip({
 export default function AdminPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<TabId>("overview");
+  const searchParams = useSearchParams();
+  const initialTab = (searchParams.get("tab") as TabId) || "overview";
+  const [activeTab, setActiveTab] = useState<TabId>(initialTab);
   const [stats, setStats] = useState<AdminDashboardStats | null>(null);
   const [activity, setActivity] = useState<AdminActivityData | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -367,13 +370,22 @@ export default function AdminPage() {
                 Monitor app health, growth, and engagement
               </p>
             </div>
-            <button
-              onClick={fetchDashboardData}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl bg-klo-slate border border-white/10 text-klo-muted hover:text-klo-text transition-colors text-sm"
-            >
-              <RefreshCw className="w-4 h-4" />
-              Refresh
-            </button>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => router.push("/admin/training")}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-klo-gold/10 border border-klo-gold/20 text-klo-gold hover:bg-klo-gold/20 transition-colors text-sm"
+              >
+                <BookOpen className="w-4 h-4" />
+                Training Guide
+              </button>
+              <button
+                onClick={fetchDashboardData}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-klo-slate border border-white/10 text-klo-muted hover:text-klo-text transition-colors text-sm"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Refresh
+              </button>
+            </div>
           </div>
         </motion.div>
 
