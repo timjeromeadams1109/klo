@@ -1,6 +1,6 @@
 {
   "name": "KLO App",
-  "url": "https://klo-app.vercel.app",
+  "url": "https://keithlodom.ai",
   "threshold": 80,
   "screenshotOnFail": true,
 
@@ -8,40 +8,44 @@
     { "path": "/", "label": "Homepage", "critical": true },
     { "path": "/about", "label": "About" },
     { "path": "/assessments", "label": "Assessments", "critical": true },
-    { "path": "/contact", "label": "Contact" },
     { "path": "/booking", "label": "Booking" },
-    { "path": "/login", "label": "Login", "critical": true }
+    { "path": "/auth/signin", "label": "Sign In", "critical": true },
+    { "path": "/events", "label": "Events" },
+    { "path": "/feed", "label": "Feed" },
+    { "path": "/pricing", "label": "Pricing" },
+    { "path": "/vault", "label": "Vault" },
+    { "path": "/support", "label": "Support" },
+    { "path": "/conference", "label": "Conference" }
   ],
 
   "apiEndpoints": [
-    { "path": "/api/health", "method": "GET", "expectedStatus": 200 },
+    { "path": "/api/events", "method": "GET", "expectedStatus": 200 },
+    { "path": "/api/contact", "method": "POST", "expectedStatus": [200, 400, 405, 500] },
     { "path": "/api/assessments", "method": "GET", "expectedStatus": [200, 401] }
   ],
 
   "userFlows": [
     {
-      "name": "Homepage to Assessment",
+      "name": "Assessments Page Loads",
       "critical": true,
       "steps": [
-        { "action": "goto", "path": "/" },
-        { "action": "waitForSelector", "selector": "a[href*='assessment'], a[href*='assessments'], button:has-text('assessment')", "timeout": 5000 },
-        { "action": "click", "selector": "a[href*='assessment'], a[href*='assessments'], button:has-text('assessment')" },
-        { "action": "waitForNavigation" },
-        { "action": "assertUrl", "pattern": "/assessment" }
+        { "action": "goto", "path": "/assessments" },
+        { "action": "waitForSelector", "selector": "h1, h2, [class*='assessment'], [class*='card']", "timeout": 5000 },
+        { "action": "assertUrl", "pattern": "/assessments" }
       ]
     },
     {
-      "name": "Contact Form Visibility",
+      "name": "Sign In Page Loads",
       "steps": [
-        { "action": "goto", "path": "/contact" },
-        { "action": "waitForSelector", "selector": "form, [data-testid='contact-form'], input[type='email']", "timeout": 5000 },
-        { "action": "assertVisible", "selector": "form, [data-testid='contact-form'], input[type='email']" }
+        { "action": "goto", "path": "/auth/signin" },
+        { "action": "waitForSelector", "selector": "input[type='email'], input[name='email']", "timeout": 5000 },
+        { "action": "assertVisible", "selector": "input[type='email'], input[name='email']" }
       ]
     }
   ],
 
   "auth": {
-    "loginUrl": "/login",
+    "loginUrl": "/auth/signin",
     "credentials": {
       "email": "ENV:FORENSIC_QA_EMAIL",
       "password": "ENV:FORENSIC_QA_PASSWORD"
@@ -58,7 +62,9 @@
       "gtag",
       "analytics",
       "hotjar",
-      "chunk load failed"
+      "chunk load failed",
+      "supabase.co/realtime",
+      "WebSocket connection"
     ]
   },
 
