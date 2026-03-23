@@ -1,12 +1,20 @@
 import webpush from "web-push";
 import { getServiceSupabase } from "@/lib/supabase";
 
-// Configure web-push with VAPID keys
-const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!;
-const VAPID_PRIVATE_KEY = process.env.VAPID_PRIVATE_KEY!;
-const VAPID_SUBJECT = process.env.VAPID_SUBJECT || "mailto:kodom@techchurch.io";
+// Configure web-push with VAPID keys (lazy — env vars unavailable at build time)
+let vapidConfigured = false;
 
-webpush.setVapidDetails(VAPID_SUBJECT, VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY);
+function ensureVapid() {
+  if (vapidConfigured) return;
+  const publicKey = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+  const privateKey = process.env.VAPID_PRIVATE_KEY;
+  const subject = process.env.VAPID_SUBJECT || "mailto:kodom@techchurch.io";
+  if (!publicKey || !privateKey) {
+    throw new Error("VAPID keys not configured");
+  }
+  webpush.setVapidDetails(subject, publicKey, privateKey);
+  vapidConfigured = true;
+}
 
 export interface PushPayload {
   title: string;
@@ -21,6 +29,7 @@ export interface PushPayload {
  * Send a push notification to a specific user (all their devices)
  */
 export async function sendPushToUser(userId: string, payload: PushPayload) {
+  ensureVapid();
   const supabase = getServiceSupabase();
   const { data: subs, error } = await supabase
     .from("push_subscriptions")
@@ -36,6 +45,7 @@ export async function sendPushToUser(userId: string, payload: PushPayload) {
  * Broadcast a push notification to ALL subscribed users
  */
 export async function broadcastPush(payload: PushPayload) {
+  ensureVapid();
   const supabase = getServiceSupabase();
   const { data: subs, error } = await supabase
     .from("push_subscriptions")
@@ -50,6 +60,7 @@ export async function broadcastPush(payload: PushPayload) {
  * Send to a filtered set of users (e.g., by tier)
  */
 export async function sendPushToUsers(userIds: string[], payload: PushPayload) {
+  ensureVapid();
   const supabase = getServiceSupabase();
   const { data: subs, error } = await supabase
     .from("push_subscriptions")
