@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { adminEventCreateSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -44,6 +45,10 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
+  const parsed = adminEventCreateSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+  }
   const {
     title,
     conference_name,
@@ -61,11 +66,7 @@ export async function POST(req: NextRequest) {
     room_location,
     is_guest_presenter,
     session_end_time,
-  } = body;
-
-  if (!title || !conference_name || !conference_location || !event_date) {
-    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
-  }
+  } = parsed.data;
 
   const slug = title
     .toLowerCase()

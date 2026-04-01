@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { socialQueueUpdateSchema } from "@/lib/validation";
 
 async function verifyAdmin() {
   const session = await getServerSession(authOptions);
@@ -22,6 +23,11 @@ export async function PUT(
 
   const { id } = await params;
   const body = await req.json();
+  const parsed = socialQueueUpdateSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+  const validatedBody = parsed.data;
   const supabase = getServiceSupabase();
 
   // Explicit allowlist — never spread raw body into DB
@@ -37,11 +43,11 @@ export async function PUT(
 
   const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
   for (const key of ALLOWED_FIELDS) {
-    if (key in body) updates[key] = body[key];
+    if (key in validatedBody) updates[key] = validatedBody[key as keyof typeof validatedBody];
   }
 
   // If status is being set to "posted", auto-set posted_at
-  if (body.status === "posted" && !body.posted_at) {
+  if (validatedBody.status === "posted" && !validatedBody.posted_at) {
     updates.posted_at = new Date().toISOString();
   }
 

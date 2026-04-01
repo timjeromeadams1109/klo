@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -50,7 +51,7 @@ const nextConfig: NextConfig = {
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: blob: https:",
               "font-src 'self' https://fonts.gstatic.com",
-              "connect-src 'self' https://api.stripe.com https://*.supabase.co wss://*.supabase.co https://vercel.live",
+              "connect-src 'self' https://api.stripe.com https://*.supabase.co wss://*.supabase.co https://vercel.live https://*.sentry.io https://*.ingest.sentry.io",
               "frame-src 'self' https://js.stripe.com https://vercel.live",
               "frame-ancestors 'self' capacitor: https://localhost",
               "base-uri 'self'",
@@ -74,4 +75,10 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+export default withSentryConfig(nextConfig, {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  silent: true,
+  widenClientFileUpload: true,
+  disableLogger: true,
+});

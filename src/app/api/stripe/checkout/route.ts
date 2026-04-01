@@ -2,16 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { stripe } from "@/lib/stripe";
+import { stripeCheckoutSchema } from "@/lib/validation";
 
 /* ------------------------------------------------------------------ */
 /*  POST /api/stripe/checkout                                          */
 /*  Creates a Stripe Checkout session for a subscription purchase.     */
 /* ------------------------------------------------------------------ */
-
-interface CheckoutRequestBody {
-  priceId: string;
-  tier: "pro" | "executive";
-}
 
 export async function POST(request: NextRequest) {
   try {
@@ -23,22 +19,15 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const body = (await request.json()) as CheckoutRequestBody;
-    const { priceId, tier } = body;
-
-    if (!priceId || !tier) {
+    const body = await request.json();
+    const parsed = stripeCheckoutSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
         { error: "Missing required fields: priceId and tier" },
         { status: 400 }
       );
     }
-
-    if (!["pro", "executive"].includes(tier)) {
-      return NextResponse.json(
-        { error: "Invalid tier. Must be 'pro' or 'executive'." },
-        { status: 400 }
-      );
-    }
+    const { priceId, tier } = parsed.data;
 
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
     const successUrl = `${baseUrl}/pricing/success?tier=${tier}&session_id={CHECKOUT_SESSION_ID}`;

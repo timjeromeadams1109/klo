@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { pushUnsubscribeSchema } from "@/lib/validation";
 
 export async function DELETE(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -10,11 +11,12 @@ export async function DELETE(request: NextRequest) {
   }
 
   try {
-    const { token } = await request.json();
-
-    if (!token) {
+    const raw = await request.json();
+    const parsed = pushUnsubscribeSchema.safeParse(raw);
+    if (!parsed.success) {
       return NextResponse.json({ error: "token is required" }, { status: 400 });
     }
+    const { token } = parsed.data;
 
     const supabase = getServiceSupabase();
     const userId = (session.user as { id?: string }).id;

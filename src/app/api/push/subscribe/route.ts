@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { pushSubscribeSchema } from "@/lib/validation";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -10,21 +11,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { platform, token, userAgent } = await request.json();
-
-    if (!platform || !token) {
+    const raw = await request.json();
+    const parsed = pushSubscribeSchema.safeParse(raw);
+    if (!parsed.success) {
       return NextResponse.json(
         { error: "platform and token are required" },
         { status: 400 }
       );
     }
-
-    if (!["web", "ios", "android"].includes(platform)) {
-      return NextResponse.json(
-        { error: "platform must be web, ios, or android" },
-        { status: 400 }
-      );
-    }
+    const { platform, token, userAgent } = parsed.data;
 
     // For web push, token is a JSON-stringified PushSubscription
     const tokenValue = platform === "web" ? JSON.stringify(token) : token;

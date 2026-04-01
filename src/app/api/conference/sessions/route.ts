@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyConferenceRole } from "@/lib/conference-auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { sessionCreateSchema } from "@/lib/validation";
 
 export async function GET(request: Request) {
   const supabase = getServiceSupabase();
@@ -46,11 +47,11 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { title, description, scheduled_at, qa_enabled, release_mode, speaker, room, time_label, sort_order, event_id } = body;
-
-  if (!title?.trim()) {
+  const parsed = sessionCreateSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "Title required" }, { status: 400 });
   }
+  const { title, description, scheduled_at, qa_enabled, release_mode, speaker, room, time_label, sort_order, event_id } = parsed.data;
 
   const supabase = getServiceSupabase();
   const { data, error } = await supabase

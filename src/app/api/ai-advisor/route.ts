@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { AI_ADVISOR_SYSTEM_PROMPT } from "@/lib/constants";
 import { advisorLimiter, checkLimit, getClientIp } from "@/lib/ratelimit";
+import { aiAdvisorSchema } from "@/lib/validation";
 
 // ------------------------------------------------------------
 // POST /api/ai-advisor
@@ -28,14 +29,14 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const messages: { role: string; content: string }[] = body.messages;
-
-    if (!Array.isArray(messages) || messages.length === 0) {
+    const parsed = aiAdvisorSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
         { error: "Messages array is required." },
         { status: 400 }
       );
     }
+    const messages = parsed.data.messages;
 
     // Call Anthropic Messages API with streaming
     const anthropicResponse = await fetch(
@@ -50,7 +51,7 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           model: "claude-haiku-4-5-20251001",
           max_tokens: 1024,
-          temperature: 0.7,
+          temperature: 0.3,
           system: AI_ADVISOR_SYSTEM_PROMPT,
           stream: true,
           messages: messages.map((m) => ({

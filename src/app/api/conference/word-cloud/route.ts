@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { createHash } from "crypto";
 import { getServiceSupabase } from "@/lib/supabase";
+import { wordCloudSubmitSchema } from "@/lib/validation";
 
 function getFingerprint(req: Request): string {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
@@ -70,14 +71,14 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { word, event_id } = body;
-
-  if (!word?.trim() || word.trim().length > 30) {
+  const parsed = wordCloudSubmitSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json(
       { error: "Word required (max 30 characters)" },
       { status: 400 }
     );
   }
+  const { word, event_id } = parsed.data;
 
   const fingerprint = getFingerprint(request);
   const supabase = getServiceSupabase();

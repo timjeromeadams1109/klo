@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { socialQueueCreateSchema } from "@/lib/validation";
 
 async function verifyAdmin() {
   const session = await getServerSession(authOptions);
@@ -50,7 +51,11 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { event_id, platform, content, hashtags, scheduled_for, auto_generate } = body;
+  const parsed = socialQueueCreateSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+  const { event_id, platform, content, hashtags, scheduled_for, auto_generate } = parsed.data;
 
   const supabase = getServiceSupabase();
 

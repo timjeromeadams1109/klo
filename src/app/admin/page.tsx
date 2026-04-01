@@ -25,6 +25,7 @@ import {
   BookOpen,
   Send,
   Bell,
+  ScrollText,
 } from "lucide-react";
 import Modal from "@/components/shared/Modal";
 import {
@@ -375,6 +376,13 @@ export default function AdminPage() {
               </p>
             </div>
             <div className="flex items-center gap-2">
+              <button
+                onClick={() => router.push("/admin/changelog")}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors text-sm"
+              >
+                <ScrollText className="w-4 h-4" />
+                Changelog
+              </button>
               <button
                 onClick={() => router.push("/admin/request-update")}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2764FF]/10 border border-[#2764FF]/20 text-[#2764FF] hover:bg-[#2764FF]/20 transition-colors text-sm"

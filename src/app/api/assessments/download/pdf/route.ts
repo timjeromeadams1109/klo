@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import { assessmentDownloadSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -10,7 +11,11 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { title, score, maxScore, percentage, recommendations } = body;
+  const parsed = assessmentDownloadSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+  const { title, score, maxScore, percentage, recommendations } = parsed.data;
 
   const doc = await PDFDocument.create();
   const page = doc.addPage([612, 792]);

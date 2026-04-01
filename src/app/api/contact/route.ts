@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { resend } from "@/lib/email";
 import { getServiceSupabase } from "@/lib/supabase";
 import { contactLimiter, checkLimit, getClientIp } from "@/lib/ratelimit";
+import { contactConsultationSchema, contactBookingSchema } from "@/lib/validation";
 
 /* ------------------------------------------------------------------ */
 /*  Validation                                                          */
@@ -183,6 +184,17 @@ export async function POST(req: NextRequest) {
     // Parse and validate
     const body = await req.json();
     const isConsultation = body?.type === "consultation";
+
+    // Zod structural pre-check
+    const zodResult = isConsultation
+      ? contactConsultationSchema.safeParse(body)
+      : contactBookingSchema.safeParse(body);
+    if (!zodResult.success) {
+      return NextResponse.json(
+        { success: false, message: "Invalid request data." },
+        { status: 400 }
+      );
+    }
 
     if (isConsultation) {
       const { valid, errors, parsed } = validateConsultForm(body);

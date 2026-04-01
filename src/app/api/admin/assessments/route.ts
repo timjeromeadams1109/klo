@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { assessmentDeleteSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -82,7 +83,8 @@ export async function DELETE(request: NextRequest) {
   }
 
   const body = await request.json().catch(() => ({}));
-  const ids = Array.isArray(body.ids) ? body.ids : null;
+  const parsed = assessmentDeleteSchema.safeParse(body);
+  const ids = parsed.success && Array.isArray(parsed.data.ids) ? parsed.data.ids : null;
 
   const supabase = getServiceSupabase();
 

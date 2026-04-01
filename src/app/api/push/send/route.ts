@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { broadcastPush, sendPushToUser, sendPushToUsers } from "@/lib/push-server";
+import { pushSendSchema } from "@/lib/validation";
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -16,14 +17,15 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { title, body, url, tag, userId, userIds } = await request.json();
-
-    if (!title || !body) {
+    const raw = await request.json();
+    const parsed = pushSendSchema.safeParse(raw);
+    if (!parsed.success) {
       return NextResponse.json(
         { error: "title and body are required" },
         { status: 400 }
       );
     }
+    const { title, body, url, tag, userId, userIds } = parsed.data;
 
     const payload = { title, body, url, tag };
 

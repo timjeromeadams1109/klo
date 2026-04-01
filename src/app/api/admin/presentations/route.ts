@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { presentationCreateSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -39,11 +40,11 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { title, description, category } = body;
-
-  if (!title?.trim()) {
+  const parsed = presentationCreateSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "Title is required" }, { status: 400 });
   }
+  const { title, description, category } = parsed.data;
 
   const supabase = getServiceSupabase();
   const { data, error } = await supabase

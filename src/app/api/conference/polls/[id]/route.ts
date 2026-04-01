@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { pollUpdateSchema } from "@/lib/validation";
 
 async function verifyAdmin() {
   const session = await getServerSession(authOptions);
@@ -22,12 +23,16 @@ export async function PUT(
 
   const { id } = await params;
   const body = await request.json();
+  const parsed = pollUpdateSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
   const supabase = getServiceSupabase();
 
   const updates: Record<string, unknown> = {};
-  if (typeof body.is_active === "boolean") updates.is_active = body.is_active;
-  if (typeof body.show_results === "boolean") updates.show_results = body.show_results;
-  if (body.is_active === false) updates.closed_at = new Date().toISOString();
+  if (typeof parsed.data.is_active === "boolean") updates.is_active = parsed.data.is_active;
+  if (typeof parsed.data.show_results === "boolean") updates.show_results = parsed.data.show_results;
+  if (parsed.data.is_active === false) updates.closed_at = new Date().toISOString();
 
   const { data, error } = await supabase
     .from("conference_polls")

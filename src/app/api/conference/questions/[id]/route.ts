@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyConferenceRole } from "@/lib/conference-auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { questionUpdateSchema } from "@/lib/validation";
 
 export async function PUT(
   request: Request,
@@ -13,21 +14,26 @@ export async function PUT(
 
   const { id } = await params;
   const body = await request.json();
+  const parsed = questionUpdateSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+  const validatedBody = parsed.data;
   const supabase = getServiceSupabase();
 
   const updates: Record<string, unknown> = {};
-  if (typeof body.is_answered === "boolean") updates.is_answered = body.is_answered;
-  if (typeof body.is_hidden === "boolean") updates.is_hidden = body.is_hidden;
-  if (typeof body.released === "boolean") updates.released = body.released;
+  if (typeof validatedBody.is_answered === "boolean") updates.is_answered = validatedBody.is_answered;
+  if (typeof validatedBody.is_hidden === "boolean") updates.is_hidden = validatedBody.is_hidden;
+  if (typeof validatedBody.released === "boolean") updates.released = validatedBody.released;
 
   // Soft-delete (archive)
-  if (body.archive === true) {
+  if (validatedBody.archive === true) {
     updates.archived_at = new Date().toISOString();
     updates.archived_by = auth.userId;
   }
 
   // Restore from archive
-  if (body.archive === false) {
+  if (validatedBody.archive === false) {
     updates.archived_at = null;
     updates.archived_by = null;
   }

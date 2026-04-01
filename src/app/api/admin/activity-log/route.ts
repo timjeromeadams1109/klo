@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { activityLogSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -40,11 +41,11 @@ export async function POST(req: NextRequest) {
   }
 
   const body = await req.json();
-  const { action, entity_type, entity_id, details, metadata } = body;
-
-  if (!action || !entity_type) {
+  const parsed = activityLogSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "action and entity_type required" }, { status: 400 });
   }
+  const { action, entity_type, entity_id, details, metadata } = parsed.data;
 
   const user = session.user as { id?: string; email?: string };
 

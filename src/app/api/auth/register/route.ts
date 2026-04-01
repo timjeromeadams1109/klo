@@ -4,6 +4,7 @@ import { getServiceSupabase } from "@/lib/supabase";
 import { resend } from "@/lib/email";
 import { registerLimiter, checkLimit, getClientIp } from "@/lib/ratelimit";
 import crypto from "crypto";
+import { registerSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
   try {
@@ -18,27 +19,18 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { email, password, full_name } = body as {
-      email?: string;
-      password?: string;
-      full_name?: string;
-    };
-
-    // Validate email
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return NextResponse.json(
-        { error: "Valid email is required" },
-        { status: 400 }
-      );
+    const parsed = registerSchema.safeParse(body);
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0];
+      const msg =
+        firstError?.path[0] === "email"
+          ? "Valid email is required"
+          : firstError?.path[0] === "password"
+            ? "Password must be at least 8 characters"
+            : "Invalid request";
+      return NextResponse.json({ error: msg }, { status: 400 });
     }
-
-    // Validate password
-    if (!password || password.length < 8) {
-      return NextResponse.json(
-        { error: "Password must be at least 8 characters" },
-        { status: 400 }
-      );
-    }
+    const { email, password, full_name } = parsed.data;
 
     const supabase = getServiceSupabase();
 

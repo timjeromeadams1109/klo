@@ -1,16 +1,17 @@
 import { NextResponse } from "next/server";
 import { getServiceSupabase } from "@/lib/supabase";
+import { guestSigninSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { display_name, access_code } = body;
-
-  if (!display_name?.trim() || !access_code?.trim()) {
+  const parsed = guestSigninSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json(
       { error: "Name and access code are required" },
       { status: 400 }
     );
   }
+  const { display_name, access_code } = parsed.data;
 
   const supabase = getServiceSupabase();
 

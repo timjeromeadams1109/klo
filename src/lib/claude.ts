@@ -38,6 +38,7 @@ export async function sendAdvisorMessage(
   const body: Record<string, unknown> = {
     model: "claude-sonnet-4-20250514",
     max_tokens: 4096,
+    temperature: 0.3,
     messages: messages.map((m) => ({
       role: m.role,
       content: m.content,
@@ -96,6 +97,7 @@ export async function streamAdvisorMessage(
   const body: Record<string, unknown> = {
     model: "claude-sonnet-4-20250514",
     max_tokens: 4096,
+    temperature: 0.3,
     stream: true,
     messages: messages.map((m) => ({
       role: m.role,

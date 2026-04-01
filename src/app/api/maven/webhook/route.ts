@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { mavenWebhookLimiter, checkLimit, getClientIp } from "@/lib/ratelimit";
+import { mavenWebhookSchema } from "@/lib/validation";
 
 /* ------------------------------------------------------------------ */
 /*  Maven Webhook — Submit tasks to Maven agent_tasks table            */
@@ -74,29 +75,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const { type, title, description, priority, email, project } = body as {
-      type?: string;
-      title?: string;
-      description?: string;
-      priority?: string;
-      email?: string;
-      project?: string;
-    };
-
-    // Validate required fields
-    if (!type || !title || !description) {
+    const parsed = mavenWebhookSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
-        { error: "Missing required fields: type, title, description" },
+        { error: "Missing or invalid fields: type, title, description" },
         { status: 400, headers: CORS_HEADERS },
       );
     }
 
-    if (!VALID_TYPES.includes(type as TaskType)) {
-      return NextResponse.json(
-        { error: `Invalid type. Must be one of: ${VALID_TYPES.join(", ")}` },
-        { status: 400, headers: CORS_HEADERS },
-      );
-    }
+    const { type, title, description, priority, email, project } = parsed.data;
 
     const resolvedPriority: Priority =
       priority && VALID_PRIORITIES.includes(priority as Priority)

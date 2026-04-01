@@ -5,6 +5,7 @@ import {
   Document, Packer, Paragraph, TextRun,
   HeadingLevel, AlignmentType, BorderStyle,
 } from "docx";
+import { assessmentDownloadSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -13,7 +14,11 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { title, score, maxScore, percentage, recommendations } = body;
+  const parsed = assessmentDownloadSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+  const { title, score, maxScore, percentage, recommendations } = parsed.data;
   const recs = (recommendations as string[]) || [];
 
   const doc = new Document({

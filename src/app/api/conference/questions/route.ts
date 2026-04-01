@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { createHash } from "crypto";
 import { getServiceSupabase } from "@/lib/supabase";
 import { verifyConferenceRole } from "@/lib/conference-auth";
+import { questionSubmitSchema } from "@/lib/validation";
 
 function getFingerprint(req: Request): string {
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0] || "unknown";
@@ -78,11 +79,11 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { text, author_name, session_id } = body;
-
-  if (!text?.trim()) {
+  const parsed = questionSubmitSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "Question text required" }, { status: 400 });
   }
+  const { text, author_name, session_id } = parsed.data;
 
   const fingerprint = getFingerprint(request);
   const supabase = getServiceSupabase();

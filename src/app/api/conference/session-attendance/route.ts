@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { sessionAttendanceSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -56,10 +57,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "User ID not found" }, { status: 401 });
   }
 
-  const { session_id } = await req.json();
-  if (!session_id) {
+  const body = await req.json();
+  const parsed = sessionAttendanceSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "session_id required" }, { status: 400 });
   }
+  const { session_id } = parsed.data;
 
   const supabase = getServiceSupabase();
 
@@ -130,13 +133,17 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: "User ID not found" }, { status: 401 });
   }
 
-  const { session_id } = await req.json();
+  const deleteBody = await req.json();
+  const deleteParsed = sessionAttendanceSchema.safeParse(deleteBody);
+  if (!deleteParsed.success) {
+    return NextResponse.json({ error: "session_id required" }, { status: 400 });
+  }
 
   const supabase = getServiceSupabase();
   const { error } = await supabase
     .from("conference_session_attendees")
     .update({ left_at: new Date().toISOString() })
-    .eq("session_id", session_id)
+    .eq("session_id", deleteParsed.data.session_id)
     .eq("user_id", userId);
 
   if (error) {

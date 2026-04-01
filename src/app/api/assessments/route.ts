@@ -4,6 +4,7 @@ import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
 import { resend } from "@/lib/email";
 import { sendPushToUser } from "@/lib/push-server";
+import { assessmentSaveSchema } from "@/lib/validation";
 
 export async function POST(request: Request) {
   const session = await getServerSession(authOptions);
@@ -17,11 +18,11 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { assessment_type, score, answers, recommendations } = body;
-
-  if (!assessment_type || score === undefined || !answers) {
+  const parsed = assessmentSaveSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
+  const { assessment_type, score, answers, recommendations } = parsed.data;
 
   const supabase = getServiceSupabase();
   const { data, error } = await supabase

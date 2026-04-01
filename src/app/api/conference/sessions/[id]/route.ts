@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyConferenceRole } from "@/lib/conference-auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { sessionUpdateSchema } from "@/lib/validation";
 
 export async function PUT(
   request: Request,
@@ -13,22 +14,27 @@ export async function PUT(
 
   const { id } = await params;
   const body = await request.json();
+  const parsed = sessionUpdateSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+  const validatedBody = parsed.data;
   const supabase = getServiceSupabase();
 
   const updates: Record<string, unknown> = {};
-  if (typeof body.title === "string") updates.title = body.title.trim();
-  if (typeof body.description === "string") updates.description = body.description.trim() || null;
-  if (body.scheduled_at !== undefined) updates.scheduled_at = body.scheduled_at;
-  if (typeof body.is_active === "boolean") updates.is_active = body.is_active;
-  if (typeof body.qa_enabled === "boolean") updates.qa_enabled = body.qa_enabled;
-  if (typeof body.release_mode === "string") updates.release_mode = body.release_mode;
-  if (typeof body.speaker === "string") updates.speaker = body.speaker.trim() || null;
-  if (typeof body.room === "string") updates.room = body.room.trim() || null;
-  if (typeof body.time_label === "string") updates.time_label = body.time_label.trim() || null;
-  if (typeof body.sort_order === "number") updates.sort_order = body.sort_order;
+  if (typeof validatedBody.title === "string") updates.title = validatedBody.title.trim();
+  if (typeof validatedBody.description === "string") updates.description = validatedBody.description.trim() || null;
+  if (validatedBody.scheduled_at !== undefined) updates.scheduled_at = validatedBody.scheduled_at;
+  if (typeof validatedBody.is_active === "boolean") updates.is_active = validatedBody.is_active;
+  if (typeof validatedBody.qa_enabled === "boolean") updates.qa_enabled = validatedBody.qa_enabled;
+  if (typeof validatedBody.release_mode === "string") updates.release_mode = validatedBody.release_mode;
+  if (typeof validatedBody.speaker === "string") updates.speaker = validatedBody.speaker.trim() || null;
+  if (typeof validatedBody.room === "string") updates.room = validatedBody.room.trim() || null;
+  if (typeof validatedBody.time_label === "string") updates.time_label = validatedBody.time_label.trim() || null;
+  if (typeof validatedBody.sort_order === "number") updates.sort_order = validatedBody.sort_order;
 
   // If activating this session, deactivate others in the same event only
-  if (body.is_active === true) {
+  if (validatedBody.is_active === true) {
     const { data: thisSession } = await supabase
       .from("conference_sessions")
       .select("event_id")
@@ -66,7 +72,7 @@ export async function PUT(
   }
 
   // If deactivating this session, pull back its content
-  if (body.is_active === false) {
+  if (validatedBody.is_active === false) {
     await Promise.all([
       supabase.from("conference_polls").update({ is_active: false }).eq("session_id", id),
       supabase.from("conference_questions").update({ released: false }).eq("session_id", id),

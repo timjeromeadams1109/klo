@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
+import { pollExportSchema } from "@/lib/validation";
 
 interface PollData {
   question: string;
@@ -29,10 +30,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { polls } = (await request.json()) as { polls: PollData[] };
-  if (!polls || polls.length === 0) {
+  const body = await request.json();
+  const parsed = pollExportSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "No polls provided" }, { status: 400 });
   }
+  const { polls } = parsed.data;
 
   const pdf = await PDFDocument.create();
   const helvetica = await pdf.embedFont(StandardFonts.Helvetica);

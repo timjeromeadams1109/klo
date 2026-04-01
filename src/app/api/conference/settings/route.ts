@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyConferenceRole } from "@/lib/conference-auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { conferenceSettingsUpdateSchema } from "@/lib/validation";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -64,13 +65,18 @@ export async function PUT(request: Request) {
   }
 
   const body = await request.json();
+  const parsed = conferenceSettingsUpdateSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Invalid request" }, { status: 400 });
+  }
+  const validatedBody = parsed.data;
   const supabase = getServiceSupabase();
 
   // Update conference_settings key-value
-  if (typeof body.key === "string" && typeof body.value === "string") {
+  if (typeof validatedBody.key === "string" && typeof validatedBody.value === "string") {
     const { error } = await supabase
       .from("conference_settings")
-      .upsert({ key: body.key, value: body.value, updated_at: new Date().toISOString() });
+      .upsert({ key: validatedBody.key, value: validatedBody.value, updated_at: new Date().toISOString() });
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
@@ -79,13 +85,13 @@ export async function PUT(request: Request) {
   }
 
   // Update seminar mode — per-event or global
-  if (typeof body.active === "boolean") {
-    if (body.event_id) {
+  if (typeof validatedBody.active === "boolean") {
+    if (validatedBody.event_id) {
       // Per-event seminar mode
       const { error } = await supabase
         .from("event_presentations")
-        .update({ seminar_mode: body.active, updated_at: new Date().toISOString() })
-        .eq("id", body.event_id);
+        .update({ seminar_mode: validatedBody.active, updated_at: new Date().toISOString() })
+        .eq("id", validatedBody.event_id);
 
       if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
@@ -94,7 +100,7 @@ export async function PUT(request: Request) {
       // Global seminar mode
       const { error } = await supabase
         .from("app_settings")
-        .update({ value: { active: body.active }, updated_at: new Date().toISOString() })
+        .update({ value: { active: validatedBody.active }, updated_at: new Date().toISOString() })
         .eq("key", "seminar_mode");
 
       if (error) {
@@ -104,16 +110,16 @@ export async function PUT(request: Request) {
   }
 
   // Update active session settings (qa_enabled, release_mode)
-  if (body.session_id) {
+  if (validatedBody.session_id) {
     const sessionUpdates: Record<string, unknown> = {};
-    if (typeof body.qa_enabled === "boolean") sessionUpdates.qa_enabled = body.qa_enabled;
-    if (typeof body.release_mode === "string") sessionUpdates.release_mode = body.release_mode;
+    if (typeof validatedBody.qa_enabled === "boolean") sessionUpdates.qa_enabled = validatedBody.qa_enabled;
+    if (typeof validatedBody.release_mode === "string") sessionUpdates.release_mode = validatedBody.release_mode;
 
     if (Object.keys(sessionUpdates).length > 0) {
       const { error } = await supabase
         .from("conference_sessions")
         .update(sessionUpdates)
-        .eq("id", body.session_id);
+        .eq("id", validatedBody.session_id);
 
       if (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });

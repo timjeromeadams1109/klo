@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyConferenceRole } from "@/lib/conference-auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { profanityTermSchema } from "@/lib/validation";
 
 export async function GET(request: Request) {
   const auth = await verifyConferenceRole(["admin"]);
@@ -44,11 +45,11 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { term } = body;
-
-  if (!term?.trim()) {
+  const parsed = profanityTermSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "Term required" }, { status: 400 });
   }
+  const { term } = parsed.data;
 
   const supabase = getServiceSupabase();
   const { data, error } = await supabase

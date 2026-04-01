@@ -2,7 +2,9 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
-import { announcementCreateSchema } from "@/lib/validation";
+import { changelogCreateSchema, changelogDeleteSchema } from "@/lib/validation";
+
+export const dynamic = "force-dynamic";
 
 async function verifyAdmin() {
   const session = await getServerSession(authOptions);
@@ -12,30 +14,27 @@ async function verifyAdmin() {
   return session;
 }
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const eventId = searchParams.get("event_id") || undefined;
+// GET /api/admin/changelog — list all changelog entries
+export async function GET() {
+  const session = await verifyAdmin();
+  if (!session) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const supabase = getServiceSupabase();
-
-  let query = supabase
-    .from("conference_announcements")
+  const { data: entries, error } = await supabase
+    .from("changelog")
     .select("*")
-    .eq("is_active", true)
     .order("created_at", { ascending: false });
-
-  if (eventId) query = query.eq("event_id", eventId);
-
-  const { data, error } = await query;
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  return NextResponse.json(data, {
-    headers: { "Cache-Control": "public, s-maxage=3, stale-while-revalidate=10" },
-  });
+  return NextResponse.json({ entries: entries ?? [] });
 }
 
+// POST /api/admin/changelog — add a new entry
 export async function POST(request: Request) {
   const session = await verifyAdmin();
   if (!session) {
@@ -43,19 +42,16 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const parsed = announcementCreateSchema.safeParse(body);
+  const parsed = changelogCreateSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
-      { error: "Title and message are required" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Version and title required" }, { status: 400 });
   }
-  const { title, message, event_id } = parsed.data;
+  const { version, title, description, type } = parsed.data;
 
   const supabase = getServiceSupabase();
   const { data, error } = await supabase
-    .from("conference_announcements")
-    .insert({ title: title.trim(), message: message.trim(), ...(event_id ? { event_id } : {}) })
+    .from("changelog")
+    .insert({ version, title, description: description || null, type: type || "feature" })
     .select()
     .single();
 
@@ -66,24 +62,22 @@ export async function POST(request: Request) {
   return NextResponse.json(data, { status: 201 });
 }
 
+// DELETE /api/admin/changelog — delete an entry
 export async function DELETE(request: Request) {
   const session = await verifyAdmin();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
-
-  if (!id) {
-    return NextResponse.json({ error: "ID required" }, { status: 400 });
+  const body = await request.json();
+  const parsed = changelogDeleteSchema.safeParse(body);
+  if (!parsed.success) {
+    return NextResponse.json({ error: "Entry ID required" }, { status: 400 });
   }
+  const { id } = parsed.data;
 
   const supabase = getServiceSupabase();
-  const { error } = await supabase
-    .from("conference_announcements")
-    .update({ is_active: false })
-    .eq("id", id);
+  const { error } = await supabase.from("changelog").delete().eq("id", id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

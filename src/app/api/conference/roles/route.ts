@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { verifyConferenceRole } from "@/lib/conference-auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { roleAssignSchema } from "@/lib/validation";
 
 export async function GET(request: Request) {
   const auth = await verifyConferenceRole(["admin"]);
@@ -33,16 +34,11 @@ export async function POST(request: Request) {
   }
 
   const body = await request.json();
-  const { user_id, session_id, role } = body;
-
-  if (!user_id || !role) {
+  const parsed = roleAssignSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "user_id and role are required" }, { status: 400 });
   }
-
-  const validRoles = ["admin", "moderator", "presenter", "attendee"];
-  if (!validRoles.includes(role)) {
-    return NextResponse.json({ error: "Invalid role" }, { status: 400 });
-  }
+  const { user_id, session_id, role } = parsed.data;
 
   const supabase = getServiceSupabase();
   const { data, error } = await supabase

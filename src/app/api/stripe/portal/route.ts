@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { stripePortalSchema } from "@/lib/validation";
 
 /* ------------------------------------------------------------------ */
 /*  POST /api/stripe/portal                                            */
@@ -19,14 +20,14 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const customerId: string | undefined = body.customerId;
-
-    if (!customerId) {
+    const parsed = stripePortalSchema.safeParse(body);
+    if (!parsed.success) {
       return NextResponse.json(
         { error: "Customer ID is required." },
         { status: 400 }
       );
     }
+    const { customerId } = parsed.data;
 
     // Verify the session user owns this customer ID
     if (customerId !== "demo") {

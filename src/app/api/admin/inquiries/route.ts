@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
+import { inquiryUpdateSchema } from "@/lib/validation";
 
 export const dynamic = "force-dynamic";
 
@@ -73,16 +74,11 @@ export async function PATCH(req: NextRequest) {
 
   const supabase = getServiceSupabase();
   const body = await req.json();
-  const { id, status } = body;
-
-  if (!id || !status) {
+  const parsed = inquiryUpdateSchema.safeParse(body);
+  if (!parsed.success) {
     return NextResponse.json({ error: "id and status are required" }, { status: 400 });
   }
-
-  const validStatuses = ["new", "reviewed", "contacted", "archived"];
-  if (!validStatuses.includes(status)) {
-    return NextResponse.json({ error: "Invalid status" }, { status: 400 });
-  }
+  const { id, status } = parsed.data;
 
   const { error } = await supabase
     .from("inquiries")
