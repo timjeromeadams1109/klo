@@ -26,9 +26,8 @@ if (!ELEVENLABS_API_KEY) {
   process.exit(1);
 }
 
-// George - Warm, Captivating Storyteller (British male)
-// Change this if Tim picks a different voice from the test page
-const VOICE_ID = "JBFqnCBsd6RMkjVDRZzb";
+// Morgan - Deep, Powerful, Confident (Morgan Freeman style)
+const VOICE_ID = "SAxJUlDKRc79XAyeWyMu";
 const MODEL_ID = "eleven_turbo_v2_5";
 const VOICE_SETTINGS = {
   stability: 0.75,
