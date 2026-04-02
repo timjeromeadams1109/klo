@@ -51,7 +51,7 @@ export default function UserMenu() {
 
   const menuItems = [
     { label: "Profile", href: "/profile", icon: User },
-    { label: "Settings", href: "/profile", icon: Settings },
+    { label: "Settings", href: "/profile?tab=settings", icon: Settings },
   ];
 
   return (
@@ -59,7 +59,7 @@ export default function UserMenu() {
       {/* Avatar button */}
       <button
         onClick={() => setOpen((prev) => !prev)}
-        className="w-9 h-9 rounded-full bg-klo-gold/15 border border-klo-gold/40 flex items-center justify-center text-klo-gold text-sm font-semibold hover:bg-klo-gold/25 transition-colors duration-200 cursor-pointer"
+        className="w-11 h-11 rounded-full bg-klo-gold/15 border border-klo-gold/40 flex items-center justify-center text-klo-gold text-sm font-semibold hover:bg-klo-gold/25 transition-colors duration-200 cursor-pointer"
         aria-label="User menu"
       >
         {session.user?.image ? (

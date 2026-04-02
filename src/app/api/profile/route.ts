@@ -80,8 +80,8 @@ export async function PUT(req: Request) {
       .insert({
         id: userId,
         email: session.user.email,
-        role: "admin",
-        subscription_tier: "executive",
+        role: "user",
+        subscription_tier: "free",
         ...profileData,
       });
 

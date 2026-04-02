@@ -64,21 +64,38 @@ export async function POST(request: NextRequest) {
         );
 
         const supabaseCheckout = getServiceSupabase();
-        await supabaseCheckout
-          .from("profiles")
-          .update({
-            subscription_tier: tier,
-            stripe_customer_id: customerId,
-          })
-          .eq("stripe_customer_id", customerId);
+        const userId = session.client_reference_id;
+
+        // Update by user ID (client_reference_id) since stripe_customer_id isn't set yet
+        if (userId) {
+          await supabaseCheckout
+            .from("profiles")
+            .update({
+              subscription_tier: tier,
+              stripe_customer_id: customerId,
+            })
+            .eq("id", userId);
+        } else {
+          // Fallback: try by stripe_customer_id for existing customers
+          await supabaseCheckout
+            .from("profiles")
+            .update({
+              subscription_tier: tier,
+              stripe_customer_id: customerId,
+            })
+            .eq("stripe_customer_id", customerId);
+        }
 
         // Push notification: subscription confirmed
         try {
-          const { data: profile } = await supabaseCheckout
-            .from("profiles")
-            .select("id")
-            .eq("stripe_customer_id", customerId)
-            .single();
+          const profileId = userId;
+          const { data: profile } = profileId
+            ? { data: { id: profileId } }
+            : await supabaseCheckout
+                .from("profiles")
+                .select("id")
+                .eq("stripe_customer_id", customerId)
+                .single();
 
           if (profile) {
             await sendPushToUser(profile.id, {

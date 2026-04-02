@@ -92,7 +92,7 @@ export default function Questionnaire({
       />
 
       {/* Question */}
-      <div className="relative min-h-[420px]">
+      <div className="relative overflow-x-hidden">
         <AnimatePresence mode="wait" custom={direction}>
           <motion.div
             key={currentQuestion.id}

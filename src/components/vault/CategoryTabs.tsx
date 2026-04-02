@@ -27,7 +27,7 @@ export default function CategoryTabs({
           <button
             key={category}
             onClick={() => onCategoryChange(category)}
-            className={`whitespace-nowrap px-4 py-2.5 text-sm font-medium rounded-full transition-all duration-200 cursor-pointer shrink-0 ${
+            className={`whitespace-nowrap px-4 py-2.5 text-sm font-medium rounded-full transition-all duration-200 cursor-pointer shrink-0 min-h-[44px] ${
               isActive
                 ? "bg-[#68E9FA] text-[#022886]"
                 : "bg-[#011A5E] text-[#8BA3D4] hover:text-klo-text hover:bg-[#011A5E]/80"

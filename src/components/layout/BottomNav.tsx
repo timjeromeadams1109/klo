@@ -61,7 +61,7 @@ export default function BottomNav() {
                     }`}
                   />
                   <span
-                    className={`text-[10px] font-medium transition-colors duration-200 ${
+                    className={`text-[11px] font-medium transition-colors duration-200 ${
                       active ? "text-[#2764FF]" : "text-[#8B949E]"
                     }`}
                   >

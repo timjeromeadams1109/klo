@@ -46,6 +46,7 @@
   --color-klo-text: #E6EDF3;
   --color-klo-muted: #8B949E;
   --color-klo-accent: #2764FF;
+  --color-klo-surface: #161B22;
 
   /* Energetic section colors */
   --color-klo-purple: #8840FF;
@@ -157,6 +158,14 @@ body {
    ============================================================ */
 
 @layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   .text-balance {
     text-wrap: balance;
   }

@@ -108,18 +108,12 @@ export const authOptions: NextAuthOptions = {
         for (const account of CREDENTIAL_ACCOUNTS) {
           const password = process.env[account.envVar]?.trim();
           if (credentials.email === account.email && password) {
-            // Support both bcrypt hashes and plain passwords (migration)
-            const isHash = password.startsWith("$2");
-            const valid = isHash
-              ? await compare(credentials.password, password)
-              : credentials.password === password;
+            if (!password.startsWith("$2")) {
+              console.error(`[Auth] Credential account ${account.email} has a plaintext password — rejecting. Set a bcrypt hash in your environment.`);
+              return null;
+            }
+            const valid = await compare(credentials.password, password);
             if (valid) {
-              // Auto-upgrade plaintext passwords to bcrypt on successful login
-              if (!isHash) {
-                console.warn(
-                  "[Auth] A credential account is using a plaintext password. Set it to a bcrypt hash in your environment."
-                );
-              }
               return {
                 id: account.id,
                 name: account.name,

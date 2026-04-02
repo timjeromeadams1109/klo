@@ -865,9 +865,13 @@ function SettingsTab() {
 }
 
 export default function ProfilePage() {
-  const [activeTab, setActiveTab] = useState<ProfileTab>("overview");
   const { tier } = useSubscription();
   const { data: session } = useSession();
+
+  // Support URL-driven tab activation (e.g., /profile?tab=settings)
+  const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+  const initialTab = (searchParams?.get("tab") as ProfileTab) || "overview";
+  const [activeTab, setActiveTab] = useState<ProfileTab>(initialTab);
 
   const userName = session?.user?.name || "User";
   const userEmail = session?.user?.email || "";
@@ -928,14 +932,15 @@ export default function ProfilePage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center gap-2 whitespace-nowrap px-4 py-2.5 text-sm font-medium rounded-t-lg transition-all duration-200 cursor-pointer border-b-2 -mb-[1px] ${
+                aria-label={tab.label}
+                className={`flex items-center gap-2 whitespace-nowrap px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-medium rounded-t-lg transition-all duration-200 cursor-pointer border-b-2 -mb-[1px] min-h-[44px] ${
                   activeTab === tab.id
                     ? "text-[#2764FF] border-[#2764FF] bg-[#2764FF]/5"
                     : "text-[#8B949E] border-transparent hover:text-klo-text hover:bg-white/5"
                 }`}
               >
                 {tab.icon}
-                <span className="hidden sm:inline">{tab.label}</span>
+                <span>{tab.label}</span>
               </button>
             ))}
           </motion.div>

@@ -375,7 +375,7 @@ export default function AdminPage() {
                 Monitor app health, growth, and engagement
               </p>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap justify-end">
               <button
                 onClick={() => router.push("/admin/changelog")}
                 className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/20 transition-colors text-sm"
@@ -410,14 +410,14 @@ export default function AdminPage() {
 
         {/* Tabs */}
         <motion.div variants={fadeUp} custom={1} className="mb-8">
-          <div className="flex gap-1 p-1 rounded-xl bg-klo-dark/50 border border-white/5 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
+          <div className="flex gap-1 p-1 rounded-xl bg-klo-dark/50 border border-white/5 overflow-x-auto scroll-touch scrollbar-hide">
             {TABS.map((tab) => {
               const Icon = tab.icon;
               return (
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap shrink-0 ${
+                  className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap shrink-0 min-h-[44px] ${
                     activeTab === tab.id
                       ? "bg-klo-slate text-klo-text shadow-md"
                       : "text-klo-muted hover:text-klo-text"

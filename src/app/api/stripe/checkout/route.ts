@@ -54,11 +54,13 @@ export async function POST(request: NextRequest) {
     /* -------------------------------------------------------------- */
     /*  Production: Create a real Stripe Checkout session               */
     /* -------------------------------------------------------------- */
+    const userId = (authSession.user as { id?: string }).id;
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: successUrl,
       cancel_url: cancelUrl,
+      client_reference_id: userId || undefined,
       metadata: { tier },
       subscription_data: {
         metadata: { tier },

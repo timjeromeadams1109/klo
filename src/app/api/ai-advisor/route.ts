@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 import { AI_ADVISOR_SYSTEM_PROMPT } from "@/lib/constants";
 import { advisorLimiter, checkLimit, getClientIp } from "@/lib/ratelimit";
 import { aiAdvisorSchema } from "@/lib/validation";
@@ -9,6 +11,15 @@ import { aiAdvisorSchema } from "@/lib/validation";
 
 export async function POST(request: NextRequest) {
   try {
+    // Auth required — prevents unauthenticated API abuse
+    const session = await getServerSession(authOptions);
+    if (!session?.user) {
+      return NextResponse.json(
+        { error: "Authentication required." },
+        { status: 401 }
+      );
+    }
+
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
