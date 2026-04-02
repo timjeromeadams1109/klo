@@ -30,10 +30,10 @@ if (!ELEVENLABS_API_KEY) {
 const VOICE_ID = "SAxJUlDKRc79XAyeWyMu";
 const MODEL_ID = "eleven_turbo_v2_5";
 const VOICE_SETTINGS = {
-  stability: 0.75,
+  stability: 0.6,   // lower = more inflection and expressiveness
   similarity_boost: 0.8,
-  style: 0.3,
-  speed: 0.85, // slightly slower for training clarity
+  style: 0.5,       // higher = more stylistic variation
+  speed: 1.0,       // natural pace
 };
 
 const AUDIO_DIR = join(process.cwd(), "public/training/audio");
