@@ -38,6 +38,13 @@ import {
   UserPlus,
   Download,
   Zap,
+  Bell,
+  Paintbrush,
+  FileEdit,
+  TrendingUp,
+  ScrollText,
+  Send,
+  RefreshCw,
 } from "lucide-react";
 
 // ------------------------------------------------------------
@@ -79,19 +86,72 @@ const TRAINING_SECTIONS: TrainingSection[] = [
     id: "getting-started",
     title: "Getting Started",
     icon: PlayCircle,
-    description: "How to access the admin dashboard and navigate its 9 tabs.",
+    description: "How to access the admin dashboard and navigate its 12 tabs.",
     steps: [
-      { icon: Globe, label: "Sign In", detail: "Go to keithlodom.io and click Sign In, or navigate directly to /auth/signin" },
+      { icon: Globe, label: "Sign In", detail: "Go to keithlodom.ai and click Sign In, or navigate directly to /auth/signin" },
       { icon: Users, label: "Use Admin Credentials", detail: "Enter your admin email and password. Only owner and admin roles can access the dashboard." },
       { icon: Star, label: "Find the Admin Link", detail: "Once signed in, the gold \"Admin\" link appears in the top navigation bar" },
-      { icon: LayoutDashboard, label: "Explore 9 Tabs", detail: "The dashboard has 9 tabs: Overview, Events, Conference, Inquiries, Presentations, Users, Content, Revenue, and Tools" },
-      { icon: Zap, label: "Request a Site Update", detail: "Click the blue \"Request Update\" button (top-right) to submit a change request for any part of the website that isn't managed in the dashboard — like homepage text, bio, images, or pricing" },
+      { icon: LayoutDashboard, label: "Explore 12 Tabs", detail: "Overview, Customize, Content (Manager), Events, Conference, Inquiries, Notifications, Presentations, Users, Content (Analytics), Revenue, and Tools" },
+      { icon: Zap, label: "Header Utilities", detail: "Four buttons in the top-right: Changelog (version history), Request Update (submit change requests), Training Guide (this page), and Refresh (reload data)" },
     ],
     tips: [
       "Only users with the \"admin\" or \"owner\" role can see the Admin link. Moderators have limited conference access.",
       "The Inquiries tab shows a blue badge with the count of new/unread inquiries.",
       "Use the Refresh button (top-right) to reload data on any tab.",
-      "For changes to website content (homepage, about page, images, etc.), use the blue \"Request Update\" button — Tim will handle it quickly.",
+      "For changes to website content not managed in the dashboard, use the \"Request Update\" button — Tim will handle it quickly.",
+    ],
+  },
+  {
+    id: "overview",
+    title: "Overview Dashboard",
+    icon: LayoutDashboard,
+    description: "At-a-glance metrics, charts, and growth analytics for the entire platform.",
+    adminTab: "overview",
+    steps: [
+      { icon: Eye, label: "View Stat Cards", detail: "Total Users (with weekly growth), Active Subscriptions, Monthly Recurring Revenue (MRR), AI Queries & tokens, Total Polls, and Active Polls" },
+      { icon: BarChart3, label: "User Signups Chart", detail: "Line chart showing new user signups over the last 30 days" },
+      { icon: BarChart3, label: "Subscription Tiers", detail: "Bar chart showing the distribution of Free, Pro, and Executive subscribers" },
+      { icon: BarChart3, label: "AI Advisor Usage", detail: "Line chart showing AI chat usage trends over time" },
+    ],
+    tips: [
+      "All charts auto-refresh when you click the Refresh button in the header.",
+      "Stat cards show growth indicators — green arrows mean positive week-over-week change.",
+    ],
+  },
+  {
+    id: "customize",
+    title: "Customize",
+    icon: Paintbrush,
+    description: "Control the app's brand colors, feature visibility, and homepage section order.",
+    adminTab: "customize",
+    steps: [
+      { icon: Paintbrush, label: "Brand Colors", detail: "Edit Primary (#2764FF), Accent/Gold (#C8A84E), Background (#0D1117), Card Surface (#161B22), and Body Text (#E6EDF3) using color pickers" },
+      { icon: Power, label: "Feature Toggles", detail: "Enable or disable 9 app features: Assessments, Vault, AI Advisor, Booking, Events, Conference, Strategy Rooms, Feed, and Marketplace. Minimum 3 must stay on." },
+      { icon: Eye, label: "Homepage Sections", detail: "Show/hide and reorder 7 homepage sections: Hero Banner (always visible), Upcoming Keynote, Latest Brief, Trending Topics, Featured Insight, AI Tool of the Week, and Assessment CTA" },
+      { icon: Download, label: "Save / Reset", detail: "Save changes with a confirmation modal, or reset all settings back to defaults" },
+    ],
+    tips: [
+      "Changes take effect immediately for all users after saving.",
+      "The Hero Banner section cannot be hidden — it's always visible on the homepage.",
+      "Drag sections to reorder how they appear on the homepage.",
+    ],
+  },
+  {
+    id: "content-manager",
+    title: "Content Manager",
+    icon: FileEdit,
+    description: "Edit all user-facing content across the homepage, vault, and feed — without touching code.",
+    adminTab: "content-manager",
+    steps: [
+      { icon: Globe, label: "Home Page Content", detail: "Edit 7 homepage sections: Hero Banner (heading, tagline, CTAs), Latest Brief, Trending Topics (5 tags), Featured Insight, AI Tool of the Week, Testimonials, and Quick Links" },
+      { icon: BookOpen, label: "Vault Library", detail: "Manage 12+ vault items — set title, category, type, level, premium/free toggle, description, author, duration, and file attachments" },
+      { icon: FileText, label: "Feed Posts", detail: "Create, edit, delete, and schedule feed posts with engagement tracking" },
+      { icon: Upload, label: "File Uploads", detail: "Attach PDFs and images to any content section" },
+    ],
+    tips: [
+      "Each content section shows a \"Last edited\" timestamp so you know when it was last updated.",
+      "Click any section card to open the edit modal with all editable fields.",
+      "Vault items support categories: AI Strategy, Governance, Digital Transformation, Cybersecurity, and more.",
     ],
   },
   {
@@ -101,7 +161,7 @@ const TRAINING_SECTIONS: TrainingSection[] = [
     description: "Create, publish, and manage conference events with files, AI document parsing, and reports.",
     adminTab: "events",
     steps: [
-      { icon: Plus, label: "Add Event", detail: "Click \"+ Add Event\" to create a new event with title, date, location, conference details, and optional access code" },
+      { icon: Plus, label: "Add Event", detail: "Click \"+ Add Event\" to create a new event with title, date, location, conference details, timezone, and optional access code" },
       { icon: Globe, label: "Web Link", detail: "Open the event's public-facing page to preview what attendees see" },
       { icon: Star, label: "Feature Event", detail: "Pin one event as the featured event — it appears on the homepage with a live countdown timer. Only one event can be featured at a time." },
       { icon: Pencil, label: "Edit Event", detail: "Modify event details including title, dates, location, slug, access code, display settings, and seminar mode" },
@@ -112,6 +172,7 @@ const TRAINING_SECTIONS: TrainingSection[] = [
     tips: [
       "Events are split into \"Current Events\" (future dates) and \"Previous Events\" (past dates).",
       "The gold star icon marks the currently featured event. Click the star on another event to switch.",
+      "Supports 7 US timezones: Eastern, Central, Mountain, Pacific, Arizona, Alaska, and Hawaii.",
       "File uploads are stored in Supabase and served via secure signed URLs.",
     ],
   },
@@ -232,6 +293,24 @@ const TRAINING_SECTIONS: TrainingSection[] = [
     ],
   },
   {
+    id: "notifications",
+    title: "Push Notifications",
+    icon: Bell,
+    description: "Send push notifications to users across web, iOS, and Android — and manage subscribers.",
+    adminTab: "notifications",
+    steps: [
+      { icon: Users, label: "Subscriber Stats", detail: "View total subscriber count with breakdown by platform: Web Push, iOS, and Android" },
+      { icon: Megaphone, label: "Compose Notification", detail: "Enter a title, body text, and optional URL link (e.g. /vault, /assessments). Choose to broadcast to all or target a specific user." },
+      { icon: Zap, label: "Send", detail: "Tap Send to deliver instantly. You'll see a confirmation with devices reached and any failures." },
+      { icon: Eye, label: "Subscriber List", detail: "Browse all active subscribers with platform indicators, name, email, and subscription date" },
+    ],
+    tips: [
+      "Push notifications work on web browsers, iOS (Safari), and Android devices.",
+      "Use the URL field to deep-link users directly to a page when they tap the notification.",
+      "The subscriber list refreshes when you click the Refresh button.",
+    ],
+  },
+  {
     id: "presentations",
     title: "Presentations",
     icon: ClipboardCheck,
@@ -256,26 +335,65 @@ const TRAINING_SECTIONS: TrainingSection[] = [
     adminTab: "users",
     steps: [
       { icon: Search, label: "Search", detail: "Find users by name or organization" },
-      { icon: Filter, label: "Filter by Tier", detail: "Free, Pro, Executive, or All" },
+      { icon: Filter, label: "Filter by Tier", detail: "Free, Pro, Executive, or All — each tier has a color-coded badge (Gold = Executive, Blue = Pro, Cyan = Free)" },
       { icon: Eye, label: "View Details", detail: "Full name, email, organization, subscription tier, and signup date" },
     ],
     tips: [
       "Users are sorted by creation date (newest first) by default.",
       "20 users per page with pagination.",
+      "Tier badges are color-coded: Gold for Executive, Blue for Pro, Cyan for Free.",
     ],
   },
   {
     id: "content",
-    title: "Content (Assessments)",
+    title: "Content Analytics",
     icon: BotMessageSquare,
-    description: "View and manage all completed leadership assessment results.",
+    description: "View assessment results, vault content metrics, and strategy room activity — with charts and filtering.",
     adminTab: "content",
     steps: [
-      { icon: Search, label: "Search", detail: "Find results by user name" },
-      { icon: Filter, label: "Filter by Type", detail: "Leadership, Strategic Vision, and other assessment types" },
-      { icon: Eye, label: "View Details", detail: "User name, email, score, and completion date" },
-      { icon: Trash2, label: "Delete Individual", detail: "Remove a single assessment result" },
-      { icon: Trash2, label: "Delete All", detail: "Bulk delete all results with a confirmation modal — use with caution!" },
+      { icon: BarChart3, label: "Stat Cards", detail: "See totals for Vault Content, Assessments Completed, and Active Strategy Rooms at a glance" },
+      { icon: BarChart3, label: "Assessment Charts", detail: "Line chart of completions over 30 days, plus breakdowns by assessment type and vault content type" },
+      { icon: Search, label: "Search Results", detail: "Find assessment results by user name" },
+      { icon: Filter, label: "Filter by Type", detail: "Leadership (LPAI), Strategic Vision (FPAI), and other assessment types" },
+      { icon: Eye, label: "Score Badges", detail: "Scores are color-coded: Green (70%+), Yellow (40–69%), Red (below 40%)" },
+      { icon: Trash2, label: "Delete", detail: "Remove individual results or bulk-delete all results (requires typing \"RESET\" to confirm)" },
+    ],
+    tips: [
+      "Score color coding makes it easy to spot users who may need follow-up coaching.",
+      "The bulk delete in the Tools tab requires typing RESET as a safety measure.",
+    ],
+  },
+  {
+    id: "revenue",
+    title: "Revenue",
+    icon: DollarSign,
+    description: "Track subscription revenue, conversion rates, and the signup-to-paid funnel.",
+    adminTab: "revenue",
+    steps: [
+      { icon: DollarSign, label: "MRR Card", detail: "Monthly Recurring Revenue displayed in dollars — your key revenue metric" },
+      { icon: Users, label: "Paid Subscriptions", detail: "Total count of paying subscribers (Pro + Executive)" },
+      { icon: TrendingUp, label: "Conversion Rate", detail: "Percentage of total users who have upgraded to a paid plan" },
+      { icon: BarChart3, label: "Subscription Conversions", detail: "Line chart showing new paid subscriptions over the last 30 days" },
+      { icon: BarChart3, label: "Tier Breakdown", detail: "Pie chart showing distribution across Free, Pro, and Executive tiers" },
+      { icon: BarChart3, label: "Conversion Funnel", detail: "Bar chart showing Total Signups → Free → Pro → Executive with percentages at each stage" },
+    ],
+    tips: [
+      "The conversion funnel shows exactly where users drop off — use it to identify where to focus marketing efforts.",
+      "MRR updates in real-time based on active Stripe subscriptions.",
+    ],
+  },
+  {
+    id: "tools",
+    title: "Tools (Danger Zone)",
+    icon: Lock,
+    description: "Admin-only destructive actions — handle with care.",
+    adminTab: "tools",
+    steps: [
+      { icon: Trash2, label: "Reset All Assessments", detail: "Permanently deletes ALL assessment results. You must type \"RESET\" to confirm — this cannot be undone." },
+    ],
+    tips: [
+      "This tab is intentionally minimal. Destructive actions require explicit confirmation.",
+      "Only use this when you need a complete fresh start on assessment data.",
     ],
   },
 ];
@@ -314,7 +432,7 @@ const WORKFLOWS = [
       "Toggle LIVE to OFF",
       "Export poll results (CSV)",
       "Review Q&A archive",
-      "Check engagement metrics",
+      "Check Revenue tab for conversions",
     ],
   },
   {
@@ -346,6 +464,69 @@ const WORKFLOWS = [
       "They can now approve Q&A questions",
     ],
   },
+  {
+    title: "Updating Homepage Content",
+    emoji: "✏️",
+    steps: [
+      "Content (Manager) tab",
+      "Click \"Home Page\" section",
+      "Select section to edit (Hero, Brief, Topics, etc.)",
+      "Update text, links, or images in the modal",
+      "Save — changes go live immediately",
+    ],
+  },
+  {
+    title: "Sending a Push Notification",
+    emoji: "🔔",
+    steps: [
+      "Notifications tab",
+      "Enter title and body text",
+      "Optional: add a URL to deep-link users",
+      "Choose Broadcast (all) or target a user",
+      "Tap Send — check delivery confirmation",
+    ],
+  },
+  {
+    title: "Customizing the App",
+    emoji: "🎨",
+    steps: [
+      "Customize tab",
+      "Adjust brand colors with color pickers",
+      "Toggle features on/off (min 3 required)",
+      "Reorder homepage sections by dragging",
+      "Save changes with confirmation",
+    ],
+  },
+  {
+    title: "Requesting a Site Change",
+    emoji: "📩",
+    steps: [
+      "Click \"Request Update\" (top-right header)",
+      "Select affected section and change type",
+      "Describe the current vs. desired state",
+      "Set priority (Low / Medium / High)",
+      "Submit — Tim receives it immediately",
+    ],
+  },
+];
+
+// ------------------------------------------------------------
+// Visual tab map data
+// ------------------------------------------------------------
+
+const TAB_MAP: { id: string; label: string; icon: React.ElementType; color: string; category: string }[] = [
+  { id: "overview", label: "Overview", icon: LayoutDashboard, color: "#2764FF", category: "Analytics" },
+  { id: "customize", label: "Customize", icon: Paintbrush, color: "#C8A84E", category: "Settings" },
+  { id: "content-manager", label: "Content", icon: FileEdit, color: "#21B8CD", category: "Content" },
+  { id: "events", label: "Events", icon: Vote, color: "#6ECF55", category: "Events" },
+  { id: "conference", label: "Conference", icon: BarChart3, color: "#8840FF", category: "Events" },
+  { id: "inquiries", label: "Inquiries", icon: Inbox, color: "#2764FF", category: "Communication" },
+  { id: "notifications", label: "Notifications", icon: Bell, color: "#F77A81", category: "Communication" },
+  { id: "presentations", label: "Presentations", icon: ClipboardCheck, color: "#C8A84E", category: "Content" },
+  { id: "users", label: "Users", icon: Users, color: "#21B8CD", category: "Management" },
+  { id: "content", label: "Analytics", icon: BotMessageSquare, color: "#8840FF", category: "Analytics" },
+  { id: "revenue", label: "Revenue", icon: DollarSign, color: "#6ECF55", category: "Analytics" },
+  { id: "tools", label: "Tools", icon: Lock, color: "#F77A81", category: "Settings" },
 ];
 
 // ------------------------------------------------------------
@@ -365,7 +546,7 @@ export default function TrainingPage() {
   const router = useRouter();
   const [expandedSection, setExpandedSection] = useState<string | null>("getting-started");
   const [expandedSub, setExpandedSub] = useState<string | null>(null);
-  const [view, setView] = useState<"guide" | "workflows">("guide");
+  const [view, setView] = useState<"map" | "guide" | "workflows">("map");
 
   const toggleSection = (id: string) => {
     setExpandedSection(expandedSection === id ? null : id);
@@ -400,25 +581,36 @@ export default function TrainingPage() {
           {/* View toggle */}
           <div className="flex gap-1 p-1 rounded-xl bg-klo-dark/50 border border-white/5">
             <button
+              onClick={() => setView("map")}
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+                view === "map"
+                  ? "bg-klo-slate text-klo-text shadow-md"
+                  : "text-klo-muted hover:text-klo-text"
+              }`}
+            >
+              <LayoutDashboard size={14} className="inline mr-1 -mt-0.5" />
+              Map
+            </button>
+            <button
               onClick={() => setView("guide")}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                 view === "guide"
                   ? "bg-klo-slate text-klo-text shadow-md"
                   : "text-klo-muted hover:text-klo-text"
               }`}
             >
-              <BookOpen size={14} className="inline mr-1.5 -mt-0.5" />
-              Feature Guide
+              <BookOpen size={14} className="inline mr-1 -mt-0.5" />
+              Guide
             </button>
             <button
               onClick={() => setView("workflows")}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                 view === "workflows"
                   ? "bg-klo-slate text-klo-text shadow-md"
                   : "text-klo-muted hover:text-klo-text"
               }`}
             >
-              <Lightbulb size={14} className="inline mr-1.5 -mt-0.5" />
+              <Lightbulb size={14} className="inline mr-1 -mt-0.5" />
               Workflows
             </button>
           </div>
@@ -427,7 +619,99 @@ export default function TrainingPage() {
 
       <div className="max-w-5xl mx-auto px-6 py-8">
         <AnimatePresence mode="wait">
-          {view === "guide" ? (
+          {view === "map" ? (
+            <motion.div
+              key="map"
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={fadeIn}
+            >
+              {/* Quick-start banner */}
+              <div className="rounded-2xl border border-[#2764FF]/20 bg-[#2764FF]/5 p-6 mb-8">
+                <h2 className="text-lg font-bold text-klo-text mb-2 flex items-center gap-2">
+                  <PlayCircle size={20} className="text-[#2764FF]" />
+                  Quick Start
+                </h2>
+                <p className="text-sm text-klo-muted leading-relaxed mb-4">
+                  Your admin dashboard has <span className="text-klo-text font-semibold">12 tabs</span> organized into 5 categories.
+                  Tap any tab below to jump to its detailed guide, or use the header buttons for Changelog, Request Update, and this Training Guide.
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { icon: ScrollText, label: "Changelog", desc: "Version history" },
+                    { icon: Send, label: "Request Update", desc: "Submit changes" },
+                    { icon: BookOpen, label: "Training Guide", desc: "This page" },
+                    { icon: RefreshCw, label: "Refresh", desc: "Reload data" },
+                  ].map((btn) => (
+                    <div key={btn.label} className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/5">
+                      <btn.icon size={14} className="text-klo-gold" />
+                      <div>
+                        <div className="text-xs font-medium text-klo-text">{btn.label}</div>
+                        <div className="text-[10px] text-klo-muted">{btn.desc}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Category groups */}
+              {["Analytics", "Content", "Events", "Communication", "Management", "Settings"].map((category) => {
+                const tabs = TAB_MAP.filter((t) => t.category === category);
+                if (tabs.length === 0) return null;
+                return (
+                  <div key={category} className="mb-6">
+                    <h3 className="text-xs font-semibold text-klo-muted uppercase tracking-wider mb-3 px-1">
+                      {category}
+                    </h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                      {tabs.map((tab) => {
+                        const Icon = tab.icon;
+                        const section = TRAINING_SECTIONS.find(
+                          (s) => s.adminTab === tab.id || s.id === tab.id
+                        );
+                        return (
+                          <button
+                            key={tab.id}
+                            onClick={() => {
+                              setView("guide");
+                              setTimeout(() => {
+                                const sectionId = section?.id || tab.id;
+                                setExpandedSection(sectionId);
+                                document.getElementById(`section-${sectionId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+                              }, 100);
+                            }}
+                            className="group flex items-start gap-4 p-4 rounded-2xl border border-white/5 bg-klo-surface hover:bg-white/[0.04] transition-all text-left"
+                          >
+                            <div
+                              className="p-2.5 rounded-xl shrink-0 transition-transform group-hover:scale-110"
+                              style={{ backgroundColor: `${tab.color}15` }}
+                            >
+                              <Icon size={20} style={{ color: tab.color }} />
+                            </div>
+                            <div className="min-w-0">
+                              <div className="text-sm font-semibold text-klo-text group-hover:text-white transition-colors">
+                                {tab.label}
+                              </div>
+                              {section && (
+                                <p className="text-xs text-klo-muted mt-0.5 line-clamp-2">
+                                  {section.description}
+                                </p>
+                              )}
+                              <div className="flex items-center gap-1 mt-2 text-[10px] font-medium text-klo-muted group-hover:text-klo-gold transition-colors">
+                                <span>View guide</span>
+                                <ChevronRight size={10} />
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              })}
+            </motion.div>
+          ) : view === "guide" ? (
             <motion.div
               key="guide"
               initial="hidden"
@@ -512,7 +796,7 @@ function SectionCard({
   const Icon = section.icon;
 
   return (
-    <div className="rounded-2xl border border-white/5 bg-klo-surface overflow-hidden">
+    <div id={`section-${section.id}`} className="rounded-2xl border border-white/5 bg-klo-surface overflow-hidden scroll-mt-24">
       {/* Header */}
       <button
         onClick={onToggle}
