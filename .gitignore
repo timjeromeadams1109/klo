@@ -55,3 +55,5 @@ playwright/.cache/
 # sensitive slides
 public/credentials-slide.*
 public/training/audio/.content-hashes.json
+# Use bun.lock instead
+package-lock.json
