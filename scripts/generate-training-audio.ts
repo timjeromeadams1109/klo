@@ -56,7 +56,7 @@ const SECTIONS: TrainingAudioSection[] = [
     title: "Getting Started",
     narration: `Welcome to the KLO Admin Dashboard training guide. Let's start with how to access your dashboard and get oriented.
 
-First, go to keithlodom.ai and click Sign In, or navigate directly to the sign-in page. Enter your admin email and password. Only users with the owner or admin role can access the dashboard.
+First, go to keith L odom dot A I and click Sign In, or navigate directly to the sign-in page. Enter your admin email and password. Only users with the owner or admin role can access the dashboard.
 
 Once signed in, you'll see a gold "Admin" link in the top navigation bar. Click it to open the dashboard.
 
