@@ -1,0 +1,126 @@
+# SAST (Static Application Security Testing) Workflow
+#
+# Drop this into .github/workflows/sast.yml in any Next.js project.
+#
+# What it does:
+#   - eslint-security: runs ESLint with security-focused rules on every push/PR
+#   - codeql-analysis: runs GitHub's CodeQL engine for deeper vulnerability detection
+#
+# Both jobs run in parallel — total wall time is dominated by the slower job (CodeQL, ~3-5 min).
+#
+# Prerequisites:
+#   - bun must be installable on ubuntu-latest (it is — uses the official install script)
+#   - eslint-plugin-security must be installed: bun add -D eslint-plugin-security
+#   - CodeQL requires no setup beyond this file; GitHub provides the runner quota free for public
+#     repos and at no extra cost for private repos on GitHub Team/Enterprise.
+#
+# To enable CodeQL on a private repo: Settings → Code security → Code scanning → Enable
+
+name: SAST
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 1: ESLint Security
+  #
+  # Runs eslint-plugin-security rules against the source tree. This catches
+  # patterns that are syntactically valid but dangerous: eval(), non-literal
+  # require(), timing-attack-prone comparisons, etc.
+  #
+  # Speed: fast (~30–90 seconds depending on project size).
+  # Signal: high precision on the specific patterns it covers; low false-positive rate.
+  # ─────────────────────────────────────────────────────────────────────────────
+  eslint-security:
+    name: ESLint Security Rules
+    runs-on: ubuntu-latest
+
+    steps:
+      # Full clone — needed so ESLint can resolve project-relative imports.
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Install bun. Pinning to a major version (not latest) avoids surprise breakage.
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1"
+
+      # Use Node 20 for ESLint compatibility. Bun runs the install; Node runs the lint.
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # Install all deps including devDependencies (eslint-plugin-security lives there).
+      # --frozen-lockfile ensures CI never silently upgrades a dep.
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
+      # Run ESLint with the security config. The --max-warnings 0 flag treats any
+      # security warning as a build failure — warnings are not informational here.
+      #
+      # If your project has a custom lint script in package.json that already includes
+      # security rules, replace this with: bun run lint
+      - name: Run ESLint security rules
+        run: |
+          bunx eslint \
+            --config eslint-security-config.js \
+            --max-warnings 0 \
+            --format compact \
+            "src/**/*.{ts,tsx,js,jsx}" \
+            "app/**/*.{ts,tsx,js,jsx}" \
+            "pages/**/*.{ts,tsx,js,jsx}"
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Job 2: CodeQL Analysis
+  #
+  # GitHub's semantic code analysis engine. Unlike ESLint, CodeQL builds a full
+  # model of the program's data flow and detects vulnerabilities that span multiple
+  # files — SQL injection, XSS via taint tracking, path traversal, etc.
+  #
+  # Speed: slower (~3–8 minutes). Runs in parallel with eslint-security.
+  # Signal: catches multi-step vulnerabilities ESLint misses; occasional false positives
+  #         on benign patterns — review findings before blocking merges on them.
+  #
+  # Query suite: security-extended covers OWASP Top 10 + CWE Top 25.
+  # To use only the core set, change to: security-and-quality
+  # ─────────────────────────────────────────────────────────────────────────────
+  codeql-analysis:
+    name: CodeQL Analysis
+    runs-on: ubuntu-latest
+
+    # CodeQL needs read access to the repo and write access to upload SARIF results
+    # to the GitHub Security tab.
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Initialize CodeQL. This sets up the analysis environment and selects the
+      # queries to run. javascript-typescript covers both .js and .ts files.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          languages: javascript-typescript
+          # security-extended = security-and-quality + additional CWE coverage.
+          # Findings appear in the repo's Security → Code scanning tab.
+          queries: security-extended
+
+      # For JavaScript/TypeScript, CodeQL does not require a build step — it analyzes
+      # source directly. If you add other compiled languages later, add a build step here.
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v3
+        with:
+          # Category scopes results when multiple CodeQL jobs exist in one workflow.
+          category: "/language:javascript-typescript"
