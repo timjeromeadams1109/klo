@@ -110,7 +110,7 @@ jobs:
       # Initialize CodeQL. This sets up the analysis environment and selects the
       # queries to run. javascript-typescript covers both .js and .ts files.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+        uses: github/codeql-action/init@v4
         with:
           languages: javascript-typescript
           # security-extended = security-and-quality + additional CWE coverage.
@@ -120,7 +120,7 @@ jobs:
       # For JavaScript/TypeScript, CodeQL does not require a build step — it analyzes
       # source directly. If you add other compiled languages later, add a build step here.
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+        uses: github/codeql-action/analyze@v4
         with:
           # Category scopes results when multiple CodeQL jobs exist in one workflow.
           category: "/language:javascript-typescript"
