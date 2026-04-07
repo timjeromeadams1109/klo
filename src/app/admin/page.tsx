@@ -59,6 +59,7 @@ import PresentationsAdminTab from "@/features/admin/PresentationsAdminTab";
 import NotificationsAdminTab from "@/features/admin/NotificationsAdminTab";
 import CustomizeAdminTab from "@/features/admin/CustomizeAdminTab";
 import ContentManagerTab from "@/features/admin/ContentManagerTab";
+import SurveysAdminTab from "@/features/admin/SurveysAdminTab";
 import { Paintbrush, FileEdit } from "lucide-react";
 
 // ------------------------------------------------------------
@@ -131,12 +132,13 @@ function StatCard({
 // Tab definitions
 // ------------------------------------------------------------
 
-type TabId = "overview" | "users" | "content" | "revenue" | "conference" | "presentations" | "events" | "inquiries" | "notifications" | "tools" | "customize" | "content-manager";
+type TabId = "overview" | "users" | "content" | "revenue" | "conference" | "presentations" | "events" | "inquiries" | "notifications" | "tools" | "customize" | "content-manager" | "surveys";
 
 const TABS: { id: TabId; label: string; icon: React.ElementType }[] = [
   { id: "overview", label: "Overview", icon: LayoutDashboard },
   { id: "customize", label: "Customize", icon: Paintbrush },
   { id: "content-manager", label: "Content", icon: FileEdit },
+  { id: "surveys", label: "Surveys", icon: ClipboardCheck },
   { id: "events", label: "Events", icon: Vote },
   { id: "conference", label: "Conference", icon: BarChart3 },
   { id: "inquiries", label: "Inquiries", icon: Inbox },
@@ -507,7 +509,7 @@ export default function AdminPage() {
         )}
 
         {/* Loading state (only for data-dependent tabs) */}
-        {loading && activeTab !== "conference" && activeTab !== "events" && activeTab !== "inquiries" && activeTab !== "tools" && (
+        {loading && activeTab !== "conference" && activeTab !== "events" && activeTab !== "inquiries" && activeTab !== "tools" && activeTab !== "surveys" && (
           <div className="flex items-center justify-center py-20">
             <RefreshCw className="w-8 h-8 text-klo-gold animate-spin" />
           </div>
@@ -1368,6 +1370,11 @@ export default function AdminPage() {
         {/* CONTENT MANAGER TAB */}
         {activeTab === "content-manager" && (
           <ContentManagerTab />
+        )}
+
+        {/* SURVEYS TAB */}
+        {activeTab === "surveys" && (
+          <SurveysAdminTab />
         )}
 
         {/* TOOLS TAB */}
