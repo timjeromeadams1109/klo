@@ -10,6 +10,7 @@ import CapacitorInit from "@/components/layout/CapacitorInit";
 import BiometricGate from "@/components/layout/BiometricGate";
 import OfflineBanner from "@/components/layout/OfflineBanner";
 import TitleFade from "@/components/layout/TitleFade";
+import ScrollToTop from "@/components/layout/ScrollToTop";
 import JsonLd, {
   personJsonLd,
   organizationJsonLd,
@@ -114,6 +115,7 @@ export default function RootLayout({
       <body className="font-body antialiased bg-[#0D1117] text-klo-text no-overscroll">
         <AuthProvider>
           <BiometricGate>
+            <ScrollToTop />
             <OfflineBanner />
             <SkipLink />
             <TopNav />
