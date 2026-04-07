@@ -117,6 +117,13 @@ export default function SurveyPage({
 
   const handleSingleSelect = (questionId: string, value: string) => {
     setAnswers((prev) => ({ ...prev, [questionId]: { value } }));
+    // Auto-advance after a brief delay so the user sees their selection
+    if (currentStep < questions.length - 1) {
+      setTimeout(() => {
+        setDirection(1);
+        setCurrentStep((s) => s + 1);
+      }, 400);
+    }
   };
 
   const handleMultiToggle = (questionId: string, value: string) => {
