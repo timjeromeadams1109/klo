@@ -122,6 +122,7 @@ export default function SurveyPage({
       setTimeout(() => {
         setDirection(1);
         setCurrentStep((s) => s + 1);
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }, 400);
     }
   };
@@ -144,6 +145,7 @@ export default function SurveyPage({
     if (currentStep < questions.length - 1) {
       setDirection(1);
       setCurrentStep((s) => s + 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 
@@ -151,6 +153,7 @@ export default function SurveyPage({
     if (currentStep > 0) {
       setDirection(-1);
       setCurrentStep((s) => s - 1);
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
   };
 

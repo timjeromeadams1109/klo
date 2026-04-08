@@ -35,9 +35,9 @@ export default function TopNav() {
   const isAdmin = ["owner", "admin"].includes(userRole ?? "");
   const { seminarMode } = useSeminarMode();
 
-  // Check for active survey to show nav link
+  // Check for active survey to show nav link (uses separate endpoint that only checks is_active)
   useEffect(() => {
-    fetch("/api/surveys/active")
+    fetch("/api/surveys/active?nav=1")
       .then((r) => r.json())
       .then((data) => setActiveSurveySlug(data.survey?.slug ?? null))
       .catch(() => {});

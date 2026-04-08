@@ -47,6 +47,9 @@ export const mfaSetupLimiter = createLimiter("mfa-setup", 5, "1 m");
 // MFA verify: 10 per minute per IP (prevent brute-force of 6-digit codes)
 export const mfaVerifyLimiter = createLimiter("mfa-verify", 10, "1 m");
 
+// Survey submission: 5 per hour per IP (prevent spam submissions)
+export const surveyLimiter = createLimiter("survey", 5, "1 h");
+
 // ── Helper ─────────────────────────────────────────────────
 
 export async function checkLimit(
