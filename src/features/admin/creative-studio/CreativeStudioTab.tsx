@@ -11,9 +11,14 @@ import {
 } from "lucide-react";
 import type { StudioPanel } from "@/types/creative-studio";
 import MediaLibraryPanel from "./media-library/MediaLibraryPanel";
+import AnimationBuilderPanel from "./animation-builder/AnimationBuilderPanel";
+import ThemeDesignerPanel from "./theme-designer/ThemeDesignerPanel";
+import MusicManagerPanel from "./music-manager/MusicManagerPanel";
+import LayoutEditorPanel from "./layout-editor/LayoutEditorPanel";
+import PageComposerPanel from "./page-composer/PageComposerPanel";
 
 const panels: { id: StudioPanel; label: string; icon: React.ElementType }[] = [
-  { id: "media-library", label: "Media Library", icon: ImageIcon },
+  { id: "media-library", label: "Media", icon: ImageIcon },
   { id: "animation-builder", label: "Animations", icon: Sparkles },
   { id: "layout-editor", label: "Layout", icon: LayoutGrid },
   { id: "music-manager", label: "Music", icon: Music },
@@ -60,39 +65,11 @@ export default function CreativeStudioTab() {
 
       {/* Panel Content */}
       {activePanel === "media-library" && <MediaLibraryPanel />}
-      {activePanel === "animation-builder" && (
-        <ComingSoonPanel name="Animation Builder" icon={Sparkles} />
-      )}
-      {activePanel === "layout-editor" && (
-        <ComingSoonPanel name="Layout Editor" icon={LayoutGrid} />
-      )}
-      {activePanel === "music-manager" && (
-        <ComingSoonPanel name="Music Manager" icon={Music} />
-      )}
-      {activePanel === "theme-designer" && (
-        <ComingSoonPanel name="Theme Designer" icon={Palette} />
-      )}
-      {activePanel === "page-composer" && (
-        <ComingSoonPanel name="Page Composer" icon={FileStack} />
-      )}
-    </div>
-  );
-}
-
-function ComingSoonPanel({
-  name,
-  icon: Icon,
-}: {
-  name: string;
-  icon: React.ElementType;
-}) {
-  return (
-    <div className="glass rounded-2xl p-12 border border-white/5 text-center">
-      <div className="inline-flex p-4 rounded-2xl bg-klo-accent/10 mb-4">
-        <Icon size={32} className="text-klo-gold" />
-      </div>
-      <h3 className="text-lg font-semibold text-klo-text mb-2">{name}</h3>
-      <p className="text-sm text-klo-muted">Coming soon — this panel is being built.</p>
+      {activePanel === "animation-builder" && <AnimationBuilderPanel />}
+      {activePanel === "layout-editor" && <LayoutEditorPanel />}
+      {activePanel === "music-manager" && <MusicManagerPanel />}
+      {activePanel === "theme-designer" && <ThemeDesignerPanel />}
+      {activePanel === "page-composer" && <PageComposerPanel />}
     </div>
   );
 }
