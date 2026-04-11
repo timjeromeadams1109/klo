@@ -219,15 +219,22 @@ export default function AdminPage() {
   const [selectedRole, setSelectedRole] = useState("");
 
   const userRole = (session?.user as { role?: string } | undefined)?.role;
-  const isAdmin = ["owner", "admin"].includes(userRole ?? "");
+  // Dev bypass: true if running on localhost OR NODE_ENV=development.
+  // Allows local testing without real auth. Production (non-localhost) requires real role.
+  const isDev =
+    process.env.NODE_ENV === "development" ||
+    (typeof window !== "undefined" &&
+      (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"));
+  const isAdmin = isDev || ["owner", "admin"].includes(userRole ?? "");
 
-  // Redirect non-admins
+  // Redirect non-admins (dev mode bypasses this for local testing)
   useEffect(() => {
+    if (isDev) return;
     if (status === "loading") return;
     if (!session || !isAdmin) {
       router.replace("/");
     }
-  }, [session, status, isAdmin, router]);
+  }, [session, status, isAdmin, router, isDev]);
 
   // Fetch stats + activity
   const fetchDashboardData = useCallback(async () => {

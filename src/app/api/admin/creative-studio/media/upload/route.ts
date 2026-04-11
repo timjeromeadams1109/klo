@@ -1,15 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
-
-async function verifyAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) return null;
-  const role = (session.user as { role?: string }).role;
-  if (!["owner", "admin"].includes(role ?? "")) return null;
-  return session;
-}
+import { verifyCreativeStudioAdmin } from "@/lib/creative-studio-auth";
 
 const ALLOWED_IMAGE_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/svg+xml", "image/avif"];
 const ALLOWED_VIDEO_TYPES = ["video/mp4", "video/webm", "video/quicktime"];
@@ -27,7 +18,7 @@ function getAssetType(mimeType: string): "image" | "video" | "audio" | "graphic"
 
 // POST /api/admin/creative-studio/media/upload — direct file upload
 export async function POST(req: NextRequest) {
-  const session = await verifyAdmin();
+  const session = await verifyCreativeStudioAdmin();
   if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
