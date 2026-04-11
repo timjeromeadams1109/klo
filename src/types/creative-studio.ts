@@ -45,7 +45,7 @@ export interface AnimationVariantConfig {
   initial: Record<string, unknown>;
   animate: Record<string, unknown>;
   exit?: Record<string, unknown>;
-  transition: {
+  transition?: {
     duration: number;
     delay?: number;
     ease: string;

@@ -154,11 +154,17 @@ export default function AnimationBuilderPanel() {
             </div>
             <div className="p-3 rounded-xl bg-klo-dark/30">
               <span className="text-klo-muted block mb-1">Duration</span>
-              <span className="text-klo-text font-medium">{selectedPreset.config.transition.duration}s</span>
+              <span className="text-klo-text font-medium">
+                {selectedPreset.config.transition
+                  ? `${selectedPreset.config.transition.duration}s`
+                  : "—"}
+              </span>
             </div>
             <div className="p-3 rounded-xl bg-klo-dark/30">
               <span className="text-klo-muted block mb-1">Easing</span>
-              <span className="text-klo-text font-medium">{selectedPreset.config.transition.ease}</span>
+              <span className="text-klo-text font-medium">
+                {selectedPreset.config.transition?.ease ?? "—"}
+              </span>
             </div>
           </div>
         </div>
@@ -227,9 +233,11 @@ function PresetCard({
         <span className="px-2 py-0.5 rounded-full bg-klo-gold/10 text-klo-gold capitalize">
           {preset.config.trigger}
         </span>
-        <span className="text-klo-muted self-center">
-          {preset.config.transition.duration}s
-        </span>
+        {preset.config.transition && (
+          <span className="text-klo-muted self-center">
+            {preset.config.transition.duration}s
+          </span>
+        )}
       </div>
     </button>
   );
