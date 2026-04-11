@@ -32,6 +32,12 @@ export async function PATCH(
   }
 
   const supabase = getServiceSupabase();
+
+  // If activating this theme, deactivate all others first (single active theme invariant)
+  if (parsed.data.is_active === true) {
+    await supabase.from("theme_config").update({ is_active: false }).neq("id", id);
+  }
+
   const { data, error } = await supabase
     .from("theme_config")
     .update(parsed.data)

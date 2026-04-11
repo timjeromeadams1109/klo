@@ -1,0 +1,281 @@
+# Maven Function Audit — KLO Admin Dashboard
+#
+# Verifies that admin dashboard actions actually produce the user-facing
+# changes they promise. Run with:
+#   maven-tool function-audit run ~/klo-app --base-url http://localhost:3002
+#
+# Cases marked ⭐ test the runtime consumption layer (admin saves → user sees).
+# Failing cases on first run become the fix punch-list.
+
+base_url: http://localhost:3002
+
+cases:
+  # ─── Sanity: admin UI accessible ───────────────────────────
+  - name: admin-dashboard-loads
+    admin_steps:
+      - action: goto
+        url: /admin
+      - action: wait_for
+        selector: 'text=Admin Dashboard'
+        timeout: 15000
+    verify:
+      - action: expect_visible
+        selector: 'text=Creative Studio'
+
+  # ─── Data seeds in place ───────────────────────────────────
+  - name: animation-presets-seeded
+    admin_steps:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/animation-presets
+        value: '"slug":"fade-up"'
+    verify:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/animation-presets
+        value: '"slug":"parallax-slow"'
+
+  - name: page-configs-seeded
+    admin_steps:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/pages
+        value: '"page_slug":"home"'
+    verify:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/pages
+        value: '"page_slug":"vault"'
+
+  - name: vault-content-seeded
+    admin_steps:
+      - action: api_get_contains
+        url: /api/content/vault
+        value: 'Pastor'
+    verify:
+      - action: api_get_contains
+        url: /api/content/vault
+        value: 'slug'
+
+  # ─── Vault create → public visible (full feedback loop) ──
+  - name: vault-create-appears-publicly
+    admin_steps:
+      - action: api_post
+        url: /api/admin/content-manager/vault
+        capture: created_vault
+        value:
+          title: "Function Audit Vault ${_run.id}"
+          slug: "function-audit-vault-${_run.id}"
+          content_type: "briefing"
+          category: "AI & Ethics"
+          body: "Audit test. Safe to delete."
+          excerpt: "Audit test item"
+          tier_required: "free"
+          visibility: "published"
+    verify:
+      - action: api_get_contains
+        url: /api/content/vault
+        value: "Function Audit Vault ${_run.id}"
+
+  # ─── Vault hide → removed from public ⭐ ────────────────
+  - name: vault-hide-removes-from-public
+    admin_steps:
+      - action: api_patch
+        url: /api/admin/content-manager/vault/${created_vault.data.id}
+        value:
+          visibility: "hidden"
+    verify:
+      - action: api_get_not_contains
+        url: /api/content/vault
+        value: "Function Audit Vault ${_run.id}"
+
+  # ─── Vault restore → back in public ────────────────────
+  - name: vault-restore-to-public
+    admin_steps:
+      - action: api_patch
+        url: /api/admin/content-manager/vault/${created_vault.data.id}
+        value:
+          visibility: "published"
+    verify:
+      - action: api_get_contains
+        url: /api/content/vault
+        value: "Function Audit Vault ${_run.id}"
+
+  # ─── Vault archive → absent from public, present in repo ─
+  - name: vault-archive-moves-to-repository
+    admin_steps:
+      - action: api_patch
+        url: /api/admin/content-manager/vault/${created_vault.data.id}
+        value:
+          visibility: "archived"
+    verify:
+      - action: api_get_not_contains
+        url: /api/content/vault
+        value: "Function Audit Vault ${_run.id}"
+      - action: api_get_contains
+        url: /api/admin/content-manager/vault?visibility=archived
+        value: "Function Audit Vault ${_run.id}"
+
+  # ─── Cleanup: permanent delete ────────────────────────────
+  - name: vault-permanent-delete
+    admin_steps:
+      - action: api_delete
+        url: /api/admin/content-manager/vault/${created_vault.data.id}
+    verify:
+      - action: api_get_not_contains
+        url: /api/admin/content-manager/vault?visibility=archived
+        value: "Function Audit Vault ${_run.id}"
+
+  # ─── Feed create → public visible ─────────────────────────
+  - name: feed-create-appears-publicly
+    admin_steps:
+      - action: api_post
+        url: /api/admin/content-manager/feed
+        capture: created_feed
+        value:
+          title: "Function Audit Feed ${_run.id}"
+          body: "Audit test feed post. Safe to delete."
+          post_type: "insight"
+          tags: ["audit"]
+          visibility: "published"
+    verify:
+      - action: api_get_contains
+        url: /api/content/feed
+        value: "Function Audit Feed ${_run.id}"
+
+  - name: feed-cleanup
+    admin_steps:
+      - action: api_delete
+        url: /api/admin/content-manager/feed/${created_feed.data.id}
+    verify:
+      - action: api_get_not_contains
+        url: /api/content/feed
+        value: "Function Audit Feed ${_run.id}"
+
+  # ─── Theme: create → activate → runtime applied ⭐ ───────
+  - name: theme-create
+    admin_steps:
+      - action: api_post
+        url: /api/admin/creative-studio/theme
+        capture: created_theme
+        value:
+          name: "Function Audit Theme ${_run.id}"
+          colors:
+            primary: "#ff00ff"
+            secondary: "#21B8CD"
+            accent: "#ff00ff"
+            background: "#0D1117"
+            surface: "#161B22"
+            text: "#E6EDF3"
+            muted: "#8B949E"
+            gold: "#C8A84E"
+          typography:
+            bodyFont: "Geist Sans, Inter, sans-serif"
+            displayFont: "Playfair Display, serif"
+            baseSizeRem: 1
+            scaleRatio: 1.25
+            weights:
+              body: 400
+              heading: 700
+          buttons:
+            radiusPx: 12
+            shadowPx: 0
+            hoverScale: 1.02
+            variant: "solid"
+    verify:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/theme
+        value: "Function Audit Theme ${_run.id}"
+
+  - name: theme-activate
+    admin_steps:
+      - action: api_patch
+        url: /api/admin/creative-studio/theme/${created_theme.data.id}
+        value:
+          is_active: true
+    verify:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/theme
+        value: '"is_active":true'
+
+  - name: theme-runtime-applied-to-homepage-⭐
+    admin_steps:
+      - action: wait
+        ms: 200
+    verify:
+      # Critical test: after activation, the homepage should show the
+      # custom primary color in its CSS variables. FAILS until theme
+      # runtime layer is built.
+      - action: goto
+        url: /
+      - action: wait
+        ms: 1000
+      - action: expect_css
+        selector: ":root"
+        property: "--color-primary"
+        value: "#ff00ff"
+
+  - name: theme-cleanup
+    admin_steps:
+      # Deactivate first (can't delete an active theme)
+      - action: api_patch
+        url: /api/admin/creative-studio/theme/${created_theme.data.id}
+        value:
+          is_active: false
+      - action: api_delete
+        url: /api/admin/creative-studio/theme/${created_theme.data.id}
+    verify:
+      - action: api_get_not_contains
+        url: /api/admin/creative-studio/theme
+        value: "Function Audit Theme ${_run.id}"
+
+  # ─── Page Composer: save → runtime rendered ⭐ ────────────
+  - name: page-composer-update-persists
+    admin_steps:
+      - action: api_patch
+        url: /api/admin/creative-studio/pages/home
+        value:
+          hero_config:
+            headline: "Function Audit Headline ${_run.id}"
+            subheadline: "Audit test hero"
+            backgroundType: "color"
+            backgroundRef: "#0D1117"
+            overlayOpacity: 0.5
+    verify:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/pages
+        value: "Function Audit Headline ${_run.id}"
+
+  - name: page-composer-runtime-renders-⭐
+    admin_steps:
+      - action: wait
+        ms: 100
+    verify:
+      # Critical test: the homepage should display the custom headline.
+      # FAILS until page composer runtime is built.
+      - action: goto
+        url: /
+      - action: wait
+        ms: 1000
+      - action: expect_text
+        selector: "h1"
+        value: "Function Audit Headline ${_run.id}"
+
+  # ─── Media Library ─────────────────────────────────────────
+  - name: media-library-list-responds
+    admin_steps:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/media
+        value: '"data"'
+    verify:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/media?limit=1
+        value: '"count"'
+
+  # ─── Push notifications (known broken per user report) ───
+  - name: push-notification-send-endpoint
+    admin_steps:
+      - action: api_post
+        url: /api/push/send
+        value:
+          title: "Function Audit"
+          body: "Test"
+    verify:
+      - action: wait
+        ms: 100

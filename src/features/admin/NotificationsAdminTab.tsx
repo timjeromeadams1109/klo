@@ -40,6 +40,13 @@ interface PushSub {
   user_email?: string;
 }
 
+interface UniqueUser {
+  id: string;
+  name: string | null;
+  email: string | null;
+  platforms: string[];
+}
+
 type SendTarget = "broadcast" | "user";
 
 export default function NotificationsAdminTab() {
@@ -59,6 +66,7 @@ export default function NotificationsAdminTab() {
 
   // Subscribers list
   const [subscribers, setSubscribers] = useState<PushSub[]>([]);
+  const [uniqueUsers, setUniqueUsers] = useState<UniqueUser[]>([]);
   const [loadingSubs, setLoadingSubs] = useState(true);
   const [subStats, setSubStats] = useState({ total: 0, web: 0, ios: 0, android: 0 });
 
@@ -69,6 +77,7 @@ export default function NotificationsAdminTab() {
       if (res.ok) {
         const data = await res.json();
         setSubscribers(data.subscribers || []);
+        setUniqueUsers(data.users || []);
         setSubStats(data.stats || { total: 0, web: 0, ios: 0, android: 0 });
       }
     } catch {
@@ -203,15 +212,31 @@ export default function NotificationsAdminTab() {
               </button>
             </div>
 
-            {/* User ID input (when targeting specific user) */}
+            {/* User dropdown (when targeting specific user) */}
             {target === "user" && (
-              <input
-                type="text"
-                placeholder="User ID (from Users tab)"
-                value={targetUserId}
-                onChange={(e) => setTargetUserId(e.target.value)}
-                className={inputClasses}
-              />
+              <div>
+                <select
+                  value={targetUserId}
+                  onChange={(e) => setTargetUserId(e.target.value)}
+                  className={inputClasses}
+                >
+                  <option value="">
+                    {uniqueUsers.length === 0
+                      ? "No subscribed users yet"
+                      : "Select a user..."}
+                  </option>
+                  {uniqueUsers.map((u) => (
+                    <option key={u.id} value={u.id}>
+                      {u.name ?? u.email ?? u.id.slice(0, 8)}
+                      {u.email && u.name ? ` · ${u.email}` : ""}
+                      {` · ${u.platforms.join(", ")}`}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-klo-muted mt-1">
+                  Only users with an active push subscription appear here.
+                </p>
+              </div>
             )}
 
             {/* Title */}

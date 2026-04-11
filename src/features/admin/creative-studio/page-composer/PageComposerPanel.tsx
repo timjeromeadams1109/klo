@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import type { HeroConfig, BackgroundType, ViewportSize } from "@/types/creative-studio";
 import { usePageComposer } from "./usePageComposer";
+import MediaPicker from "./MediaPicker";
 
 const VIEWPORTS: { size: ViewportSize; icon: React.ElementType; label: string }[] = [
   { size: 390, icon: Smartphone, label: "Mobile" },
@@ -198,18 +199,46 @@ export default function PageComposerPanel() {
             </select>
           </label>
 
-          <label className="block">
-            <span className="text-xs text-klo-muted mb-1 block">
-              {hero.backgroundType === "color" ? "Background Color" : "Asset URL"}
-            </span>
-            <input
-              type={hero.backgroundType === "color" ? "color" : "text"}
-              value={hero.backgroundRef ?? (hero.backgroundType === "color" ? "#0D1117" : "")}
-              onChange={(e) => setHero({ ...hero, backgroundRef: e.target.value || null })}
-              placeholder={hero.backgroundType === "color" ? "" : "Paste media URL from Media Library"}
-              className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]"
-            />
-          </label>
+          {hero.backgroundType === "color" ? (
+            <label className="block">
+              <span className="text-xs text-klo-muted mb-1 block">Background Color</span>
+              <div className="flex items-center gap-2">
+                <input
+                  type="color"
+                  value={hero.backgroundRef ?? "#0D1117"}
+                  onChange={(e) => setHero({ ...hero, backgroundRef: e.target.value })}
+                  className="w-12 h-12 rounded-lg border border-white/10 cursor-pointer bg-transparent"
+                />
+                <input
+                  type="text"
+                  value={hero.backgroundRef ?? "#0D1117"}
+                  onChange={(e) => setHero({ ...hero, backgroundRef: e.target.value || null })}
+                  className="flex-1 px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px] font-mono"
+                />
+              </div>
+            </label>
+          ) : hero.backgroundType === "image" ? (
+            <div>
+              <span className="text-xs text-klo-muted mb-2 block">Background Image</span>
+              <MediaPicker
+                value={hero.backgroundRef}
+                onChange={(url) => setHero({ ...hero, backgroundRef: url })}
+                assetType="image"
+                label="Background Image"
+              />
+            </div>
+          ) : (
+            <label className="block">
+              <span className="text-xs text-klo-muted mb-1 block">Video URL</span>
+              <input
+                type="text"
+                value={hero.backgroundRef ?? ""}
+                onChange={(e) => setHero({ ...hero, backgroundRef: e.target.value || null })}
+                placeholder="Paste a video URL (MP4, WebM)"
+                className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]"
+              />
+            </label>
+          )}
 
           <label className="block">
             <span className="text-xs text-klo-muted mb-1 block">Overlay Opacity ({Math.round(hero.overlayOpacity * 100)}%)</span>
