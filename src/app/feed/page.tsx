@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Rss, ChevronDown, ChevronUp, Clock, Calendar } from "lucide-react";
 import ReactMarkdown from "react-markdown";
@@ -8,7 +8,6 @@ import Badge from "@/components/shared/Badge";
 import Button from "@/components/shared/Button";
 import Card from "@/components/shared/Card";
 import {
-  feedPosts,
   categoryColors,
   type FeedCategory,
   type FeedPost,
@@ -141,6 +140,15 @@ export default function FeedPage() {
   const [activeCategory, setActiveCategory] = useState<"All" | FeedCategory>(
     "All"
   );
+  const [feedPosts, setFeedPosts] = useState<FeedPost[]>([]);
+
+  // Fetch published feed posts from Supabase
+  useEffect(() => {
+    fetch("/api/content/feed")
+      .then((res) => res.json())
+      .then((json) => setFeedPosts(json.data ?? []))
+      .catch((err) => console.error("Failed to fetch feed:", err));
+  }, []);
 
   const filteredPosts =
     activeCategory === "All"

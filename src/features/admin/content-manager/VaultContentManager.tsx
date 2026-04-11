@@ -1,399 +1,477 @@
 "use client";
 
 import { useState } from "react";
-import { Search, Plus, Pencil, Star, Lock, Filter } from "lucide-react";
-import Badge from "@/components/shared/Badge";
-import Button from "@/components/shared/Button";
-import EditModal, { type EditField } from "./EditModal";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, Plus, Pencil, Trash2, RefreshCw, X, Star, AlertTriangle } from "lucide-react";
+import VisibilityToggle from "./VisibilityToggle";
+import { useContent, type BaseContentItem, type Visibility } from "./useContent";
 
-interface VaultItem {
-  id: string;
+interface VaultItem extends BaseContentItem {
   title: string;
-  category: string;
-  type: string;
-  level: string;
-  premium: boolean;
-  published: string;
-  description: string;
   slug: string;
-  duration: string;
-  author: string;
-  files?: { name: string; type: string; size: string }[];
+  content_type: string;
+  category: string;
+  body: string;
+  excerpt: string | null;
+  thumbnail_url: string | null;
+  tier_required: string;
+  author_name: string | null;
+  published_at: string | null;
 }
 
-const VAULT_ITEMS: VaultItem[] = [
-  {
-    id: "v1",
-    title: "The Pastor's Guide to AI Adoption",
-    category: "AI Strategy",
-    type: "framework",
-    level: "Beginner",
-    premium: false,
-    published: "Mar 1, 2026",
-    description: "A step-by-step framework for pastors and ministry leaders looking to responsibly adopt AI tools in their organizations.",
-    slug: "pastors-guide-ai-adoption",
-    duration: "15 min read",
-    author: "Keith L. Odom",
-    files: [
-      { name: "Pastors-Guide-AI-Adoption.pdf", type: "application/pdf", size: "2.4 MB" },
-    ],
-  },
-  {
-    id: "v2",
-    title: "Enterprise AI Governance Framework",
-    category: "Governance",
-    type: "framework",
-    level: "Executive",
-    premium: true,
-    published: "Feb 28, 2026",
-    description: "Comprehensive governance framework for organizations implementing AI at scale, covering ethics, compliance, and risk management.",
-    slug: "enterprise-ai-governance-framework",
-    duration: "25 min read",
-    author: "Keith L. Odom",
-    files: [
-      { name: "AI-Governance-Framework-v2.pdf", type: "application/pdf", size: "3.8 MB" },
-      { name: "Governance-Checklist.docx", type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", size: "156 KB" },
-    ],
-  },
-  {
-    id: "v3",
-    title: "Digital Ministry Playbook 2026",
-    category: "Digital Transformation",
-    type: "playbook",
-    level: "Intermediate",
-    premium: true,
-    published: "Feb 20, 2026",
-    description: "Your comprehensive guide to leveraging digital tools for ministry growth, engagement, and community building.",
-    slug: "digital-ministry-playbook-2026",
-    duration: "30 min read",
-    author: "Keith L. Odom",
-  },
-  {
-    id: "v4",
-    title: "Cybersecurity Essentials for Churches",
-    category: "Cybersecurity",
-    type: "briefing",
-    level: "Beginner",
-    premium: false,
-    published: "Feb 15, 2026",
-    description: "Essential cybersecurity practices every church needs, from protecting member data to securing online giving.",
-    slug: "cybersecurity-essentials-churches",
-    duration: "12 min read",
-    author: "Keith L. Odom",
-  },
-  {
-    id: "v5",
-    title: "Board-Level Technology Reporting Template",
-    category: "Governance",
-    type: "template",
-    level: "Executive",
-    premium: true,
-    published: "Feb 10, 2026",
-    description: "Ready-to-use reporting template for presenting technology initiatives, ROI, and risk to board members.",
-    slug: "board-level-tech-reporting",
-    duration: "10 min read",
-    author: "Keith L. Odom",
-    files: [
-      { name: "Board-Tech-Report-Template.pptx", type: "application/vnd.openxmlformats-officedocument.presentationml.presentation", size: "1.1 MB" },
-      { name: "Board-Tech-Report-Template.docx", type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", size: "245 KB" },
-    ],
-  },
-  {
-    id: "v6",
-    title: "AI Ethics Policy Template for Nonprofits",
-    category: "AI Strategy",
-    type: "policy",
-    level: "Intermediate",
-    premium: false,
-    published: "Feb 5, 2026",
-    description: "A customizable AI ethics policy template designed specifically for nonprofit and faith-based organizations.",
-    slug: "ai-ethics-policy-nonprofits",
-    duration: "8 min read",
-    author: "Keith L. Odom",
-    files: [
-      { name: "AI-Ethics-Policy-Template.docx", type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", size: "189 KB" },
-    ],
-  },
-  {
-    id: "v7",
-    title: "The Executive AI Briefing Q1 2026",
-    category: "AI Strategy",
-    type: "briefing",
-    level: "Executive",
-    premium: true,
-    published: "Jan 30, 2026",
-    description: "Quarterly executive briefing covering the latest AI developments, regulatory changes, and strategic implications.",
-    slug: "executives-ai-briefing-q1-2026",
-    duration: "20 min read",
-    author: "Keith L. Odom",
-    files: [
-      { name: "Executive-AI-Briefing-Q1-2026.pdf", type: "application/pdf", size: "4.2 MB" },
-    ],
-  },
-  {
-    id: "v8",
-    title: "Data Privacy Compliance Checklist",
-    category: "Governance",
-    type: "template",
-    level: "Intermediate",
-    premium: false,
-    published: "Jan 25, 2026",
-    description: "Comprehensive checklist for ensuring your organization meets data privacy requirements across major regulatory frameworks.",
-    slug: "data-privacy-compliance-checklist",
-    duration: "6 min read",
-    author: "Keith L. Odom",
-    files: [
-      { name: "Data-Privacy-Checklist.pdf", type: "application/pdf", size: "890 KB" },
-    ],
-  },
-  {
-    id: "v9",
-    title: "Church Digital Transformation Roadmap",
-    category: "Digital Transformation",
-    type: "framework",
-    level: "Beginner",
-    premium: false,
-    published: "Jan 20, 2026",
-    description: "A 12-month roadmap for churches beginning their digital transformation journey, from assessment to implementation.",
-    slug: "church-digital-transformation-roadmap",
-    duration: "18 min read",
-    author: "Keith L. Odom",
-  },
-  {
-    id: "v10",
-    title: "AI Vendor Evaluation Rubric",
-    category: "AI Strategy",
-    type: "template",
-    level: "Executive",
-    premium: true,
-    published: "Jan 15, 2026",
-    description: "Structured rubric for evaluating AI vendor proposals, comparing capabilities, pricing, and alignment with organizational values.",
-    slug: "ai-vendor-evaluation-rubric",
-    duration: "10 min read",
-    author: "Keith L. Odom",
-    files: [
-      { name: "AI-Vendor-Rubric.xlsx", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", size: "312 KB" },
-    ],
-  },
-  {
-    id: "v11",
-    title: "Leadership in the Age of AI",
-    category: "Leadership",
-    type: "briefing",
-    level: "Intermediate",
-    premium: false,
-    published: "Jan 10, 2026",
-    description: "How leaders must evolve their management style, decision-making, and strategic thinking in an AI-augmented world.",
-    slug: "leadership-age-of-ai",
-    duration: "14 min read",
-    author: "Keith L. Odom",
-  },
-  {
-    id: "v12",
-    title: "Ministry Technology Budget Template",
-    category: "Digital Transformation",
-    type: "template",
-    level: "Beginner",
-    premium: false,
-    published: "Jan 5, 2026",
-    description: "A practical budget template for ministry technology initiatives, including ROI tracking and stakeholder reporting.",
-    slug: "ministry-tech-budget-template",
-    duration: "5 min read",
-    author: "Keith L. Odom",
-    files: [
-      { name: "Ministry-Tech-Budget-2026.xlsx", type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", size: "178 KB" },
-    ],
-  },
+const CATEGORIES = [
+  "AI & Ethics",
+  "Church & Tech",
+  "Governance",
+  "Leadership",
+  "Youth & Workforce",
+  "Previous Events",
+  "Current Events",
 ];
 
-const CATEGORIES = ["All", "AI Strategy", "Governance", "Digital Transformation", "Cybersecurity", "Leadership"];
-const TYPES = ["All", "framework", "briefing", "template", "policy", "playbook"];
-
-function getItemFields(item: VaultItem): EditField[] {
-  return [
-    { key: "title", label: "Title", value: item.title, type: "text", maxLength: 120, required: true },
-    { key: "slug", label: "URL Slug", value: item.slug, type: "text", maxLength: 100, hint: "Used in the URL: /vault/your-slug-here" },
-    { key: "category", label: "Category", value: item.category, type: "select", options: CATEGORIES.filter((c) => c !== "All") },
-    { key: "type", label: "Content Type", value: item.type, type: "select", options: TYPES.filter((t) => t !== "All") },
-    { key: "level", label: "Level", value: item.level, type: "select", options: ["Beginner", "Intermediate", "Executive"] },
-    { key: "description", label: "Description", value: item.description, type: "textarea", maxLength: 500 },
-    { key: "duration", label: "Duration / Read Time", value: item.duration, type: "text", maxLength: 30 },
-    { key: "author", label: "Author", value: item.author, type: "text", maxLength: 60 },
-    { key: "premium", label: "Access", value: item.premium ? "Premium" : "Free", type: "select", options: ["Free", "Premium"] },
-  ];
-}
-
-function newItemFields(): EditField[] {
-  return [
-    { key: "title", label: "Title", value: "", type: "text", maxLength: 120, required: true },
-    { key: "slug", label: "URL Slug", value: "", type: "text", maxLength: 100, hint: "Used in the URL: /vault/your-slug-here" },
-    { key: "category", label: "Category", value: "AI Strategy", type: "select", options: CATEGORIES.filter((c) => c !== "All") },
-    { key: "type", label: "Content Type", value: "briefing", type: "select", options: TYPES.filter((t) => t !== "All") },
-    { key: "level", label: "Level", value: "Beginner", type: "select", options: ["Beginner", "Intermediate", "Executive"] },
-    { key: "description", label: "Description", value: "", type: "textarea", maxLength: 500 },
-    { key: "duration", label: "Duration / Read Time", value: "", type: "text", maxLength: 30 },
-    { key: "author", label: "Author", value: "Keith L. Odom", type: "text", maxLength: 60 },
-    { key: "premium", label: "Access", value: "Free", type: "select", options: ["Free", "Premium"] },
-  ];
-}
+const CONTENT_TYPES = ["article", "video", "template", "guide", "briefing", "framework", "policy", "replay", "event"];
+const TIERS = ["free", "essentials", "professional", "enterprise"];
 
 export default function VaultContentManager() {
-  const [items] = useState(VAULT_ITEMS);
-  const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("All");
-  const [typeFilter, setTypeFilter] = useState("All");
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [creatingNew, setCreatingNew] = useState(false);
+  const {
+    items,
+    loading,
+    totalCount,
+    visibility,
+    setVisibility,
+    search,
+    setSearch,
+    updateItem,
+    setItemVisibility,
+    deleteItem,
+    createItem,
+    refetch,
+  } = useContent<VaultItem>({ type: "vault", initialVisibility: "all" });
 
-  const filtered = items.filter((item) => {
-    const matchesSearch =
-      !search ||
-      item.title.toLowerCase().includes(search.toLowerCase()) ||
-      item.description.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = categoryFilter === "All" || item.category === categoryFilter;
-    const matchesType = typeFilter === "All" || item.type === typeFilter;
-    return matchesSearch && matchesCategory && matchesType;
-  });
+  const [editingItem, setEditingItem] = useState<VaultItem | null>(null);
+  const [showCreate, setShowCreate] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [error, setError] = useState("");
 
-  const editingItem = items.find((i) => i.id === editingId);
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteItem(id);
+      setDeleteConfirm(null);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Delete failed");
+    }
+  };
 
   return (
     <div className="space-y-4">
-      {/* Search + Filters + Add */}
+      {error && (
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-red-500/10 border border-red-500/20">
+          <AlertTriangle size={16} className="text-red-400 shrink-0" />
+          <p className="text-sm text-red-300 flex-1">{error}</p>
+          <button onClick={() => setError("")} className="min-h-[44px] min-w-[44px] flex items-center justify-center"><X size={14} className="text-red-400" /></button>
+        </div>
+      )}
+
+      {/* Toolbar */}
       <div className="flex flex-col sm:flex-row gap-3">
         <div className="relative flex-1">
           <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-klo-muted" />
           <input
             type="text"
-            placeholder="Search vault content..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full bg-[#0D1117] border border-[#21262D] rounded-lg pl-10 pr-4 py-2.5 text-sm text-klo-text placeholder:text-klo-muted/50 focus:outline-none focus:ring-2 focus:ring-[#2764FF]/50"
+            placeholder="Search vault content..."
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm placeholder:text-klo-muted focus:outline-none focus:border-klo-accent/50 min-h-[44px]"
           />
         </div>
-        <div className="flex gap-2">
-          <select
-            value={categoryFilter}
-            onChange={(e) => setCategoryFilter(e.target.value)}
-            className="bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-sm text-klo-text min-h-[44px]"
-          >
-            {CATEGORIES.map((c) => (
-              <option key={c} value={c}>{c === "All" ? "All Categories" : c}</option>
-            ))}
-          </select>
-          <select
-            value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
-            className="bg-[#0D1117] border border-[#21262D] rounded-lg px-3 py-2.5 text-sm text-klo-text min-h-[44px]"
-          >
-            {TYPES.map((t) => (
-              <option key={t} value={t}>{t === "All" ? "All Types" : t.charAt(0).toUpperCase() + t.slice(1)}</option>
-            ))}
-          </select>
-        </div>
-        <Button variant="primary" size="sm" onClick={() => setCreatingNew(true)}>
-          <Plus size={16} />
-          Add New
-        </Button>
-      </div>
 
-      {/* Results count */}
-      <p className="text-xs text-klo-muted">
-        Showing {filtered.length} of {items.length} items
-      </p>
-
-      {/* Item List */}
-      <div className="space-y-2">
-        {filtered.map((item) => (
-          <div
-            key={item.id}
-            className="flex items-center gap-4 p-4 rounded-xl bg-klo-dark/30 border border-white/5 hover:border-white/10 transition-all"
-          >
-            {/* Content type icon */}
-            <div className="w-10 h-10 rounded-lg bg-[#2764FF]/10 flex items-center justify-center shrink-0">
-              <span className="text-[10px] font-bold text-[#2764FF] uppercase">
-                {item.type.slice(0, 4)}
-              </span>
-            </div>
-
-            {/* Info */}
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 mb-0.5">
-                <p className="text-sm font-medium text-klo-text truncate">
-                  {item.title}
-                </p>
-                {item.premium && (
-                  <Lock size={12} className="text-klo-gold shrink-0" />
-                )}
-              </div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <Badge variant="blue">{item.category}</Badge>
-                <Badge variant="muted">{item.level}</Badge>
-                {item.files && item.files.length > 0 && (
-                  <span className="text-[10px] text-klo-muted">
-                    {item.files.length} file{item.files.length !== 1 ? "s" : ""}
-                  </span>
-                )}
-              </div>
-            </div>
-
-            {/* Date */}
-            <span className="text-xs text-klo-muted/50 shrink-0 hidden sm:block">
-              {item.published}
-            </span>
-
-            {/* Edit */}
+        <div className="flex gap-1 p-1 rounded-xl bg-klo-dark/30 border border-white/5">
+          {(["all", "published", "hidden", "archived"] as const).map((v) => (
             <button
-              onClick={() => setEditingId(item.id)}
-              className="shrink-0 p-2 rounded-lg hover:bg-white/5 text-klo-muted hover:text-klo-text transition-colors cursor-pointer min-w-[40px] min-h-[40px] flex items-center justify-center"
+              key={v}
+              onClick={() => setVisibility(v)}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all capitalize min-h-[36px] ${
+                visibility === v ? "bg-klo-slate text-klo-text shadow" : "text-klo-muted hover:text-klo-text"
+              }`}
             >
-              <Pencil size={16} />
+              {v}
             </button>
-          </div>
-        ))}
+          ))}
+        </div>
+
+        <button
+          onClick={() => setShowCreate(true)}
+          className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-klo-accent text-white text-sm font-medium hover:bg-klo-accent/80 min-h-[44px]"
+        >
+          <Plus size={16} /> New Item
+        </button>
+
+        <button
+          onClick={refetch}
+          className="p-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-muted hover:text-klo-text min-h-[44px] min-w-[44px] flex items-center justify-center"
+        >
+          <RefreshCw size={16} />
+        </button>
       </div>
 
-      {filtered.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-klo-muted text-sm">No items match your search.</p>
+      {/* Count */}
+      <div className="text-sm text-klo-muted">
+        {totalCount} vault item{totalCount !== 1 ? "s" : ""}
+      </div>
+
+      {/* List */}
+      {loading ? (
+        <div className="flex items-center justify-center h-48">
+          <RefreshCw size={24} className="animate-spin text-klo-muted" />
+        </div>
+      ) : items.length === 0 ? (
+        <div className="text-center py-12 text-klo-muted text-sm glass rounded-2xl border border-white/5">
+          No vault items match the current filter.
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {items.map((item) => (
+            <VaultCard
+              key={item.id}
+              item={item}
+              onEdit={() => setEditingItem(item)}
+              onDelete={() => setDeleteConfirm(item.id)}
+              onVisibilityChange={async (v) => {
+                try {
+                  await setItemVisibility(item.id, v);
+                } catch (err) {
+                  setError(err instanceof Error ? err.message : "Update failed");
+                }
+              }}
+            />
+          ))}
         </div>
       )}
 
       {/* Edit Modal */}
-      {editingItem && (
-        <EditModal
-          open={true}
-          title={`Edit: ${editingItem.title}`}
-          subtitle={`/vault/${editingItem.slug}`}
-          fields={getItemFields(editingItem)}
-          files={editingItem.files}
-          onSave={(values) => {
-            console.log("Save vault item:", editingItem.id, values);
-            setEditingId(null);
-          }}
-          onClose={() => setEditingId(null)}
-          onDelete={() => {
-            console.log("Delete vault item:", editingItem.id);
-            setEditingId(null);
-          }}
-        />
-      )}
+      <AnimatePresence>
+        {editingItem && (
+          <EditItemModal
+            item={editingItem}
+            onClose={() => setEditingItem(null)}
+            onSave={async (updates) => {
+              try {
+                await updateItem(editingItem.id, updates as Partial<VaultItem>);
+                setEditingItem(null);
+              } catch (err) {
+                setError(err instanceof Error ? err.message : "Save failed");
+              }
+            }}
+          />
+        )}
+      </AnimatePresence>
 
-      {/* New Item Modal */}
-      {creatingNew && (
-        <EditModal
-          open={true}
-          title="Add New Vault Item"
-          subtitle="This will be published immediately after confirmation"
-          fields={newItemFields()}
-          isNew
-          onSave={(values) => {
-            console.log("Create vault item:", values);
-            setCreatingNew(false);
-          }}
-          onClose={() => setCreatingNew(false)}
-        />
-      )}
+      {/* Create Modal */}
+      <AnimatePresence>
+        {showCreate && (
+          <CreateItemModal
+            onClose={() => setShowCreate(false)}
+            onCreate={async (data) => {
+              try {
+                await createItem(data as Partial<VaultItem>);
+                setShowCreate(false);
+              } catch (err) {
+                setError(err instanceof Error ? err.message : "Create failed");
+              }
+            }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation */}
+      <AnimatePresence>
+        {deleteConfirm && (
+          <DeleteConfirm
+            onConfirm={() => handleDelete(deleteConfirm)}
+            onCancel={() => setDeleteConfirm(null)}
+          />
+        )}
+      </AnimatePresence>
     </div>
+  );
+}
+
+function VaultCard({
+  item,
+  onEdit,
+  onDelete,
+  onVisibilityChange,
+}: {
+  item: VaultItem;
+  onEdit: () => void;
+  onDelete: () => void;
+  onVisibilityChange: (v: Visibility) => void;
+}) {
+  return (
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 4 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 4 }}
+      className="flex flex-col sm:flex-row gap-3 p-4 rounded-xl bg-klo-dark/30 border border-white/5 hover:border-white/10 transition-all"
+    >
+      <div className="flex-1 min-w-0">
+        <div className="flex items-start gap-2">
+          <h4 className="text-sm font-medium text-klo-text truncate flex-1">{item.title}</h4>
+          {item.tier_required !== "free" && (
+            <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-klo-gold/10 text-klo-gold text-[10px] shrink-0">
+              <Star size={10} /> Premium
+            </span>
+          )}
+        </div>
+        <p className="text-xs text-klo-muted mt-1 line-clamp-2">{item.excerpt ?? item.body.slice(0, 120)}</p>
+        <div className="flex items-center gap-2 mt-2 flex-wrap">
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-klo-accent/10 text-klo-accent">{item.category}</span>
+          <span className="text-[10px] px-1.5 py-0.5 rounded bg-klo-dark text-klo-muted capitalize">{item.content_type}</span>
+          {item.published_at && (
+            <span className="text-[10px] text-klo-muted">
+              {new Date(item.published_at).toLocaleDateString()}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 sm:flex-col sm:items-end">
+        <VisibilityToggle value={item.visibility} onChange={onVisibilityChange} size="sm" />
+        <div className="flex gap-1">
+          <button onClick={onEdit} className="p-2 rounded-lg hover:bg-white/5 text-klo-muted hover:text-klo-text min-h-[36px] min-w-[36px] flex items-center justify-center">
+            <Pencil size={14} />
+          </button>
+          <button onClick={onDelete} className="p-2 rounded-lg hover:bg-red-500/20 text-klo-muted hover:text-red-400 min-h-[36px] min-w-[36px] flex items-center justify-center">
+            <Trash2 size={14} />
+          </button>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
+
+function EditItemModal({
+  item,
+  onClose,
+  onSave,
+}: {
+  item: VaultItem;
+  onClose: () => void;
+  onSave: (updates: Partial<VaultItem>) => Promise<void>;
+}) {
+  const [title, setTitle] = useState(item.title);
+  const [category, setCategory] = useState(item.category);
+  const [contentType, setContentType] = useState(item.content_type);
+  const [tierRequired, setTierRequired] = useState(item.tier_required);
+  const [excerpt, setExcerpt] = useState(item.excerpt ?? "");
+  const [body, setBody] = useState(item.body);
+  const [authorName, setAuthorName] = useState(item.author_name ?? "");
+  const [saving, setSaving] = useState(false);
+
+  const handleSave = async () => {
+    setSaving(true);
+    try {
+      await onSave({
+        title,
+        category,
+        content_type: contentType,
+        tier_required: tierRequired,
+        excerpt: excerpt || undefined,
+        body,
+        author_name: authorName || undefined,
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 overflow-y-auto"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <motion.div
+        initial={{ scale: 0.95, y: 16 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.95, y: 16 }}
+        className="w-full max-w-2xl rounded-2xl bg-klo-slate border border-white/10 p-6 space-y-4 my-8"
+      >
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-klo-text">Edit Vault Item</h3>
+          <button onClick={onClose} className="min-h-[44px] min-w-[44px] flex items-center justify-center text-klo-muted hover:text-klo-text"><X size={18} /></button>
+        </div>
+
+        <label className="block">
+          <span className="text-xs text-klo-muted mb-1 block">Title</span>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]" />
+        </label>
+
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <label className="block">
+            <span className="text-xs text-klo-muted mb-1 block">Category</span>
+            <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]">
+              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </label>
+          <label className="block">
+            <span className="text-xs text-klo-muted mb-1 block">Type</span>
+            <select value={contentType} onChange={(e) => setContentType(e.target.value)} className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]">
+              {CONTENT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </label>
+          <label className="block">
+            <span className="text-xs text-klo-muted mb-1 block">Tier</span>
+            <select value={tierRequired} onChange={(e) => setTierRequired(e.target.value)} className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]">
+              {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </label>
+        </div>
+
+        <label className="block">
+          <span className="text-xs text-klo-muted mb-1 block">Excerpt</span>
+          <textarea value={excerpt} onChange={(e) => setExcerpt(e.target.value)} rows={2} className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm resize-none" />
+        </label>
+
+        <label className="block">
+          <span className="text-xs text-klo-muted mb-1 block">Body</span>
+          <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={8} className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm resize-none" />
+        </label>
+
+        <label className="block">
+          <span className="text-xs text-klo-muted mb-1 block">Author</span>
+          <input value={authorName} onChange={(e) => setAuthorName(e.target.value)} className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]" />
+        </label>
+
+        <div className="flex gap-2 pt-2">
+          <button onClick={onClose} className="flex-1 px-4 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-muted text-sm min-h-[44px]">Cancel</button>
+          <button onClick={handleSave} disabled={saving} className="flex-1 px-4 py-2.5 rounded-xl bg-klo-accent text-white text-sm font-medium min-h-[44px] disabled:opacity-50">
+            {saving ? "Saving..." : "Save"}
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function CreateItemModal({
+  onClose,
+  onCreate,
+}: {
+  onClose: () => void;
+  onCreate: (data: Partial<VaultItem>) => Promise<void>;
+}) {
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState(CATEGORIES[0]);
+  const [contentType, setContentType] = useState(CONTENT_TYPES[0]);
+  const [body, setBody] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  const handleCreate = async () => {
+    if (!title.trim() || !body.trim()) return;
+    setSaving(true);
+    try {
+      const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+      await onCreate({
+        title: title.trim(),
+        slug,
+        category,
+        content_type: contentType,
+        body,
+        excerpt: body.slice(0, 200),
+        tier_required: "free",
+        visibility: "published",
+      });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 overflow-y-auto"
+      onClick={(e) => e.target === e.currentTarget && onClose()}
+    >
+      <motion.div
+        initial={{ scale: 0.95, y: 16 }}
+        animate={{ scale: 1, y: 0 }}
+        exit={{ scale: 0.95, y: 16 }}
+        className="w-full max-w-lg rounded-2xl bg-klo-slate border border-white/10 p-6 space-y-4 my-8"
+      >
+        <div className="flex items-center justify-between">
+          <h3 className="text-lg font-semibold text-klo-text">New Vault Item</h3>
+          <button onClick={onClose} className="min-h-[44px] min-w-[44px] flex items-center justify-center text-klo-muted hover:text-klo-text"><X size={18} /></button>
+        </div>
+
+        <label className="block">
+          <span className="text-xs text-klo-muted mb-1 block">Title</span>
+          <input value={title} onChange={(e) => setTitle(e.target.value)} autoFocus className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]" />
+        </label>
+
+        <div className="grid grid-cols-2 gap-3">
+          <label className="block">
+            <span className="text-xs text-klo-muted mb-1 block">Category</span>
+            <select value={category} onChange={(e) => setCategory(e.target.value)} className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]">
+              {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+            </select>
+          </label>
+          <label className="block">
+            <span className="text-xs text-klo-muted mb-1 block">Type</span>
+            <select value={contentType} onChange={(e) => setContentType(e.target.value)} className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]">
+              {CONTENT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </label>
+        </div>
+
+        <label className="block">
+          <span className="text-xs text-klo-muted mb-1 block">Body</span>
+          <textarea value={body} onChange={(e) => setBody(e.target.value)} rows={6} className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm resize-none" />
+        </label>
+
+        <div className="flex gap-2 pt-2">
+          <button onClick={onClose} className="flex-1 px-4 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-muted text-sm min-h-[44px]">Cancel</button>
+          <button onClick={handleCreate} disabled={saving || !title.trim() || !body.trim()} className="flex-1 px-4 py-2.5 rounded-xl bg-klo-accent text-white text-sm font-medium min-h-[44px] disabled:opacity-50">
+            {saving ? "Creating..." : "Create"}
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function DeleteConfirm({ onConfirm, onCancel }: { onConfirm: () => void; onCancel: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      onClick={(e) => e.target === e.currentTarget && onCancel()}
+    >
+      <motion.div
+        initial={{ scale: 0.95 }}
+        animate={{ scale: 1 }}
+        exit={{ scale: 0.95 }}
+        className="w-full max-w-sm rounded-2xl bg-klo-slate border border-white/10 p-6 text-center space-y-4"
+      >
+        <div className="inline-flex p-3 rounded-xl bg-red-500/10">
+          <Trash2 size={24} className="text-red-400" />
+        </div>
+        <h3 className="text-lg font-semibold text-klo-text">Delete Permanently?</h3>
+        <p className="text-sm text-klo-muted">
+          This action cannot be undone. If you just want to hide this item, use the Hidden or Archived toggle instead.
+        </p>
+        <div className="flex gap-2">
+          <button onClick={onCancel} className="flex-1 px-4 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-muted text-sm min-h-[44px]">Cancel</button>
+          <button onClick={onConfirm} className="flex-1 px-4 py-2.5 rounded-xl bg-red-500/20 border border-red-500/30 text-red-300 text-sm font-medium min-h-[44px]">Delete</button>
+        </div>
+      </motion.div>
+    </motion.div>
   );
 }

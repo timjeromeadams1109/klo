@@ -1,21 +1,23 @@
 "use client";
 
 import { useState } from "react";
-import { Home, BookOpen, Rss } from "lucide-react";
+import { Home, BookOpen, Rss, Archive } from "lucide-react";
 import HomeContentManager from "./content-manager/HomeContentManager";
 import VaultContentManager from "./content-manager/VaultContentManager";
 import FeedContentManager from "./content-manager/FeedContentManager";
+import ContentRepository from "./content-manager/ContentRepository";
 
-type Section = "home" | "vault" | "feed";
+type Section = "home" | "vault" | "feed" | "repository";
 
-const sections: { id: Section; label: string; icon: React.ElementType; count: number }[] = [
-  { id: "home", label: "Home Page", icon: Home, count: 7 },
-  { id: "vault", label: "Vault Library", icon: BookOpen, count: 12 },
-  { id: "feed", label: "Feed Posts", icon: Rss, count: 8 },
+const sections: { id: Section; label: string; icon: React.ElementType }[] = [
+  { id: "home", label: "Home Page", icon: Home },
+  { id: "vault", label: "Vault Library", icon: BookOpen },
+  { id: "feed", label: "Feed Posts", icon: Rss },
+  { id: "repository", label: "Repository", icon: Archive },
 ];
 
 export default function ContentManagerTab() {
-  const [activeSection, setActiveSection] = useState<Section>("home");
+  const [activeSection, setActiveSection] = useState<Section>("vault");
 
   return (
     <div className="space-y-6">
@@ -25,29 +27,26 @@ export default function ContentManagerTab() {
           Content Manager
         </h2>
         <p className="text-sm text-klo-muted mt-1">
-          Add, edit, and organize all content across your app. Upload files and manage what visitors see.
+          Add, edit, hide, or archive content. Archived items move to the Repository and remain available as reference for KLO Intelligence.
         </p>
       </div>
 
       {/* Section Selector */}
-      <div className="flex gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {sections.map((section) => {
           const Icon = section.icon;
           return (
             <button
               key={section.id}
               onClick={() => setActiveSection(section.id)}
-              className={`flex-1 flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer ${
+              className={`flex items-center gap-3 p-4 rounded-xl border transition-all cursor-pointer min-h-[44px] ${
                 activeSection === section.id
                   ? "bg-[#2764FF]/10 border-[#2764FF]/30 text-klo-text"
                   : "bg-klo-dark/30 border-white/5 text-klo-muted hover:text-klo-text hover:border-white/10"
               }`}
             >
               <Icon size={20} />
-              <div className="text-left">
-                <p className="text-sm font-medium">{section.label}</p>
-                <p className="text-xs text-klo-muted">{section.count} items</p>
-              </div>
+              <p className="text-sm font-medium">{section.label}</p>
             </button>
           );
         })}
@@ -57,6 +56,7 @@ export default function ContentManagerTab() {
       {activeSection === "home" && <HomeContentManager />}
       {activeSection === "vault" && <VaultContentManager />}
       {activeSection === "feed" && <FeedContentManager />}
+      {activeSection === "repository" && <ContentRepository />}
     </div>
   );
 }
