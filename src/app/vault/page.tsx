@@ -7,7 +7,7 @@ import { BookOpen, Search, X } from "lucide-react";
 import CategoryTabs from "@/components/vault/CategoryTabs";
 import FilterBar from "@/components/vault/FilterBar";
 import ContentCard from "@/components/vault/ContentCard";
-import { vaultItems, VAULT_CATEGORIES } from "@/lib/vault-data";
+import { VAULT_CATEGORIES } from "@/lib/vault-data";
 import type { VaultItem } from "@/lib/vault-data";
 import { fetchEventItems } from "@/lib/vault-events";
 
@@ -36,6 +36,7 @@ export default function VaultPage() {
   const [level, setLevel] = useState("");
   const [type, setType] = useState("");
   const [freeOnly, setFreeOnly] = useState(false);
+  const [vaultItems, setVaultItems] = useState<VaultItem[]>([]);
   const [eventItems, setEventItems] = useState<VaultItem[]>([]);
   const [eventsLoading, setEventsLoading] = useState(true);
 
@@ -46,6 +47,14 @@ export default function VaultPage() {
     }
   }, [tabParam]);
 
+  // Fetch published vault items from Supabase (via /api/content/vault)
+  useEffect(() => {
+    fetch("/api/content/vault")
+      .then((res) => res.json())
+      .then((json) => setVaultItems(json.data ?? []))
+      .catch((err) => console.error("Failed to fetch vault:", err));
+  }, []);
+
   // Fetch dynamic event items
   useEffect(() => {
     fetchEventItems()
@@ -55,7 +64,7 @@ export default function VaultPage() {
 
   const allItems = useMemo(
     () => [...vaultItems, ...eventItems],
-    [eventItems]
+    [vaultItems, eventItems]
   );
 
   const filteredItems = useMemo(() => {

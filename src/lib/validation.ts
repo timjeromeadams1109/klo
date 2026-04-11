@@ -596,6 +596,55 @@ export const audioAssetUpdateSchema = z.object({
 // Creative Studio — Page Configs
 // ----------------------------------------------------------------
 
+// ----------------------------------------------------------------
+// Content Manager — vault + feed content with visibility toggle
+// ----------------------------------------------------------------
+
+export const visibilitySchema = z.enum(["published", "hidden", "archived"]);
+
+export const vaultContentUpsertSchema = z.object({
+  title: z.string().min(1).max(500),
+  slug: z.string().min(1).max(500).regex(/^[a-z0-9-]+$/),
+  content_type: z.string().max(50),
+  category: z.string().max(200),
+  body: z.string().max(100000).optional(),
+  excerpt: z.string().max(2000).optional(),
+  thumbnail_url: z.string().max(2000).nullable().optional(),
+  tier_required: z.enum(["free", "essentials", "professional", "enterprise"]).optional(),
+  visibility: visibilitySchema.optional(),
+  author_name: z.string().max(200).optional(),
+  published_at: z.string().nullable().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+});
+
+export const vaultContentUpdateSchema = vaultContentUpsertSchema.partial().refine(
+  (data) => Object.keys(data).length > 0,
+  { message: "At least one field is required" },
+);
+
+export const feedPostUpsertSchema = z.object({
+  title: z.string().max(500).nullable().optional(),
+  body: z.string().min(1).max(100000),
+  post_type: z.string().max(50).optional(),
+  tags: z.array(z.string().max(100)).max(20).optional(),
+  visibility: visibilitySchema.optional(),
+  published_at: z.string().nullable().optional(),
+  metadata: z.record(z.string(), z.unknown()).optional(),
+  is_pinned: z.boolean().optional(),
+});
+
+export const feedPostUpdateSchema = feedPostUpsertSchema.partial().refine(
+  (data) => Object.keys(data).length > 0,
+  { message: "At least one field is required" },
+);
+
+export const contentListQuerySchema = z.object({
+  visibility: visibilitySchema.optional(),
+  search: z.string().max(200).optional(),
+  limit: z.coerce.number().int().min(1).max(200).optional(),
+  offset: z.coerce.number().int().min(0).optional(),
+});
+
 export const pageConfigUpdateSchema = z.object({
   hero_config: z.object({
     headline: z.string().max(500),
