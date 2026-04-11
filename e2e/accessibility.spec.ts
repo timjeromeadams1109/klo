@@ -6,7 +6,8 @@ test.describe("Accessibility (WCAG)", () => {
     page,
   }) => {
     await page.goto("/");
-    const results = await new AxeBuilder({ page })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const results = await new AxeBuilder({ page: page as any })
       .withTags(["wcag2a", "wcag2aa"])
       .disableRules(["region", "color-contrast"])
       .analyze();
@@ -17,7 +18,8 @@ test.describe("Accessibility (WCAG)", () => {
     page,
   }) => {
     await page.goto("/auth/signin");
-    const results = await new AxeBuilder({ page })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const results = await new AxeBuilder({ page: page as any })
       .withTags(["wcag2a", "wcag2aa"])
       .disableRules(["region", "color-contrast"])
       .analyze();

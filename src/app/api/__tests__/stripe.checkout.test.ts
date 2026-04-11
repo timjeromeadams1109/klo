@@ -33,13 +33,14 @@ vi.mock("@/lib/stripe", () => ({
 }));
 
 import { POST } from "@/app/api/stripe/checkout/route";
+import type { NextRequest } from "next/server";
 
-function makeRequest(body: unknown): Request {
+function makeRequest(body: unknown): NextRequest {
   return new Request("http://localhost:3000/api/stripe/checkout", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
-  });
+  }) as unknown as NextRequest;
 }
 
 const validBody = { priceId: "price_abc123", tier: "pro" };
