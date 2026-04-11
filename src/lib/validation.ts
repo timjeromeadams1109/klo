@@ -561,7 +561,9 @@ export const themeConfigCreateSchema = z.object({
   custom_css: z.string().max(10000).optional(),
 });
 
-export const themeConfigUpdateSchema = themeConfigCreateSchema.partial().refine(
+export const themeConfigUpdateSchema = themeConfigCreateSchema.partial().extend({
+  is_active: z.boolean().optional(),
+}).refine(
   (data) => Object.keys(data).length > 0,
   { message: "At least one field is required" },
 );

@@ -12,6 +12,7 @@ import OfflineBanner from "@/components/layout/OfflineBanner";
 import TitleFade from "@/components/layout/TitleFade";
 import ScrollToTop from "@/components/layout/ScrollToTop";
 import ActiveSurveyProvider from "@/components/layout/ActiveSurveyProvider";
+import ThemeInjector from "@/components/layout/ThemeInjector";
 import JsonLd, {
   personJsonLd,
   organizationJsonLd,
@@ -77,7 +78,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -85,6 +86,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${playfairDisplay.variable} ${dmSans.variable}`}>
       <head>
+        <ThemeInjector />
         <meta name="theme-color" content="#0D1117" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <script

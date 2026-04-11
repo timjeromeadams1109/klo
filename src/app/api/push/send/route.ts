@@ -1,48 +1,53 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { broadcastPush, sendPushToUser, sendPushToUsers } from "@/lib/push-server";
 import { pushSendSchema } from "@/lib/validation";
+import { verifyCreativeStudioAdmin } from "@/lib/creative-studio-auth";
 
 export async function POST(request: NextRequest) {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) {
+  const session = await verifyCreativeStudioAdmin();
+  if (!session) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  // Only owner/admin can send push notifications
-  const role = (session.user as { role?: string }).role;
-  if (!["owner", "admin"].includes(role ?? "")) {
-    return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  let raw: unknown;
+  try {
+    raw = await request.json();
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid JSON in request body" },
+      { status: 400 }
+    );
   }
 
+  const parsed = pushSendSchema.safeParse(raw);
+  if (!parsed.success) {
+    return NextResponse.json(
+      { error: "Validation failed", details: parsed.error.flatten() },
+      { status: 400 }
+    );
+  }
+
+  const { title, body, url, tag, userId, userIds } = parsed.data;
+  const payload = { title, body, url, tag };
+
   try {
-    const raw = await request.json();
-    const parsed = pushSendSchema.safeParse(raw);
-    if (!parsed.success) {
-      return NextResponse.json(
-        { error: "title and body are required" },
-        { status: 400 }
-      );
-    }
-    const { title, body, url, tag, userId, userIds } = parsed.data;
-
-    const payload = { title, body, url, tag };
-
     let result;
     if (userId) {
-      // Send to a specific user
       result = await sendPushToUser(userId, payload);
-    } else if (userIds && Array.isArray(userIds)) {
-      // Send to specific users
+    } else if (userIds && Array.isArray(userIds) && userIds.length > 0) {
       result = await sendPushToUsers(userIds, payload);
     } else {
-      // Broadcast to all subscribers
       result = await broadcastPush(payload);
     }
-
     return NextResponse.json({ ok: true, ...result });
-  } catch {
-    return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+  } catch (err) {
+    console.error("[POST /api/push/send]", err);
+    return NextResponse.json(
+      {
+        error: "Push delivery failed",
+        detail: err instanceof Error ? err.message : String(err),
+      },
+      { status: 500 }
+    );
   }
 }

@@ -30,7 +30,21 @@ const scrollImages = [
   "/images/keith/hero-5.jpg",
 ];
 
-export default function HeroBanner() {
+interface HeroBannerProps {
+  headline?: string;
+  subheadline?: string;
+  backgroundColor?: string | null;
+  backgroundImage?: string | null;
+  overlayOpacity?: number;
+}
+
+export default function HeroBanner({
+  headline,
+  subheadline,
+  backgroundColor,
+  backgroundImage,
+  overlayOpacity,
+}: HeroBannerProps = {}) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
@@ -97,21 +111,21 @@ export default function HeroBanner() {
             Technology Innovator &bull; Strategic Advisor &bull; Speaker
           </motion.p>
 
-          {/* Name */}
+          {/* Name / headline — admin-overridable via page_configs.hero_config */}
           <motion.h1
             variants={fadeUp}
             className="font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-6 bg-gradient-to-r from-[#2764FF] to-[#21B8CD] bg-clip-text text-transparent"
           >
-            Keith L. Odom
+            {headline || "Keith L. Odom"}
           </motion.h1>
 
-          {/* Tagline */}
+          {/* Tagline / subheadline — admin-overridable */}
           <motion.p
             variants={fadeUp}
             className="text-lg sm:text-xl text-[#E6EDF3] leading-relaxed mb-10 max-w-xl"
           >
-            Empowering organizations with AI-driven strategy and digital
-            transformation
+            {subheadline ||
+              "Empowering organizations with AI-driven strategy and digital transformation"}
           </motion.p>
 
           {/* CTA buttons */}

@@ -7,12 +7,25 @@ import AIToolOfTheWeek from "@/components/home/AIToolOfTheWeek";
 import QuickAssessmentCTA from "@/components/home/QuickAssessmentCTA";
 import UpcomingKeynote from "@/components/home/UpcomingKeynote";
 import FadeInOnScroll from "@/components/shared/FadeInOnScroll";
+import { getPageConfig } from "@/lib/page-config-server";
 
-export default function Home() {
+// Force dynamic so admin edits to page_configs reflect immediately
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const pageConfig = await getPageConfig("home");
+  const hero = pageConfig?.hero_config;
+
   return (
     <>
-      {/* Hero — full width, no container constraints */}
-      <HeroBanner />
+      {/* Hero — full width. Admin-overridable via page_configs.hero_config */}
+      <HeroBanner
+        headline={hero?.headline || undefined}
+        subheadline={hero?.subheadline || undefined}
+        backgroundColor={hero?.backgroundType === "color" ? hero?.backgroundRef : null}
+        backgroundImage={hero?.backgroundType === "image" ? hero?.backgroundRef : null}
+        overlayOpacity={hero?.overlayOpacity}
+      />
 
       {/* Remaining sections — contained and spaced */}
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-[#0D1117] overflow-hidden">
