@@ -53,13 +53,20 @@ cases:
         value: '"page_slug":"vault"'
 
   - name: vault-content-seeded
+    # Checks the admin listing (which returns all rows regardless of
+    # visibility when no filter is passed) rather than the public API —
+    # the public API legitimately returns 0 items when Keith has chosen
+    # to hide everything, and that's not a seed failure. Seed health =
+    # "the row exists in vault_content", not "the row is currently
+    # published". Omit the visibility query param so the route skips
+    # its .eq("visibility", ...) filter entirely.
     admin_steps:
       - action: api_get_contains
-        url: /api/content/vault
+        url: /api/admin/content-manager/vault?limit=200
         value: 'Pastor'
     verify:
       - action: api_get_contains
-        url: /api/content/vault
+        url: /api/admin/content-manager/vault?limit=200
         value: 'slug'
 
   # ─── Vault create → public visible (full feedback loop) ──
@@ -94,6 +101,20 @@ cases:
         url: /api/content/vault
         value: "Function Audit Vault ${_run.id}"
 
+  # ─── Hidden vault item must 404 on detail URL ⭐ ────────
+  # Regression guard for the ghost CMS bug closed in PR #44 (2026-04-11):
+  # /vault/[slug] was reading the static seed first and rendering hidden
+  # items despite visibility='hidden'. The list-level check above passed
+  # while this slug-level check would have caught it.
+  - name: vault-hide-slug-detail-returns-404
+    admin_steps:
+      - action: wait
+        ms: 50
+    verify:
+      - action: api_get_status
+        url: /api/content/vault/function-audit-vault-${_run.id}
+        value: 404
+
   # ─── Vault restore → back in public ────────────────────
   - name: vault-restore-to-public
     admin_steps:
@@ -105,6 +126,70 @@ cases:
       - action: api_get_contains
         url: /api/content/vault
         value: "Function Audit Vault ${_run.id}"
+
+  # ─── Restored vault item must 200 on detail URL ⭐ ──────
+  # Companion to vault-hide-slug-detail-returns-404. If the detail route
+  # is broken in the opposite direction (hides everything), this catches
+  # it.
+  - name: vault-restore-slug-detail-returns-200
+    admin_steps:
+      - action: wait
+        ms: 50
+    verify:
+      - action: api_get_status
+        url: /api/content/vault/function-audit-vault-${_run.id}
+        value: 200
+
+  # ─── Runtime invariant: vault API serves only DB rows ⭐ ─
+  # Regression guard for PR #44 (2026-04-11). The public list endpoint
+  # was merging src/lib/vault-data.ts (static seed, IDs "v-001"..."v-017")
+  # on top of DB rows. After the fix, every returned item is prefixed
+  # "db-<uuid>". This invariant holds regardless of test state, so it's
+  # stateless and cheap. If any static seed leaks back, "v-0" shows up
+  # and this case fails immediately.
+  - name: vault-api-serves-only-db-rows
+    admin_steps:
+      - action: wait
+        ms: 10
+    verify:
+      - action: api_get_not_contains
+        url: /api/content/vault
+        value: '"id":"v-0'
+
+  # ─── Events must not leak into /api/content/vault ⭐ ────
+  # Regression guard for PR #46 (2026-04-11). /vault was concatenating
+  # /api/events onto the vault list, so admin "Hide" toggles on
+  # vault_content had no effect on event_presentations. One admin
+  # surface = one public surface. Create a published event, verify the
+  # vault API does NOT include it, clean up.
+  - name: events-do-not-leak-into-vault-api
+    admin_steps:
+      - action: api_post
+        url: /api/admin/events
+        capture: audit_event
+        value:
+          title: "Function Audit Event ${_run.id}"
+          conference_name: "Function Audit Conference"
+          conference_location: "Nowhere, TX"
+          event_category: "Current Events"
+          description: "Audit test event. Safe to delete."
+          event_date: "2030-01-01"
+    verify:
+      - action: api_get_contains
+        url: /api/events
+        value: "Function Audit Event ${_run.id}"
+      - action: api_get_not_contains
+        url: /api/content/vault
+        value: "Function Audit Event ${_run.id}"
+
+  - name: events-cleanup
+    admin_steps:
+      - action: api_delete
+        url: /api/admin/events/${audit_event.id}
+    verify:
+      - action: api_get_not_contains
+        url: /api/events
+        value: "Function Audit Event ${_run.id}"
 
   # ─── Vault archive → absent from public, present in repo ─
   - name: vault-archive-moves-to-repository
@@ -288,3 +373,29 @@ cases:
     verify:
       - action: wait
         ms: 100
+
+  # ─── Service worker hygiene ⭐ ────────────────────────────
+  # Regression guard for PR #47 (2026-04-11). The PWA service worker
+  # had a static CACHE_NAME that never bumped across deploys, and /vault
+  # was pre-cached in APP_SHELL. Users on installed PWAs kept seeing
+  # stale bundles for days after fixes shipped.
+  - name: sw-served-and-has-cache-name
+    admin_steps:
+      - action: wait
+        ms: 10
+    verify:
+      - action: api_get_contains
+        url: /sw.js
+        value: 'CACHE_NAME = "klo-v'
+
+  - name: sw-vault-not-in-app-shell
+    admin_steps:
+      - action: wait
+        ms: 10
+    verify:
+      # /vault renders admin-controlled dynamic data — it must never be
+      # pre-cached in APP_SHELL or users see frozen content on install.
+      # The string pattern matches the array entry specifically (quoted).
+      - action: api_get_not_contains
+        url: /sw.js
+        value: '"/vault"'
