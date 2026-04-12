@@ -60,7 +60,9 @@ First, go to keith L odom dot A I and click Sign In, or navigate directly to the
 
 Once signed in, you'll see a gold "Admin" link in the top navigation bar. Click it to open the dashboard.
 
-The dashboard has twelve tabs across the top: Overview, Customize, Content Manager, Events, Conference, Inquiries, Notifications, Presentations, Users, Content Analytics, Revenue, and Tools.
+The dashboard has fourteen tabs across the top: Overview, Creative Studio, Customize, Content Manager, Surveys, Events, Conference, Inquiries, Notifications, Presentations, Users, Content Analytics, Revenue, and Tools.
+
+The two newest tabs are Creative Studio — where you upload and manage all the images, animations, fonts, and hero backgrounds for every page — and Surveys, where you build and publish multi-question intake forms.
 
 In the top-right corner, you'll find four utility buttons: Changelog for version history, Request Update to submit change requests to Tim, Training Guide which brings you to this page, and Refresh to reload data on any tab.
 
@@ -78,9 +80,34 @@ Below that are three charts. The User Signups chart shows a line graph of new si
 All charts refresh when you click the Refresh button in the header. Green arrows on stat cards mean positive week-over-week growth.`,
   },
   {
+    id: "creative-studio",
+    title: "Creative Studio",
+    narration: `The Creative Studio tab is the full visual toolkit for the app. Anything visible on the home page — the photos, the animations, the colors, the fonts, the background — is managed from here. It's six panels shown as a segmented control at the top: Media, Animations, Layout, Music, Theme, and Pages.
+
+Let's walk through each one.
+
+Media is your image library. Click the gold Upload button in the top-right of the panel to upload photos, videos, or audio files. You can pick one or many at once, or drag them straight onto the panel. The left sidebar shows folders — click New Folder to organize uploads, for example a folder called hero-backgrounds or speaker-photos. Above the grid are filter buttons for All, Images, Videos, and Audio. The search box at the top filters by filename. To delete a file, hover over its card and click the red trash icon, then confirm. Deletion is permanent and removes the file from storage, so make sure no page still references it first.
+
+Animations is where you manage animation presets. Eight system presets ship by default — Fade In, Fade Up, Slide Left, Slide Right, Scale Up, Bounce In, and Parallax Slow. You can click any preset to preview it on the right. If you click New Preset you can build your own custom animation by picking a category, trigger, duration, and easing. System presets are locked and cannot be deleted, but custom ones can.
+
+Layout Editor lets you adjust global spacing — padding, gaps, section margins — using sliders. Changes preview live and are global, meaning they affect every page that uses the shared shell. Click Save to publish.
+
+Music Manager is where you upload background audio tracks. MP3, WAV, and M4A files are supported. Each track has a play button for instant preview. You can toggle tracks on and off without deleting them, and delete any track you no longer need. Keep clips short and set them to loop — long tracks inflate the bundle and annoy users.
+
+Theme Designer lets you build complete visual themes with their own color palette, body font, display font, and button variants. Click New Theme to start. Click Activate to make a theme live — only one theme is active at a time. The active theme cannot be deleted until you activate a different one.
+
+And the most important panel: Pages. This is where you compose each page of the app individually. Pick a page from the dropdown — Home, Advisor, Assessments, Booking, Events, Marketplace, Strategy Rooms, or Vault. For each page, you can set the hero headline and subheadline text, the background type — Solid Color, Image, or Video — the overlay opacity, the animation preset, the audio track, and SEO metadata. The publish toggle lets you stage changes as a Draft before going live. And the gold Save Page button in the top-right commits your changes.
+
+Here's the most common workflow: to change the photo on the home page, upload a new image in the Media panel, then switch to the Pages panel, select Home from the dropdown, set Background Type to Image, click the media picker to choose your image, adjust the overlay opacity to taste, and click Save Page. That's it — the home hero now uses your image instead of the default Keith photo slideshow.
+
+To restore the default slideshow, set the background type back to Color and clear the color value. Each page has its own hero config, so changes to Home don't affect Vault or any other page.
+
+Creative Studio replaced the old workflow where visual changes meant editing code. Everything visual now lives here. Content Manager still owns the TEXT of the home page — headlines, CTAs, testimonials — but the VISUALS live in Creative Studio.`,
+  },
+  {
     id: "customize",
     title: "Customize",
-    narration: `The Customize tab lets you control the look and feel of the app without touching any code.
+    narration: `The Customize tab lets you control the look and feel of the app without touching any code. Use this tab for quick brand tweaks and feature toggles. For deeper visual changes — like swapping the hero background image, changing fonts, or building a full theme — use the Creative Studio tab instead.
 
 Under Brand Colors, you can edit five colors using color pickers: Primary, Accent Gold, Background, Card Surface, and Body Text.
 
@@ -88,20 +115,45 @@ Feature Toggles let you enable or disable nine features: Assessments, Vault, AI 
 
 Homepage Sections lets you show, hide, and reorder seven sections on the homepage: Hero Banner, Upcoming Keynote, Latest Brief, Trending Topics, Featured Insight, AI Tool of the Week, and Assessment Call to Action. The Hero Banner is always visible and cannot be hidden.
 
-When you're done, click Save to apply your changes with a confirmation dialog. Or click Reset to go back to the default settings. Changes take effect immediately for all users.`,
+When you're done, click Save to apply your changes with a confirmation dialog. Or click Reset to go back to the default settings. Changes take effect immediately for all users.
+
+Remember: this tab controls WHICH sections appear and their basic colors. To change the actual photo or background image on the home hero, head over to Creative Studio and open the Pages panel.`,
   },
   {
     id: "content-manager",
     title: "Content Manager",
-    narration: `The Content Manager tab is where you edit all the text, images, and files that appear on the website — without needing to touch any code.
+    narration: `The Content Manager tab is where you edit the text of user-facing content across the website — without needing to touch any code. Think of it as the words and copy layer. For the visuals — images, fonts, animations, and hero backgrounds — use Creative Studio instead.
 
-There are three main areas. Home Page Content lets you edit seven homepage sections: the Hero Banner with its heading and taglines, the Latest Brief, Trending Topics, Featured Insight, AI Tool of the Week, Testimonials, and Quick Links.
+There are three main areas. Home Page Content lets you edit seven homepage sections: the Hero Banner headline and tagline and call-to-action buttons, the Latest Brief, Trending Topics, Featured Insight, AI Tool of the Week, Testimonials, and Quick Links. Note that the hero's background image or color is NOT here — that lives in Creative Studio, Pages panel.
 
 The Vault Library lets you manage all vault items. For each item, you can set the title, category, type, level, whether it's premium or free, the description, author, duration, and attach files.
 
 Feed Posts lets you create, edit, delete, and schedule posts that appear in the community feed.
 
-You can also upload PDFs and images to any content section. Each section shows when it was last edited so you can keep track of what's current.`,
+You can attach PDFs and cover images to individual vault items and feed posts directly from the edit modal. But if you want to upload reusable graphics like hero backgrounds or speaker photos, upload them in Creative Studio, Media panel, first.
+
+Each section shows when it was last edited so you can keep track of what's current. Rule of thumb: Content Manager is words. Creative Studio is pictures, fonts, animations, and hero backgrounds.`,
+  },
+  {
+    id: "surveys",
+    title: "Surveys",
+    narration: `The Surveys tab lets you build and publish multi-question intake forms. Think of it as the big brother of the single-question polls in the Conference tab. Use Surveys when you need a structured questionnaire — for example the AI in the Black Church survey. Use Conference polls for single-question live moments during an event.
+
+To create a new survey, click New Survey and give it a title, description, and slug. The slug becomes the public URL, so keep it short and lowercase.
+
+Add questions of any type you need: single-select, multi-select, short answer, long answer, rating scale, or yes-no. Mark questions required if respondents must answer them to move on.
+
+Click Preview to see the survey exactly as a respondent will experience it, including the auto-advance behavior and scroll transitions.
+
+Toggle Published to make the survey live at slash survey slash your-slug. Unpublished surveys return 404 for non-admins.
+
+Once responses start coming in, click the survey card to open the response table. You can filter by completed or partial, sort by submission date, and view per-question breakdowns and distribution charts.
+
+Click Export CSV to download every response as a spreadsheet for deeper analysis.
+
+A few important notes. Respondents can start a survey, leave, and come back later — partial responses are auto-saved. The CSV export includes a completion status column so you can filter those out if you want only fully completed responses. Each survey has its own unique URL, so you can deep-link from emails or social posts without having to feature it on the homepage.
+
+And finally, the Delete action removes a survey and all of its responses permanently. There's a confirmation prompt so you don't hit it by accident.`,
   },
   {
     id: "events",
