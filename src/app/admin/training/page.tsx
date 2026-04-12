@@ -748,8 +748,10 @@ const fadeIn = {
 const AUDIO_MAP: Record<string, string> = {
   "getting-started": "/training/audio/getting-started.mp3",
   "overview": "/training/audio/overview.mp3",
+  "creative-studio": "/training/audio/creative-studio.mp3",
   "customize": "/training/audio/customize.mp3",
   "content-manager": "/training/audio/content-manager.mp3",
+  "surveys": "/training/audio/surveys.mp3",
   "events": "/training/audio/events.mp3",
   "conference": "/training/audio/conference.mp3",
   "inquiries": "/training/audio/inquiries.mp3",
