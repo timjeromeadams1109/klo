@@ -1,16 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/lib/auth";
 import { getServiceSupabase } from "@/lib/supabase";
 import { adminEventUpdateSchema } from "@/lib/validation";
-
-async function verifyAdmin() {
-  const session = await getServerSession(authOptions);
-  if (!session?.user) return null;
-  const role = (session.user as { role?: string }).role;
-  if (!["owner", "admin"].includes(role ?? "")) return null;
-  return session;
-}
+import { verifyAdmin } from "@/lib/admin-auth";
 
 export async function PUT(
   req: NextRequest,
