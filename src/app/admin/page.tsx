@@ -185,7 +185,15 @@ export default function AdminPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialTab = (searchParams.get("tab") as TabId) || "overview";
+  // ?page=home deep-links into the PageComposer with that page pre-selected
+  const initialPageParam = searchParams.get("page") ?? undefined;
   const [activeTab, setActiveTab] = useState<TabId>(initialTab);
+
+  // Keep the active tab in sync when the URL search params change (e.g. deep-link buttons).
+  useEffect(() => {
+    const tab = (searchParams.get("tab") as TabId) || "overview";
+    setActiveTab(tab);
+  }, [searchParams]);
   const [stats, setStats] = useState<AdminDashboardStats | null>(null);
   const [activity, setActivity] = useState<AdminActivityData | null>(null);
   const [users, setUsers] = useState<AdminUser[]>([]);
@@ -529,6 +537,23 @@ export default function AdminPage() {
         {/* OVERVIEW TAB */}
         {!loading && activeTab === "overview" && stats && activity && (
           <div className="space-y-8">
+            {/* Quick actions — prominent shortcuts for common tasks */}
+            <motion.div variants={fadeUp} custom={1.5}>
+              {/*
+                Deep-links into Creative Studio → Pages tab with "home" pre-selected.
+                We navigate via router.push so the URL updates and the page param
+                is available to CreativeStudioTab on the re-render.
+              */}
+              <button
+                onClick={() => router.push("/admin?tab=creative-studio&page=home")}
+                className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-klo-accent/10 border border-klo-accent/20 text-klo-accent hover:bg-klo-accent/20 transition-all min-h-[56px] text-sm font-semibold"
+              >
+                <Wand2 size={18} />
+                Edit Home Page
+                <span className="text-xs font-normal text-klo-muted ml-1">— hero, watermarks, background</span>
+              </button>
+            </motion.div>
+
             {/* Stat cards */}
             <motion.div
               variants={fadeUp}
@@ -1375,7 +1400,10 @@ export default function AdminPage() {
 
         {/* CREATIVE STUDIO TAB */}
         {activeTab === "creative-studio" && (
-          <CreativeStudioTab />
+          <CreativeStudioTab
+            initialPanel={initialPageParam ? "page-composer" : undefined}
+            initialPage={initialPageParam}
+          />
         )}
 
         {/* CUSTOMIZE TAB */}

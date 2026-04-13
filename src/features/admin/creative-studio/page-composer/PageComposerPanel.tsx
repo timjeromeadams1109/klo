@@ -14,8 +14,10 @@ import {
   FileText,
   ToggleLeft,
   ToggleRight,
+  ChevronDown,
+  ChevronRight,
 } from "lucide-react";
-import type { HeroConfig, BackgroundType, ViewportSize } from "@/types/creative-studio";
+import type { HeroConfig, BackgroundType, ViewportSize, SectionImageConfig, SectionImages } from "@/types/creative-studio";
 import { usePageComposer } from "./usePageComposer";
 import MediaPicker from "./MediaPicker";
 
@@ -33,7 +35,18 @@ const DEFAULT_HERO: HeroConfig = {
   overlayOpacity: 0.5,
 };
 
-export default function PageComposerPanel() {
+const DEFAULT_SECTION_IMAGE: SectionImageConfig = {
+  backgroundType: "image",
+  backgroundRef: null,
+  overlayOpacity: 0.04,
+};
+
+interface PageComposerPanelProps {
+  /** Pre-select a page slug on mount (used by the deep-link from the overview shortcut). */
+  initialPage?: string;
+}
+
+export default function PageComposerPanel({ initialPage }: PageComposerPanelProps = {}) {
   const {
     pages,
     selectedPage,
@@ -57,6 +70,20 @@ export default function PageComposerPanel() {
   const [metaDescription, setMetaDescription] = useState("");
   const [published, setPublished] = useState(true);
 
+  // Section images (only relevant for the "home" page)
+  const [latestBriefImg, setLatestBriefImg] = useState<SectionImageConfig>(DEFAULT_SECTION_IMAGE);
+  const [featuredInsightImg, setFeaturedInsightImg] = useState<SectionImageConfig>(DEFAULT_SECTION_IMAGE);
+  const [latestBriefOpen, setLatestBriefOpen] = useState(false);
+  const [featuredInsightOpen, setFeaturedInsightOpen] = useState(false);
+
+  // Apply initialPage deep-link once pages are loaded
+  useEffect(() => {
+    if (initialPage && pages.length > 0) {
+      const match = pages.find((p) => p.page_slug === initialPage);
+      if (match) setSelectedSlug(initialPage);
+    }
+  }, [initialPage, pages, setSelectedSlug]);
+
   // Sync from selected page
   useEffect(() => {
     if (selectedPage) {
@@ -67,6 +94,11 @@ export default function PageComposerPanel() {
       setMetaTitle(selectedPage.meta_title ?? "");
       setMetaDescription(selectedPage.meta_description ?? "");
       setPublished(selectedPage.published);
+
+      // Populate section image state from page config
+      const si = selectedPage.section_images;
+      setLatestBriefImg({ ...DEFAULT_SECTION_IMAGE, ...si?.latestBrief });
+      setFeaturedInsightImg({ ...DEFAULT_SECTION_IMAGE, ...si?.featuredInsight });
     }
   }, [selectedPage]);
 
@@ -75,14 +107,25 @@ export default function PageComposerPanel() {
     setSaving(true);
     setError("");
     try {
-      await updatePage(selectedSlug, {
+      const updates: Parameters<typeof updatePage>[1] = {
         hero_config: hero as HeroConfig,
         animation_preset_id: animationPresetId,
         audio_asset_id: audioAssetId,
         meta_title: metaTitle || null,
         meta_description: metaDescription || null,
         published,
-      });
+      };
+
+      // Only include section_images when editing the home page
+      if (selectedSlug === "home") {
+        const sectionImages: SectionImages = {
+          latestBrief: latestBriefImg,
+          featuredInsight: featuredInsightImg,
+        };
+        (updates as Record<string, unknown>).section_images = sectionImages;
+      }
+
+      await updatePage(selectedSlug, updates);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Save failed");
     } finally {
@@ -153,6 +196,114 @@ export default function PageComposerPanel() {
           </button>
         </div>
       </div>
+
+      {/* ── Home-page section image editors ──────────────────────────────────────
+           Only shown when the "home" page is selected. These let Keith swap the
+           subtle watermark images in LatestBrief and FeaturedInsight without
+           touching code.
+      ────────────────────────────────────────────────────────────────────────── */}
+      {selectedSlug === "home" && (
+        <div className="space-y-3">
+          {/* Latest Brief watermark */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass rounded-2xl border border-white/5 overflow-hidden"
+          >
+            <button
+              type="button"
+              onClick={() => setLatestBriefOpen((v) => !v)}
+              className="w-full flex items-center justify-between p-5 text-left min-h-[52px]"
+            >
+              <div className="flex items-center gap-2">
+                <ImageIcon size={16} className="text-klo-gold" />
+                <span className="text-sm font-semibold text-klo-text">Latest Brief — Watermark Image</span>
+              </div>
+              {latestBriefOpen ? <ChevronDown size={16} className="text-klo-muted" /> : <ChevronRight size={16} className="text-klo-muted" />}
+            </button>
+            {latestBriefOpen && (
+              <div className="px-5 pb-5 space-y-3 border-t border-white/5">
+                <label className="block pt-3">
+                  <span className="text-xs text-klo-muted mb-1 block">Background Type</span>
+                  <select
+                    value={latestBriefImg.backgroundType}
+                    onChange={(e) =>
+                      setLatestBriefImg({ ...latestBriefImg, backgroundType: e.target.value as "image" | "color", backgroundRef: null })
+                    }
+                    className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]"
+                  >
+                    <option value="image">Image</option>
+                    <option value="color">Solid Color (no watermark)</option>
+                  </select>
+                </label>
+                {latestBriefImg.backgroundType === "image" ? (
+                  <div>
+                    <span className="text-xs text-klo-muted mb-2 block">Watermark Image</span>
+                    <MediaPicker
+                      value={latestBriefImg.backgroundRef}
+                      onChange={(url) => setLatestBriefImg({ ...latestBriefImg, backgroundRef: url })}
+                      assetType="image"
+                      label="Latest Brief Watermark"
+                    />
+                  </div>
+                ) : (
+                  <p className="text-xs text-klo-muted">No watermark — the card will show a plain dark background.</p>
+                )}
+              </div>
+            )}
+          </motion.div>
+
+          {/* Featured Insight watermark */}
+          <motion.div
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.05 }}
+            className="glass rounded-2xl border border-white/5 overflow-hidden"
+          >
+            <button
+              type="button"
+              onClick={() => setFeaturedInsightOpen((v) => !v)}
+              className="w-full flex items-center justify-between p-5 text-left min-h-[52px]"
+            >
+              <div className="flex items-center gap-2">
+                <ImageIcon size={16} className="text-klo-gold" />
+                <span className="text-sm font-semibold text-klo-text">Featured Insight — Watermark Image</span>
+              </div>
+              {featuredInsightOpen ? <ChevronDown size={16} className="text-klo-muted" /> : <ChevronRight size={16} className="text-klo-muted" />}
+            </button>
+            {featuredInsightOpen && (
+              <div className="px-5 pb-5 space-y-3 border-t border-white/5">
+                <label className="block pt-3">
+                  <span className="text-xs text-klo-muted mb-1 block">Background Type</span>
+                  <select
+                    value={featuredInsightImg.backgroundType}
+                    onChange={(e) =>
+                      setFeaturedInsightImg({ ...featuredInsightImg, backgroundType: e.target.value as "image" | "color", backgroundRef: null })
+                    }
+                    className="w-full px-3 py-2.5 rounded-xl bg-klo-dark/50 border border-white/5 text-klo-text text-sm min-h-[44px]"
+                  >
+                    <option value="image">Image</option>
+                    <option value="color">Solid Color (no watermark)</option>
+                  </select>
+                </label>
+                {featuredInsightImg.backgroundType === "image" ? (
+                  <div>
+                    <span className="text-xs text-klo-muted mb-2 block">Watermark Image</span>
+                    <MediaPicker
+                      value={featuredInsightImg.backgroundRef}
+                      onChange={(url) => setFeaturedInsightImg({ ...featuredInsightImg, backgroundRef: url })}
+                      assetType="image"
+                      label="Featured Insight Watermark"
+                    />
+                  </div>
+                ) : (
+                  <p className="text-xs text-klo-muted">No watermark — the card will show a plain dark background.</p>
+                )}
+              </div>
+            )}
+          </motion.div>
+        </div>
+      )}
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Hero Section */}

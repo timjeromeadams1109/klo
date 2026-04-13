@@ -16,6 +16,19 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
   const pageConfig = await getPageConfig("home");
   const hero = pageConfig?.hero_config;
+  const sectionImages = pageConfig?.section_images;
+
+  // Resolve section background images — use admin override when set, otherwise
+  // each component falls back to its own hardcoded default.
+  const latestBriefImage =
+    sectionImages?.latestBrief?.backgroundType === "image"
+      ? (sectionImages.latestBrief.backgroundRef ?? null)
+      : null;
+
+  const featuredInsightImage =
+    sectionImages?.featuredInsight?.backgroundType === "image"
+      ? (sectionImages.featuredInsight.backgroundRef ?? null)
+      : null;
 
   return (
     <>
@@ -40,13 +53,13 @@ export default async function Home() {
             <UpcomingKeynote />
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.05}>
-            <LatestBrief />
+            <LatestBrief backgroundImage={latestBriefImage} />
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.1}>
             <TrendingTopics />
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.05}>
-            <FeaturedInsight />
+            <FeaturedInsight backgroundImage={featuredInsightImage} />
           </FadeInOnScroll>
           <FadeInOnScroll delay={0.1}>
             <AIToolOfTheWeek />

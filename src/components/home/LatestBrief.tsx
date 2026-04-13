@@ -13,7 +13,14 @@ const mockBrief = {
   slug: "/vault/executives-ai-briefing-q1-2026",
 };
 
-export default function LatestBrief() {
+interface LatestBriefProps {
+  backgroundImage?: string | null;
+}
+
+export default function LatestBrief({ backgroundImage }: LatestBriefProps = {}) {
+  // Fall back to the original hardcoded watermark when no admin override is set
+  const watermarkSrc = backgroundImage ?? "/images/keith/b.jpg";
+
   return (
     <section>
       {/* Section heading */}
@@ -33,9 +40,9 @@ export default function LatestBrief() {
       >
         <Link href={mockBrief.slug} className="block group">
           <div className="relative bg-[#161B22] border border-[#21262D] rounded-xl p-6 sm:p-8 transition-all duration-300 group-hover:-translate-y-1 hover:border-[#2764FF]/30 hover:shadow-[0_0_30px_rgba(39,100,255,0.1)] overflow-hidden">
-            {/* Subtle background watermark image */}
+            {/* Subtle background watermark image — admin-overridable via page_configs.home.section_images */}
             <div className="absolute inset-0 opacity-[0.04] group-hover:opacity-[0.08] transition-opacity duration-500">
-              <Image src="/images/keith/b.jpg" alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
+              <Image src={watermarkSrc} alt="" fill className="object-cover" sizes="(max-width: 768px) 100vw, 50vw" />
             </div>
             {/* Left accent bar */}
             <div className="absolute left-0 top-8 bottom-8 w-0.5 bg-gradient-to-b from-[#2764FF] to-[#21B8CD] rounded-full opacity-50 group-hover:opacity-100 transition-opacity" />

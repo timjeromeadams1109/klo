@@ -19,6 +19,17 @@ export interface LayoutConfig {
   maxWidthPx: number;
 }
 
+export interface SectionImageConfig {
+  backgroundType: "image" | "color";
+  backgroundRef: string | null;
+  overlayOpacity?: number;
+}
+
+export interface SectionImages {
+  latestBrief?: SectionImageConfig;
+  featuredInsight?: SectionImageConfig;
+}
+
 export interface PageConfigRow {
   id: string;
   page_slug: string;
@@ -26,6 +37,7 @@ export interface PageConfigRow {
   hero_config: HeroConfig | null;
   layout_config: LayoutConfig | null;
   sections: unknown[];
+  section_images?: SectionImages | null;
   animation_preset_id: string | null;
   audio_asset_id: string | null;
   meta_title: string | null;

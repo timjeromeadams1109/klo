@@ -69,8 +69,15 @@ const panels: {
   },
 ];
 
-export default function CreativeStudioTab() {
-  const [activePanel, setActivePanel] = useState<StudioPanel>("media-library");
+interface CreativeStudioTabProps {
+  /** Pre-select a panel on mount (e.g. "page-composer" from a deep-link). */
+  initialPanel?: StudioPanel;
+  /** Pre-select a page slug inside PageComposerPanel (only used when initialPanel="page-composer"). */
+  initialPage?: string;
+}
+
+export default function CreativeStudioTab({ initialPanel, initialPage }: CreativeStudioTabProps = {}) {
+  const [activePanel, setActivePanel] = useState<StudioPanel>(initialPanel ?? "media-library");
   const currentPanel = panels.find((p) => p.id === activePanel)!;
 
   return (
@@ -132,7 +139,7 @@ export default function CreativeStudioTab() {
       {activePanel === "layout-editor" && <LayoutEditorPanel />}
       {activePanel === "music-manager" && <MusicManagerPanel />}
       {activePanel === "theme-designer" && <ThemeDesignerPanel />}
-      {activePanel === "page-composer" && <PageComposerPanel />}
+      {activePanel === "page-composer" && <PageComposerPanel initialPage={initialPage} />}
     </div>
   );
 }
