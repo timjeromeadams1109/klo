@@ -416,3 +416,78 @@ cases:
       - action: api_get_not_contains
         url: /sw.js
         value: '"/vault"'
+
+  # ─── MediaPicker: Upload & Use round-trip ────────────────────
+  # Verifies that uploading a file inside MediaPicker auto-selects it
+  # and the public_url is returned in the media_assets record.
+  # Cleanup: hard-deletes the uploaded test asset so no orphaned record
+  # lingers in the media_assets table.
+  - name: media-picker-upload-and-use-round-trip
+    admin_steps:
+      - action: api_upload
+        url: /api/admin/creative-studio/media/upload
+        file: test-assets/1x1-red.png
+        folder: page-images
+        capture: uploaded_asset
+      - action: api_get_contains
+        url: /api/admin/creative-studio/media?asset_type=image&limit=100
+        value: "${uploaded_asset.data.id}"
+    verify:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/media/${uploaded_asset.data.id}
+        value: '"public_url"'
+    cleanup:
+      # CRITICAL — always runs in try/finally. Removes the test image so the
+      # media library stays clean. If this cleanup fails the runner reports a
+      # Cleanup Warning — do NOT ignore those.
+      - action: api_delete
+        url: /api/admin/creative-studio/media/${uploaded_asset.data.id}
+      - action: api_get_not_contains
+        url: /api/admin/creative-studio/media?asset_type=image&limit=100
+        value: "${uploaded_asset.data.id}"
+
+  # ─── section_images: save → home-page render ⭐ ──────────────
+  # Verifies that writing section_images.latestBrief to page_configs.home
+  # is persisted and that the home page serves the new backgroundRef in
+  # the page config response.
+  #
+  # MUTATING CASE — cleanup MUST restore prior section_images.
+  # Rationale: localhost dev shares prod Supabase creds. A previous audit
+  # case polluted page_configs.home for ~36hr (2026-04-12). This case
+  # follows the same try/finally cleanup pattern established in
+  # page-composer-save-persists-and-runtime-renders-⭐ (PR #50).
+  - name: section-images-save-and-home-page-render-⭐
+    admin_steps:
+      # Step 1 — snapshot current section_images so cleanup can restore exactly
+      - action: api_get
+        url: /api/admin/creative-studio/pages/home
+        capture: original_page_config
+      # Step 2 — write a sentinel section_images value
+      - action: api_patch
+        url: /api/admin/creative-studio/pages/home
+        value:
+          section_images:
+            latestBrief:
+              backgroundType: "color"
+              backgroundRef: "#ff00aa"
+              overlayOpacity: 0.04
+            featuredInsight:
+              backgroundType: "color"
+              backgroundRef: "#ff00aa"
+              overlayOpacity: 0.04
+    verify:
+      - action: api_get_contains
+        url: /api/admin/creative-studio/pages/home
+        value: '"backgroundRef":"#ff00aa"'
+    cleanup:
+      # CRITICAL — always runs via runner finally block. Restores section_images
+      # to whatever was there before the test (null in a fresh install, or the
+      # real admin value in prod). Resetting to null causes LatestBrief and
+      # FeaturedInsight to fall back to their hardcoded defaults — safe.
+      - action: api_patch
+        url: /api/admin/creative-studio/pages/home
+        value:
+          section_images: null
+      - action: api_get_not_contains
+        url: /api/admin/creative-studio/pages/home
+        value: '"backgroundRef":"#ff00aa"'

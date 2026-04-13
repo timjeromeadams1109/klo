@@ -647,6 +647,12 @@ export const contentListQuerySchema = z.object({
   offset: z.coerce.number().int().min(0).optional(),
 });
 
+const sectionImageConfigSchema = z.object({
+  backgroundType: z.enum(["image", "color"]),
+  backgroundRef: z.string().max(2000).nullable(),
+  overlayOpacity: z.number().min(0).max(1).optional(),
+});
+
 export const pageConfigUpdateSchema = z.object({
   hero_config: z.object({
     headline: z.string().max(500),
@@ -654,7 +660,11 @@ export const pageConfigUpdateSchema = z.object({
     backgroundType: z.enum(["color", "image", "video"]),
     backgroundRef: z.string().max(2000).nullable(),
     overlayOpacity: z.number().min(0).max(1),
-  }).optional(),
+  }).nullable().optional(),
+  section_images: z.object({
+    latestBrief: sectionImageConfigSchema.optional(),
+    featuredInsight: sectionImageConfigSchema.optional(),
+  }).nullable().optional(),
   layout_config: z.object({
     columns: z.union([z.literal(1), z.literal(2), z.literal(3), z.literal(4)]),
     spacing: z.enum(["tight", "normal", "loose"]),

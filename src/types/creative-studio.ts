@@ -160,6 +160,17 @@ export interface HeroConfig {
   overlayOpacity: number;
 }
 
+export interface SectionImageConfig {
+  backgroundType: "image" | "color";
+  backgroundRef: string | null;
+  overlayOpacity?: number;
+}
+
+export interface SectionImages {
+  latestBrief?: SectionImageConfig;
+  featuredInsight?: SectionImageConfig;
+}
+
 export interface LayoutConfig {
   columns: ColumnCount;
   spacing: Spacing;
@@ -182,6 +193,7 @@ export interface PageConfig {
   hero_config: HeroConfig;
   layout_config: LayoutConfig;
   sections: SectionBlock[];
+  section_images?: SectionImages | null;
   animation_preset_id: string | null;
   audio_asset_id: string | null;
   theme_overrides: Partial<ThemeColors> | null;
