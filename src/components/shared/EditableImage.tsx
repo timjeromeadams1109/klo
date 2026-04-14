@@ -10,7 +10,6 @@ import { useState } from "react";
 import { Camera } from "lucide-react";
 import { useEditMode } from "@/contexts/EditModeContext";
 import type { EditableSlot } from "@/contexts/EditModeContext";
-import MediaPicker from "@/features/admin/creative-studio/page-composer/MediaPicker";
 
 interface EditableImageProps {
   children: React.ReactNode;
@@ -140,7 +139,7 @@ function _PickerWrapper({
   // in a portal-like div. Since MediaPicker shows a trigger button + modal,
   // we simulate an immediate "open" by passing a custom trigger that auto-fires.
   return (
-    <_AutoOpenPicker
+    <AutoOpenPicker
       value={currentUrl}
       label={label}
       onClose={onClose}
@@ -164,7 +163,7 @@ import {
 } from "lucide-react";
 import type { MediaAsset } from "@/types/creative-studio";
 
-function _AutoOpenPicker({
+function AutoOpenPicker({
   value,
   label,
   onClose,
