@@ -2,9 +2,11 @@
 -- details card on /events. Per-event show_countdown toggle goes away; spotlight
 -- selection is now a global config with auto/manual modes.
 
--- 1. Remove per-event countdown toggles (replaced by site_spotlight config).
-ALTER TABLE event_presentations DROP COLUMN IF EXISTS show_countdown_title;
-ALTER TABLE event_presentations DROP COLUMN IF EXISTS show_countdown;
+-- 1. Legacy per-event countdown columns (show_countdown, show_countdown_title)
+-- are intentionally NOT dropped here. Dropping them before Vercel finishes
+-- deploying the new code would cause admin saves to 500 against stale client
+-- bundles. They're harmless as dead columns; a follow-up migration can remove
+-- them once we're sure nothing reads them.
 
 -- 2. Per-event additions: hosting entity + per-event listing visibility.
 ALTER TABLE event_presentations
