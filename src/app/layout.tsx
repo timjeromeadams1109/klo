@@ -7,6 +7,7 @@ import AuthProvider from "@/components/layout/AuthProvider";
 import SkipLink from "@/components/layout/SkipLink";
 import ServiceWorkerRegister from "@/components/layout/ServiceWorkerRegister";
 import CapacitorInit from "@/components/layout/CapacitorInit";
+import PushAutoInit from "@/components/layout/PushAutoInit";
 import BiometricGate from "@/components/layout/BiometricGate";
 import OfflineBanner from "@/components/layout/OfflineBanner";
 import TitleFade from "@/components/layout/TitleFade";
@@ -117,6 +118,7 @@ export default async function RootLayout({
       </head>
       <body className="font-body antialiased bg-[#0D1117] text-klo-text no-overscroll">
         <AuthProvider>
+          <PushAutoInit />
           <ActiveSurveyProvider>
           <BiometricGate>
             <ScrollToTop />
